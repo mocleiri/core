@@ -17,6 +17,7 @@
 	</description>
 
 	<modules>
+		<module>dojo-parent</module>
 		<module>progressbar-parent</module>
 		<module>push-parent-jdk-1.5</module>
 		<module>scala-extensions-parent</module>
@@ -58,7 +59,6 @@
 		<module>maven-support</module>
 		<module>theme-parent</module>
 		<module>jasperreports-parent</module>
-		<module>dojo-parent</module>
 	  </modules>
 
 	<build>

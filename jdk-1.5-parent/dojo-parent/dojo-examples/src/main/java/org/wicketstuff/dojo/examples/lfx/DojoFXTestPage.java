@@ -3,16 +3,16 @@ package org.wicketstuff.dojo.examples.lfx;
 
 
 import org.apache.wicket.PageParameters;
-import org.wicketstuff.dojo.dojofx.FXOnClickFader;
-import org.wicketstuff.dojo.dojofx.FXOnClickSlider;
-import org.wicketstuff.dojo.dojofx.FXOnClickWiper;
-import org.wicketstuff.dojo.dojofx.FXOnMouseOverFader;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
 import org.wicketstuff.dojo.dojofx.FXOnClickExploder;
+import org.wicketstuff.dojo.dojofx.FXOnClickFader;
+import org.wicketstuff.dojo.dojofx.FXOnClickSlider;
+import org.wicketstuff.dojo.dojofx.FXOnClickWiper;
+import org.wicketstuff.dojo.dojofx.FXOnMouseOverFader;
 import org.wicketstuff.dojo.dojofx.FXOnMouseOverHighlighter;
 import org.wicketstuff.dojo.examples.WicketExamplePage;
 
@@ -183,7 +183,7 @@ public class DojoFXTestPage extends WicketExamplePage{
 		menu2 = new WebMarkupContainer("menu2");
 		menuhead = new WebMarkupContainer("menuhead");
 		menutitle = new Label("menutitle","File menu");
-		menutoggle = new Label("menutoggle","(±)");
+		menutoggle = new Label("menutoggle","(ï¿½)");
 		menubody = new WebMarkupContainer("menubody");
 		item1 = new WebMarkupContainer("item1");
 		item1label = new Label("item1label","Move file");
@@ -201,7 +201,7 @@ public class DojoFXTestPage extends WicketExamplePage{
 		menu3 = new WebMarkupContainer("menu3");
 		menu3head = new WebMarkupContainer("menu3head");
 		menu3title = new Label("menu3title","Other places");
-		menu3toggle = new Label("menu3toggle","(±)");
+		menu3toggle = new Label("menu3toggle","(ï¿½)");
 		menu3body = new WebMarkupContainer("menu3body");
 		item13 = new WebMarkupContainer("item13");
 		item1label3 = new Label("item1label3","Notulen");

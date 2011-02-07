@@ -6,9 +6,7 @@
 		<groupId>org.wicketstuff</groupId>
 		<artifactId>dojo-parent</artifactId>
 		<version>1.4-SNAPSHOT</version>
-	
 	</parent>
-	<groupId>org.wicketstuff</groupId>
 	<artifactId>dojo-examples</artifactId>
 	<packaging>war</packaging>
 	<name>WicketStuff Dojo Examples</name>
@@ -36,7 +34,7 @@
 		<dependency>
 			<groupId>org.wicketstuff</groupId>
 			<artifactId>dojo-api</artifactId>
-			<version>${project.version}T</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>

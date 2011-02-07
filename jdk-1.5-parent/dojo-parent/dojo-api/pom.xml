@@ -56,6 +56,13 @@
 	      <artifactId>cometd-client</artifactId>
 	      <version>${jetty.version}</version>
 	    </dependency>
+	    <dependency>
+	    	<groupId>org.wicketstuff</groupId>
+	    	<artifactId>dojo-resources</artifactId>
+	    	<version>${project.version}</version>
+	    	<type>jar</type>
+	    	<scope>compile</scope>
+	    </dependency>
 	</dependencies>
 	<build>
 		<resources>
@@ -82,5 +89,32 @@
 				</excludes>
 			</testResource>
 		</testResources>
+		<plugins>
+		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<index>true</index>
+						<manifest>
+							<addDefaultSpecificationEntries>
+								true
+							</addDefaultSpecificationEntries>
+							<addDefaultImplementationEntries>
+								true
+							</addDefaultImplementationEntries>
+						</manifest>
+						<manifestEntries>
+							<Specification-Title>${project.name}</Specification-Title>
+							<Specification-Version>${project.version}</Specification-Version>
+							<Implementation-Title>${project.name}</Implementation-Title>
+							<Implementation-Version>${project.version}</Implementation-Version>
+							<SCM-url>${project.scm.url}</SCM-url>
+							<dojo-version>${dojo.version}</dojo-version>
+						</manifestEntries>
+					</archive>
+				</configuration>
+			</plugin>
+			</plugins>
 	</build>
 </project>
