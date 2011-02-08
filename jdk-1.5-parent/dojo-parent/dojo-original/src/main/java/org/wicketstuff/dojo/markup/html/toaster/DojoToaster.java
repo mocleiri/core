@@ -164,7 +164,7 @@ public class DojoToaster extends WebMarkupContainer implements IDojoWidget{
 	 * @param target ajax target
 	 */
 	public void publishMessage(AjaxRequestTarget target){
-		target.appendJavascript("dojo.event.topic.publish(\"" + getMarkupId() + "\",\"" + getModelObject() + "\")");
+		target.appendJavascript("dojo.event.topic.publish(\"" + getMarkupId() + "\",\"" + getDefaultModelObject() + "\")");
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class DojoToaster extends WebMarkupContainer implements IDojoWidget{
 	 * @param target ajax target
 	 */
 	public void publishMessage(AjaxRequestTarget target, String type){
-		target.appendJavascript("dojo.event.topic.publish(\"" + getMarkupId() + "\",{message:\"" + getModelObject() + "\",type:\"" + type + "\"})");
+		target.appendJavascript("dojo.event.topic.publish(\"" + getMarkupId() + "\",{message:\"" + getDefaultModelObject() + "\",type:\"" + type + "\"})");
 	}
 
 }

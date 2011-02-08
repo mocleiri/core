@@ -1,9 +1,10 @@
 package org.wicketstuff.dojo.examples;
 
-import org.mortbay.jetty.Connector;
-import org.mortbay.jetty.Server;
-import org.mortbay.jetty.nio.SelectChannelConnector;
-import org.mortbay.jetty.webapp.WebAppContext;
+import org.eclipse.jetty.server.Connector;
+import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
+import org.eclipse.jetty.webapp.WebAppContext;
+
 
 /**
  * Seperate startup class for people that want to run the examples directly.
@@ -32,7 +33,7 @@ public class DojoExamplesLauncher {
         web.setWar("src/main/webapp");
         web.setDistributable(true);
         web.setClassLoader(DojoExamplesLauncher.class.getClassLoader());
-        server.addHandler(web);
+        server.setHandler(web);
         
         try {
             server.start();

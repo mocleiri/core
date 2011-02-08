@@ -16,6 +16,7 @@
  */
 package org.wicketstuff.dojo.markup.html.form.validation;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
@@ -79,7 +80,7 @@ public class FXTooltipFeedbackPanel extends Panel implements IFeedback
 				 * 
 				 * @see wicket.model.IModel#getObject()
 				 */
-				public Object getObject()
+				public Serializable getObject()
 				{
 					return getCSSClass(message);
 				}

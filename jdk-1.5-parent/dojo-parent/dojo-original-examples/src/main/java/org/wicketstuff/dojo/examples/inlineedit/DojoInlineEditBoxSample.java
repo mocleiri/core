@@ -19,7 +19,7 @@ public class DojoInlineEditBoxSample extends WicketExamplePage {
 		
 		add(dojoInlineEditBox = new DojoInlineEditBox("inlineEditBox", "Hello, World!") {
 			protected void onSave(AjaxRequestTarget target) {
-				displayText.setModelObject(getModelObject());
+				displayText.setDefaultModelObject(getDefaultModelObject());
 				target.addComponent(displayText);
 				target.addComponent(dojoInlineEditBox);
 			}

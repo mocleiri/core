@@ -51,7 +51,7 @@ public class Index extends ExampleBasePage
 
 			@Override
 			protected void onSubmit(AjaxRequestTarget target, Form form) {
-				if ("Windows".equals(skin.getModelObjectAsString())){
+				if ("Windows".equals(skin.getDefaultModelObjectAsString())){
         			SkinManager.getInstance().setupSkin(new WindowsDojoSkin());
         		}else{
         			SkinManager.getInstance().setupSkin(null);

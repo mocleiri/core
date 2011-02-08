@@ -69,8 +69,8 @@ public class DojoIntegerSlider extends Panel
 		
 		slider = new DojoSlider("slider", value);
 		slider.add(new DojoIntegerSliderHandler());
-		if (getModelObject() != null){
-			slider.setInitialValue(getModelObject().toString());
+		if (getDefaultModelObject() != null){
+			slider.setInitialValue(getDefaultModelObject().toString());
 		}
 		this.add(slider);
 	}

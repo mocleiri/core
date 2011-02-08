@@ -59,6 +59,12 @@ public class SuggestionListSample extends WicketExamplePage {
 				}
 				return list;
 			}
+
+			public String getDojoType() {
+				// mocleiri: not sure if this is suitable or not
+				return "RequestSuggestionList";
+			}
+
 		};
 
 		ArrayList personList = new ArrayList();
@@ -74,7 +80,7 @@ public class SuggestionListSample extends WicketExamplePage {
 			@Override
 			public void onSetValue(AjaxRequestTarget target) {
 				System.err.println("New value is " + getInput());
-				selectedPerson.setModel(new Model(getInput()));
+				selectedPerson.setDefaultModel(new Model(getInput()));
 				target.addComponent(selectedPerson);
 			}
 		};

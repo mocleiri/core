@@ -17,7 +17,7 @@ public class DnDShower extends WicketExamplePage {
 			public void onDrop(AjaxRequestTarget target, DojoDragContainer container, int position) {
 				System.out.println("position = " + position);
 				System.out.println("DojoDragContainer = " + container.getId());
-				System.out.println("DojoDragContainerModel = " + container.getModelObjectAsString());
+				System.out.println("DojoDragContainerModel = " + container.getDefaultModelObjectAsString());
 				
 			}
 		
@@ -28,7 +28,7 @@ public class DnDShower extends WicketExamplePage {
 		DojoDragContainer dragContainer2 = new DojoDragContainer("dragContainer2");
 		DojoDragContainer dragContainer3 = new DojoDragContainer("dragContainer3");
 		add(dragContainer1);
-		dragContainer1.setModel(new Model("foo"));
+		dragContainer1.setDefaultModel(new Model("foo"));
 		add(dragContainer2);
 		add(dragContainer3);
 		

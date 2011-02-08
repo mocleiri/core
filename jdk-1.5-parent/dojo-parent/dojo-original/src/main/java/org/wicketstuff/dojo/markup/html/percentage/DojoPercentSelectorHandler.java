@@ -41,17 +41,17 @@ class DojoPercentSelectorHandler extends AbstractDojoWidgetBehavior
 	protected void respond(AjaxRequestTarget target)
 	{
 		String result = getComponent().getRequest().getParameter("json");
-		((PercentageRanges)getComponent().getModelObject()).createFromJson(result);
+		((PercentageRanges)getComponent().getDefaultModelObject()).createFromJson(result);
 	}
 
 	public void renderHead(IHeaderResponse response)
 	{
 		super.renderHead(response);
-		if (((PercentageRanges)getComponent().getModelObject()) != null){
+		if (((PercentageRanges)getComponent().getDefaultModelObject()) != null){
 			String toRender = "";
 			toRender += "<script language=\"JavaScript\" type=\"text/javascript\">\n";
 			toRender += "function init" + getComponent().getMarkupId() + "(){\n";
-			toRender += "	var json='" + ((PercentageRanges)getComponent().getModelObject()).generateJson() + "'\n";
+			toRender += "	var json='" + ((PercentageRanges)getComponent().getDefaultModelObject()).generateJson() + "'\n";
 			toRender += "	dojo.widget.byId('" + getComponent().getMarkupId() + "').setJson(json);\n";
 			toRender += "}\n";
 			toRender += "dojo.addOnLoad(init"+ getComponent().getMarkupId() +");\n";

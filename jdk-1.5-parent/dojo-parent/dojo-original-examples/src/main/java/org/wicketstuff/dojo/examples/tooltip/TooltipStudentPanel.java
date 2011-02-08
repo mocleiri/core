@@ -15,7 +15,7 @@ public class TooltipStudentPanel extends Panel
 	{
 		super(id, model);
 		
-		TooltipStudentModel thisStudent = (TooltipStudentModel)getModelObject();
+		TooltipStudentModel thisStudent = (TooltipStudentModel)getDefaultModelObject();
 		
 		//simply add the components to match the HTML
 		add(new Label("studentid", thisStudent.getStudentID() + ""));

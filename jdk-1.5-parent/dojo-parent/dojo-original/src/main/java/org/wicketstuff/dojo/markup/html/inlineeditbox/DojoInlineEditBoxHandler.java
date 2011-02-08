@@ -69,7 +69,7 @@ public class DojoInlineEditBoxHandler extends AbstractDojoWidgetBehavior
 	protected void respond(AjaxRequestTarget target)
 	{
 		String textValue = getComponent().getRequest().getParameter("newTextValue");
-		getComponent().setModelObject(textValue);
+		getComponent().setDefaultModelObject(textValue);
 		((DojoInlineEditBox)getComponent()).onSave(target);
 	}
 }

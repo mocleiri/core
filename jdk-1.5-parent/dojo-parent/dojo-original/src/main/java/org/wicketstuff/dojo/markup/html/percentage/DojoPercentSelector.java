@@ -61,18 +61,19 @@ public class DojoPercentSelector extends WebMarkupContainer implements IDojoWidg
 	}
 	
 
-	/**
-	 * Set the model associated with this widget
-	 * @param model model associated with the widget. <b>Only PercentageRange</b>
-	 * @return the component
-	 */
-	public Component setModel(IModel model)
-	{
-		if (!(model.getObject() instanceof PercentageRanges)){
-			throw new WicketRuntimeException("Model for a DojoPercentSelector should be a PercentageRanges instance");
-		}
-		return super.setModel(model);
-	}
+	
+//	/**
+//	 * Set the model associated with this widget
+//	 * @param model model associated with the widget. <b>Only PercentageRange</b>
+//	 * @return the component
+//	 */
+//	public Component setModel(IModel model)
+//	{
+//		if (!(model.getObject() instanceof PercentageRanges)){
+//			throw new WicketRuntimeException("Model for a DojoPercentSelector should be a PercentageRanges instance");
+//		}
+//		return super.setModel(model);
+//	}
 
 	/**
 	 * The widget constructor

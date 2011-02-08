@@ -127,8 +127,8 @@ public class DojoInlineEditBox extends WebComponent implements IDojoWidget
 	/** To initialize the text field with the model value */
 	protected void onComponentTagBody(MarkupStream markupStream, ComponentTag openTag)
 	{
-		String value = getModelObjectAsString();
-		if (getModelObject() == null)
+		String value = getDefaultModelObjectAsString();
+		if (getDefaultModelObject() == null)
 			value = Strings.escapeMarkup(getPlaceholderValue()).toString();
 		replaceComponentTagBody(markupStream, openTag, value);
 	}

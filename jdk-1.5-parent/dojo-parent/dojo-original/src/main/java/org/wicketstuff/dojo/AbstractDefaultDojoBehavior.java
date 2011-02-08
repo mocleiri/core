@@ -70,7 +70,7 @@ public abstract class AbstractDefaultDojoBehavior extends AbstractDefaultAjaxBeh
 	 * a Unique key to know if a CompressedResourceReference is set by the user 
 	 * in order to use a custom dojo distribution
 	 */
-	public static final MetaDataKey USE_CUSTOM_DOJO_DIST = new MetaDataKey(CompressedResourceReference.class){
+	public static final MetaDataKey USE_CUSTOM_DOJO_DIST = new MetaDataKey(){
 		private static final long serialVersionUID = 1L;
 	};
 	

@@ -52,7 +52,7 @@ public class DatePickerTest extends WicketTestCase {
 			@Override
 			protected void onSubmit() {
 				super.onSubmit();
-				timeAfter = ((Date)this.get("picker1").getModelObject()).getTime();
+				timeAfter = ((Date)this.get("picker1").getDefaultModelObject()).getTime();
 			}
 		};
 		DojoDatePicker picker = new DojoDatePicker("picker1", new Model(date), "dd/MM/yyyy");

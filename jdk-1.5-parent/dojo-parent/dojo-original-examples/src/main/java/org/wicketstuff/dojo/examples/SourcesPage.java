@@ -352,12 +352,12 @@ public class SourcesPage extends WebPage
 					{
 						public void onClick(AjaxRequestTarget target)
 						{
-							setName(getModelObjectAsString());
+							setName(getDefaultModelObjectAsString());
 							target.addComponent(codePanel);
 							target.addComponent(filename);
 						}
 					};
-					link.add(new Label("name", item.getModelObjectAsString()));
+					link.add(new Label("name", item.getDefaultModelObjectAsString()));
 					item.add(link);
 				}
 			};

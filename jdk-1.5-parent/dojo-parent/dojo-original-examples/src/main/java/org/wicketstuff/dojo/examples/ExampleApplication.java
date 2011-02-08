@@ -1,6 +1,5 @@
 package org.wicketstuff.dojo.examples;
 
-import org.apache.wicket.ISessionFactory;
 import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
@@ -20,15 +19,14 @@ public class ExampleApplication extends WebApplication {
 		return Index.class;
 	}
 
-	/**
-	 * @see wicket.protocol.http.WebApplication#getSessionFactory()
+	
+	/* (non-Javadoc)
+	 * @see org.apache.wicket.protocol.http.WebApplication#newSession(org.apache.wicket.Request, org.apache.wicket.Response)
 	 */
-	public ISessionFactory getSessionFactory() {
-		return new ISessionFactory() {
-			public Session newSession(Request request, Response response) {
-				return new ExampleSession(ExampleApplication.this, request, response);
-			}
-		};
+	@Override
+	public Session newSession(Request request, Response response) {
+		
+		return new ExampleSession(ExampleApplication.this, request, response);
 	}
 	@Override
 	protected void init() {

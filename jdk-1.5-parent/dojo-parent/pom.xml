@@ -27,9 +27,9 @@
 	
 	
 	<modules>
+		<module>dojo-original</module>
 		<module>dojo-api</module>
-		<module>dojo-resources</module>
-		<module>dojo-examples</module>
+		<module>dojo-original-examples</module>
 	</modules>
 	
 	<dependencyManagement>
