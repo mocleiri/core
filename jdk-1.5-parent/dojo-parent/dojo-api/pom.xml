@@ -19,8 +19,10 @@
 	</licenses>
 
 	<properties>
-               <jetty.version>6.1.14</jetty.version>
-       </properties>
+		<!--  for the version of cometd used.  Definitely out of date compared to wicket-push -->		
+		<jetty.version>6.1.14</jetty.version>
+		<dojo.version>1.4.3</dojo.version>
+	</properties>
 	
 	<dependencies>
 		<dependency>
@@ -108,13 +110,36 @@
 							<Specification-Title>${project.name}</Specification-Title>
 							<Specification-Version>${project.version}</Specification-Version>
 							<Implementation-Title>${project.name}</Implementation-Title>
-							<Implementation-Version>${project.version}</Implementation-Version>
+							<Implementation-Version>${dojo.version}</Implementation-Version>
 							<SCM-url>${project.scm.url}</SCM-url>
-							<dojo-version>${dojo.version}</dojo-version>
 						</manifestEntries>
 					</archive>
 				</configuration>
 			</plugin>
+			<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-dependency-plugin</artifactId>
+  <executions>
+    <execution>
+      <id>unpack dojo</id>
+      <phase>generate-sources</phase>
+      <goals>
+        <goal>unpack</goal>
+      </goals>
+      <configuration>
+        <artifactItems>
+          <artifactItem>
+            <groupId>org.dojotoolkit</groupId>
+            <artifactId>dojo</artifactId>
+            <version>${dojo.version}</version>
+            <type>zip</type>
+          </artifactItem>
+        </artifactItems>
+        <outputDirectory>${project.build.directory}/classes/dojo</outputDirectory>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
 			</plugins>
 	</build>
 </project>

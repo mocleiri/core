@@ -7,7 +7,7 @@
 		<artifactId>dojo-parent</artifactId>
 		<version>1.4-SNAPSHOT</version>
 	</parent>
-	<artifactId>dojo-original-examples</artifactId>
+	<artifactId>dojo-examples</artifactId>
 	<packaging>war</packaging>
 	<name>WicketStuff Dojo Examples</name>
 	<description>An integration project for the Ajax JavaScript library Dojo. This project provides the basic AjaxHandler for DOJO processing at the serverside, and Dojo/Wicket components.</description>
@@ -33,7 +33,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.wicketstuff</groupId>
-			<artifactId>dojo-original</artifactId>
+			<artifactId>dojo-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>

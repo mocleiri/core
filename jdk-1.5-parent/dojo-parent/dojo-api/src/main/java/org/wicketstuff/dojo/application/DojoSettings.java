@@ -91,11 +91,7 @@ public class DojoSettings implements IDojoSettings
 			_application.getSharedResources().putClassAlias(AbstractDefaultDojoBehavior.class, "dojo");
 			Properties dojoProperties = new Properties();
 			
-			Manifest mf = new Manifest(getClass().getClassLoader().getResourceAsStream("/META-INF/MANIFEST.MF"));
-			
-			Attributes attributes = mf.getAttributes("dojo-version");
-			
-			_dojoRelease = attributes.getValue("dojo-version");
+			_dojoRelease = getClass().getPackage().getImplementationVersion();
 			
 			if (Strings.isEmpty(_dojoRelease)) {
 				throw new IllegalArgumentException("not a valid dojo release: "+_dojoRelease);
