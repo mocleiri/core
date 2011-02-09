@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_5.xsd"
+  version="2.5">
+  <display-name>wicketstuff-dojo-1.1-test</display-name>
+  <!--
+    There are three means to configure Wickets configuration mode and
+    they are tested in the order given. 1) A system property:
+    -Dwicket.configuration 2) servlet specific <init-param> 3) context
+    specific <context-param> The value might be either "development"
+    (reloading when templates change) or "deployment". If no
+    configuration is found, "development" is the default.
+  -->
+  <servlet>
+    <servlet-name>cometd</servlet-name>
+    <servlet-class>org.mortbay.cometd.continuation.ContinuationCometdServlet</servlet-class>
+    <init-param>
+      <param-name>timeout</param-name>
+      <param-value>45000</param-value>
+    </init-param>
+    <init-param>
+      <param-name>loglevel</param-name>
+      <param-value>0</param-value>
+    </init-param>
+    <init-param>
+      <param-name>multi-timeout</param-name>
+      <!--
+        don't increase that one if you use
+        at.molindo.cometd.IPlayCometdServlet
+      -->
+      <param-value>0</param-value>
+    </init-param>
+    <init-param>
+      <param-name>verbose</param-name>
+      <param-value>false</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>cometd</servlet-name>
+    <url-pattern>/cometd/*</url-pattern>
+  </servlet-mapping>
+  <filter>
+    <filter-name>wicket.wicketstuff-dojo-1.1-test</filter-name>
+    <filter-class>org.apache.wicket.protocol.http.WicketFilter</filter-class>
+    <init-param>
+      <param-name>applicationClassName</param-name>
+      <param-value>org.wicketstuff.dojo11.test.WicketApplication</param-value>
+    </init-param>
+  </filter>
+  <filter-mapping>
+    <filter-name>wicket.wicketstuff-dojo-1.1-test</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+</web-app>

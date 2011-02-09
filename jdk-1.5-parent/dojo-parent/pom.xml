@@ -36,11 +36,6 @@
 				<artifactId>dojo-api</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.wicketstuff</groupId>
-				<artifactId>dojo-resources-${dojo.profile}</artifactId>
-				<version>${project.version}</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	

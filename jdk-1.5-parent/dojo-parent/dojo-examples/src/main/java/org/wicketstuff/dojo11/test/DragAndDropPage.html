@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+    <head>
+        <title>Drag and Drop Demo Page</title>
+    </head>
+    <body>
+        <strong>Drag and Drop Demo Page</strong>
+        <br/><br/>
+		<div class="drop" wicket:id="dropContainer"><span>drop here</span></div>
+		<div wicket:id="dragContainer">
+			<span>drag here</span>
+			<div wicket:id="dragItem1" class="drag">one</div>
+			<div wicket:id="dragItem2" class="drag">two</div>
+			<div wicket:id="dragItem3" class="drag">three</div>
+			<div wicket:id="dragItem4" class="drag">four</div>
+		</div>
+    </body>
+</html>
+
+<wicket:fragment wicket:id="frag">
+	<div class="drag">foobar</div>
+</wicket:fragment>

@@ -1,0 +1,22 @@
+.drag {
+	display: block;
+	width: 70px;
+	height: 70px;
+	margin: 3px;
+	background: yellow;
+	color: black;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.drop {
+	display: block;
+	width: 76px;
+	padding: 0;
+	margin: 10px;
+	border: 1px solid black;
+	background: white;
+	vertical-align: top;
+	text-align: center;
+	height: 266px;
+}
