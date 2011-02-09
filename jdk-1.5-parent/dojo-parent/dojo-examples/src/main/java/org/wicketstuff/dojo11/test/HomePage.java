@@ -13,16 +13,16 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.repeater.RepeatingView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-import org.wicketstuff.dojo11.dojofx.FxToggler;
-import org.wicketstuff.dojo11.dojofx.ToggleEvents;
-import org.wicketstuff.dojo11.dojofx.ToggleAnimations;
-import org.wicketstuff.dojo11.markup.html.toaster.DojoToaster;
-import org.wicketstuff.dojo11.markup.html.toaster.DojoToaster.ToasterMessageType;
-import org.wicketstuff.dojo11.markup.html.toaster.DojoToaster.ToasterPosition;
-import org.wicketstuff.dojo11.push.ChannelEvent;
-import org.wicketstuff.dojo11.push.IChannelListener;
-import org.wicketstuff.dojo11.push.IChannelTarget;
-import org.wicketstuff.dojo11.push.cometd.CometdTarget;
+import org.wicketstuff.dojo.dojofx.FxToggler;
+import org.wicketstuff.dojo.dojofx.ToggleAnimations;
+import org.wicketstuff.dojo.dojofx.ToggleEvents;
+import org.wicketstuff.dojo.markup.html.toaster.DojoToaster;
+import org.wicketstuff.dojo.markup.html.toaster.DojoToaster.ToasterMessageType;
+import org.wicketstuff.dojo.markup.html.toaster.DojoToaster.ToasterPosition;
+import org.wicketstuff.dojo.push.ChannelEvent;
+import org.wicketstuff.dojo.push.IChannelListener;
+import org.wicketstuff.dojo.push.IChannelTarget;
+import org.wicketstuff.dojo.push.cometd.CometdTarget;
 
 /**
  * Homepage
@@ -57,7 +57,7 @@ public class HomePage extends WebPage {
 			private Integer _counter = 42;
 
 			public void onClick(AjaxRequestTarget target) {
-				toaster.setModelObject("Ajax Servus");
+				toaster.setDefaultModelObject("Ajax Servus");
         		toaster.publishMessage(target,ToasterMessageType.ERROR);
         		t.show(target);
         		((WicketApplication) Application.get()).getSvc().publish(new ChannelEvent("foo").addData("foo", Integer.toString(_counter++)));
@@ -81,7 +81,7 @@ public class HomePage extends WebPage {
 
 			@SuppressWarnings("unchecked")
 			public void onEvent(String channel, Map datas, IChannelTarget target) {
-				toaster.setModelObject("Ajax Servus");
+				toaster.setDefaultModelObject("Ajax Servus");
 				rv.add(new Label(rv.newChildId(), (String)datas.get("foo")));
         		((CometdTarget)target).addComponent(c);		
 			}

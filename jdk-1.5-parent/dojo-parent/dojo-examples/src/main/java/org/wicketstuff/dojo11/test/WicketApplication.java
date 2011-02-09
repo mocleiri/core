@@ -1,8 +1,8 @@
 package org.wicketstuff.dojo11.test;
 
 import org.apache.wicket.Page;
-import org.wicketstuff.dojo11.application.DojoApplication;
-import org.wicketstuff.dojo11.push.cometd.CometdService;
+import org.wicketstuff.dojo.application.DojoApplication;
+import org.wicketstuff.dojo.push.cometd.CometdService;
 
 /**
  * Application object for your web application. If you want to run this application without deploying, run the Start class.

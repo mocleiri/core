@@ -5,10 +5,10 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.HeaderContributor;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
-import org.wicketstuff.dojo11.dojodnd.DojoDragAndDropContainer;
-import org.wicketstuff.dojo11.dojodnd.DojoDraggableBehavior;
-import org.wicketstuff.dojo11.dojodnd.DojoDragContainer;
-import org.wicketstuff.dojo11.dojodnd.DojoDropContainer;
+import org.wicketstuff.dojo.dojodnd.DojoDragAndDropContainer;
+import org.wicketstuff.dojo.dojodnd.DojoDragContainer;
+import org.wicketstuff.dojo.dojodnd.DojoDraggableBehavior;
+import org.wicketstuff.dojo.dojodnd.DojoDropContainer;
 
 public class DragAndDropPage extends WebPage {
 

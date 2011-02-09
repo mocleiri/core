@@ -48,6 +48,9 @@ public class DojoSettings implements IDojoSettings
 
 	private static final org.slf4j.Logger log = org.slf4j.LoggerFactory
 			.getLogger(DojoSettings.class);
+
+	// TODO: make this cofigurable.  
+	private static final String DOJO_VERSION_1_4_3 = "1.4.3";
 	
 	private Application _application;
 	
@@ -91,13 +94,14 @@ public class DojoSettings implements IDojoSettings
 			_application.getSharedResources().putClassAlias(AbstractDefaultDojoBehavior.class, "dojo");
 			Properties dojoProperties = new Properties();
 			
-			_dojoRelease = getClass().getPackage().getImplementationVersion();
+			// TODO: put the version into a file
+			_dojoRelease = DOJO_VERSION_1_4_3;
 			
 			if (Strings.isEmpty(_dojoRelease)) {
 				throw new IllegalArgumentException("not a valid dojo release: "+_dojoRelease);
 			}
 			_dojoSkinManager = newDojoSkinManager();
-			_dojoBaseUrl = getDojoPath()+"/dojo/";
+			_dojoBaseUrl = "/dojo/" + getDojoPath();
 			return this;
 		} catch (Throwable t) {
 			throw new WicketRuntimeException(t);
@@ -116,16 +120,7 @@ public class DojoSettings implements IDojoSettings
 			throw new NullPointerException("layer");
 		}
 		
-		StringBuilder path = new StringBuilder(getDojoPath()).append("/");
-		if (layer.startsWith("../")) {
-			layer = layer.substring(3);
-		} else {
-			path.append("dojo/");
-		}
-		
-		if (layer.startsWith("../")) {
-			throw new IllegalArgumentException("layer must only start with a single '../' but was, "+layer );
-		}
+		StringBuilder path = new StringBuilder(_dojoBaseUrl).append("/");
 		
 		path.append(layer);
 		if (Application.DEVELOPMENT.equals(_application.getConfigurationType())) {

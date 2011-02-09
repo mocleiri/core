@@ -23,8 +23,6 @@
 	
 	
 	<modules>
-		<module>dojo-original</module>
-		<module>dojo-original-examples</module>
 		<module>dojo-api</module>
 		<module>dojo-examples</module>
 	</modules>
