@@ -66,6 +66,7 @@ public abstract class AbstractRequireDojoBehavior extends AbstractDefaultDojoBeh
 		StringBuffer require = getRequire();
 
 		//render dojo.require
+//		response.renderOnDomReadyJavascript(require.toString());
 		response.renderJavascript(require, AbstractRequireDojoBehavior.class.getName());
 	}
 	

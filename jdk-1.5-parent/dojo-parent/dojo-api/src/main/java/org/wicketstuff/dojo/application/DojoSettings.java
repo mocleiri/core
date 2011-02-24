@@ -16,6 +16,7 @@
  */
 package org.wicketstuff.dojo.application;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,8 +25,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
+
+import javax.servlet.ServletContext;
 
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
@@ -35,9 +36,13 @@ import org.apache.wicket.Session;
 import org.apache.wicket.WicketRuntimeException;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.resources.CompressedResourceReference;
+import org.apache.wicket.markup.html.resources.JavascriptResourceReference;
+import org.apache.wicket.protocol.http.WebApplication;
+import org.apache.wicket.protocol.http.WebResponse;
 import org.apache.wicket.util.string.Strings;
 import org.wicketstuff.dojo.AbstractDefaultDojoBehavior;
 import org.wicketstuff.dojo.AbstractDefaultDojoBehavior.DojoModule;
+import org.wicketstuff.dojo.resource.DojoJavaScriptResource;
 import org.wicketstuff.dojo.skin.manager.DojoSkinManager;
 
 /**
@@ -50,7 +55,6 @@ public class DojoSettings implements IDojoSettings
 			.getLogger(DojoSettings.class);
 
 	// TODO: make this cofigurable.  
-	private static final String DOJO_VERSION_1_4_3 = "1.4.3";
 	
 	private Application _application;
 	
@@ -91,17 +95,30 @@ public class DojoSettings implements IDojoSettings
 	 */
 	public DojoSettings configure() {
 		try {
-			_application.getSharedResources().putClassAlias(AbstractDefaultDojoBehavior.class, "dojo");
+//			_application.getSharedResources().putClassAlias(AbstractDefaultDojoBehavior.class, "dojo");
+			
 			Properties dojoProperties = new Properties();
 			
 			// TODO: put the version into a file
-			_dojoRelease = DOJO_VERSION_1_4_3;
+			_dojoRelease = "1.4.3";
 			
 			if (Strings.isEmpty(_dojoRelease)) {
 				throw new IllegalArgumentException("not a valid dojo release: "+_dojoRelease);
 			}
 			_dojoSkinManager = newDojoSkinManager();
-			_dojoBaseUrl = "/dojo/" + getDojoPath();
+			
+			final ServletContext servletContext = ((WebApplication)Application.get()).getServletContext();
+
+			
+			String path = servletContext.getContextPath() + "/resources/" + DojoJavaScriptResource.class.getPackage().getName() + "/dojo-" + _dojoRelease; 
+			
+			setDojoBaseUrl(path);
+			
+			_dojoBaseUrl = getDojoPath()+"/dojo";
+			
+//			WebApplication webApplication = (WebApplication)_application;
+			
+//			webApplication.mount(new DojoRequestTargetUrlEncodingStrategy(DOJO_VERSION_1_4_3));
 			return this;
 		} catch (Throwable t) {
 			throw new WicketRuntimeException(t);
@@ -127,7 +144,9 @@ public class DojoSettings implements IDojoSettings
 			path.append(".uncompressed.js");
 		}
 		
-		return new CompressedResourceReference(AbstractDefaultDojoBehavior.class, path.toString());
+//		return new DojoJavaScriptResourceReference(layer, getDojoBaseUrl(), layer);
+		
+		return new JavascriptResourceReference(DojoJavaScriptResource.class, path.toString());
 	}
 
 	protected DojoSkinManager newDojoSkinManager() {

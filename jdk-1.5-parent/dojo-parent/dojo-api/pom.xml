@@ -135,7 +135,7 @@
             <type>zip</type>
           </artifactItem>
         </artifactItems>
-        <outputDirectory>${project.build.directory}/classes/dojo</outputDirectory>
+        <outputDirectory>${project.build.directory}/classes/org/wicketstuff/dojo/resource</outputDirectory>
       </configuration>
     </execution>
   </executions>
