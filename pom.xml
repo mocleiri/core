@@ -7,7 +7,7 @@
 	<groupId>org.wicketstuff</groupId>
 	<artifactId>wicketstuff-core</artifactId>
 	<packaging>pom</packaging>
-	<version>1.5-SNAPSHOT</version>
+	<version>1.5-RC3.1</version>
 
 	<name>WicketStuff Core Parent</name>
 	<description>
@@ -97,6 +97,18 @@
 
 			</activation>
 
+			<repositories>
+				<repository>
+					<id>jboss-releases-repo</id>
+					<name>Hibernate releases repo</name>
+					<url>https://repository.jboss.org/nexus/content/repositories/releases</url>
+					<releases>
+						<enabled>true</enabled>
+					</releases>
+
+				</repository>
+
+			</repositories>
 			<build>
 				<plugins>
 					<plugin>
@@ -268,7 +280,7 @@
 	<!-- mocleiri: for distribution in to central repository sections in the main pom are not allowed -->
 
 	<properties>
-		<wicket.version>1.5-SNAPSHOT</wicket.version>
+		<wicket.version>1.5-RC3</wicket.version>
 
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
