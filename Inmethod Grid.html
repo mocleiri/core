@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : Inmethod Grid</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : Inmethod Grid
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Oct 13, 2009 by <font color="#0050B2">eriksensei</font>.
+				    </div>
+
+				    <h2><a name="InmethodGrid-Overview"></a>Overview</h2>
+
+<p>A data grid component with the following features:</p>
+<ul class="alternate" type="square">
+	<li>Fully Ajaxified</li>
+	<li>Editable cells</li>
+	<li>Pageable</li>
+	<li>Wicket 1.4.x compatible (work on a generified branch is going on in SVN as of 13 Oct 2009)<br clear="all" /></li>
+</ul>
+
+
+<p>Here's how it might look:</p>
+
+
+<p><img src="download/attachments/29065558/inmethod-grid-screenshot.png" align="absmiddle" border="0"/><br clear="all" /></p>
+
+<p>A possible alternative to this component is the Wicket Stuff Table component.</p>
+
+
+<h2><a name="InmethodGrid-Documentation"></a>Documentation</h2>
+
+<p>Maven:
+<br clear="all" />
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>&lt;dependency&gt;
+    &lt;groupId&gt;org.wicketstuff&lt;/groupId&gt;
+    &lt;artifactId&gt;inmethod-grid&lt;/artifactId&gt;
+    &lt;version&gt;1.4-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
+
+&lt;repository&gt;
+    &lt;id&gt;wicketstuff&lt;/id&gt;
+    &lt;url&gt;http://wicketstuff.org/maven/repository&lt;/url&gt;
+    &lt;snapshots&gt;
+        &lt;enabled&gt;true&lt;/enabled&gt;
+    &lt;/snapshots&gt;
+    &lt;releases&gt;
+	&lt;enabled&gt;true&lt;/enabled&gt;
+    &lt;/releases&gt;
+&lt;/repository&gt;
+</pre>
+</div></div><br clear="all" />
+<br clear="all" /></p>
+
+<p>Java:</p>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">        <span class="code-keyword">final</span> List&lt;Person&gt; personList = ... ;
+        <span class="code-keyword">final</span> listDataProvider = <span class="code-keyword">new</span> ListDataProvider(personList);
+
+        List&lt;IGridColumn&gt; cols = (List) Arrays.asList(
+            <span class="code-keyword">new</span> PropertyColumn(<span class="code-keyword">new</span> Model(<span class="code-quote">"First Name"</span>), <span class="code-quote">"firstName"</span>),
+            <span class="code-keyword">new</span> PropertyColumn(<span class="code-keyword">new</span> Model(<span class="code-quote">"Last Name"</span>), <span class="code-quote">"lastName"</span>));
+        DataGrid grid = <span class="code-keyword">new</span> DefaultDataGrid(<span class="code-quote">"grid"</span>, <span class="code-keyword">new</span> DataProviderAdapter(listDataProvider), cols);
+        add(grid);</pre>
+</div></div><br clear="all" />
+<br clear="all" /></p>
+
+<p>&nbsp;HTML:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;div wicket:id=<span class="code-quote">"grid"</span>&gt;&lt;/div&gt;</pre>
+</div></div>
+
+<h2><a name="InmethodGrid-Latestrelease"></a>Latest release</h2>
+
+<p>The latest release is available at TODO</p>
+
+<h2><a name="InmethodGrid-Projectmaintainers"></a>Project maintainers</h2>
+
+<p>Matej Knopp</p>
+
+<h2><a name="InmethodGrid-SVNRepository"></a>SVN Repository</h2>
+
+<p>The SVN repository of this project is available at:</p>
+
+<p><a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/releases/wicketstuff-core-1.4-rc7/inmethod-grid-parent">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/releases/wicketstuff-core-1.4-rc7/inmethod-grid-parent</a></p>
+
+				    					    <br/>
+                        <div class="tabletitle">
+                            <a name="attachments">Attachments:</a>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/29065558/inmethod-grid-screenshot.png">inmethod-grid-screenshot.png</a> (image/png)
+                                <br/>
+                                                    </div>
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

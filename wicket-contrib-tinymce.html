@@ -1,0 +1,95 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : wicket-contrib-tinymce</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : wicket-contrib-tinymce
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Apr 06, 2009 by <font color="#0050B2">raboof</font>.
+				    </div>
+
+				    <h2><a name="wicket-contrib-tinymce-About"></a>About</h2>
+
+<p>Add a tinymce wysiwyg HTML editor to your pages</p>
+
+<h2><a name="wicket-contrib-tinymce-Features"></a>Features</h2>
+
+<ul>
+	<li>Add Add a tinymce wysiwyg HTML editor to your pages</li>
+	<li>Use wysiwyg editor for textarea inputs in your forms</li>
+	<li>Use wysiwyg editor for in-place-editing of your page content (no form required).</li>
+</ul>
+
+
+<h2><a name="wicket-contrib-tinymce-Usedby"></a>Used by</h2>
+
+<p>Please insert your site here if using the contrib and its possible for you.</p>
+
+<h2><a name="wicket-contrib-tinymce-Examples"></a>Examples</h2>
+
+<p>For a simple rich text area in a form, you do the following. Add a textarea element to the form:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;textarea wicket:id=<span class="code-quote">"richTextInput"</span> rows=<span class="code-quote">"10"</span> cols=<span class="code-quote">"60"</span>&gt;test rich text input&lt;/textarea&gt;</pre>
+</div></div>
+<p>Then in the form code add the TinyMceBehavior to this input:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">TextArea textArea = <span class="code-keyword">new</span> TextArea(<span class="code-quote">"richTextInput"</span>, <span class="code-keyword">new</span> Model(TEXT));
+textArea.add(<span class="code-keyword">new</span> TinyMceBehavior());
+form.add(textArea);</pre>
+</div></div>
+<p>Another way to use the rich text editor is as in place editor for your page content. In the following example the div "editable" can be edited by a user. if the user clicks on the div, it turns into a rich text editor. Clicking save updates the content of the div (after optional processing by the server). Clicking the cancel button in the editor restores the original text.</p>
+
+<p>Insert a div in your page (you do not need a form for an in place editor):</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"> &lt;div wicket:id=<span class="code-quote">"editable"</span>&gt;&lt;/div&gt;</pre>
+</div></div>
+<p>&nbsp;And add the following code to the page:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"> InPlaceEditComponent component = <span class="code-keyword">new</span> InPlaceEditComponent(<span class="code-quote">"editable"</span>,
+   <span class="code-quote">"&lt;p&gt;&lt;b&gt;Click me&lt;/b&gt; and &lt;i&gt;edit me&lt;/i&gt; with &lt;font color=\"</span>red\<span class="code-quote">"&gt;tinymce&lt;/font&gt;. "</span>
+   + <span class="code-quote">"Afterwards, click save button to update <span class="code-keyword">this</span> text with your changes!&lt;/p&gt;"</span>);
+ add(component);</pre>
+</div></div>
+
+<h3><a name="wicket-contrib-tinymce-Moreexamples"></a>More examples</h3>
+
+<p>You can find more examples in the tinymce-examples (formerly wicket-contrib-tinymce-examples) project. Start it with 'mvn jetty:run' (formerly 'mvn jetty6:run') and connect to <a href="http://localhost:8080">http://localhost:8080</a> .</p>
+
+<h2><a name="wicket-contrib-tinymce-SVN"></a>SVN</h2>
+
+<p><a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-core/tinymce-parent/tinymce/">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-core/tinymce-parent/tinymce/</a><br clear="all" />
+See more about checking out from svn <a href="http://wicketstuff.org/confluence/display/STUFFWEB/Home#Home-HowdoIcheckthelatestcodeoutofSubversion%3F">here</a>&nbsp;</p>
+
+<h2><a name="wicket-contrib-tinymce-JIRA"></a>JIRA</h2>
+
+<p><a href="http://wicketstuff.org/jira/browse/WCTINYMCE">http://wicketstuff.org/jira/browse/WCTINYMCE</a></p>
+
+<h3><a name="wicket-contrib-tinymce-Maven"></a>Maven</h3>
+
+<p>It's in wicket stuff repo aswell</p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

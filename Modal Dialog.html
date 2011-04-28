@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : Modal Dialog</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : Modal Dialog
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Mar 31, 2007 by <font color="#0050B2">vdemay</font>.
+				    </div>
+
+				    <h1><a name="ModalDialog-ModalDialogFeature"></a>Modal Dialog Feature</h1>
+
+<p>&nbsp;Modal Dialog is a very simple widget allowing to show a div in popup and blocking the backgound. Modal comes with a closer and an oponer class to open or close it. <img src="download/attachments/3932162/DojoDialog.png" align="absmiddle" border="0"/><br/>
+&nbsp;</p>
+
+<h1><a name="ModalDialog-JavaSources"></a>Java Sources</h1>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-keyword">package</span> wicket.contrib.dojo.examples;
+
+<span class="code-keyword">import</span> wicket.PageParameters;
+<span class="code-keyword">import</span> wicket.contrib.dojo.markup.html.dialog.DojoDialog;
+<span class="code-keyword">import</span> wicket.contrib.dojo.markup.html.dialog.DojoDialogCloser;
+<span class="code-keyword">import</span> wicket.contrib.dojo.markup.html.dialog.DojoDialogOpener;
+<span class="code-keyword">import</span> wicket.contrib.dojo.toggle.DojoWipeToggle;
+<span class="code-keyword">import</span> wicket.markup.html.WebPage;
+
+<span class="code-keyword">public</span> class DialogShower <span class="code-keyword">extends</span> WebPage {
+
+    <span class="code-keyword">public</span> DialogShower(PageParameters parameters){
+        DojoDialog dialog = <span class="code-keyword">new</span> DojoDialog(<span class="code-quote">"dialogPanel"</span>);
+        add(dialog);
+        dialog.setToggle(<span class="code-keyword">new</span> DojoWipeToggle(500));
+        add(<span class="code-keyword">new</span> DojoDialogOpener(<span class="code-quote">"openner"</span>, dialog));
+        dialog.add(<span class="code-keyword">new</span> DojoDialogCloser(<span class="code-quote">"closer"</span>, dialog));
+    }
+}</pre>
+</div></div><br clear="all" /></p>
+
+<p>In this sample we create a DojoDialog containing a DojoDialogCloser. A DojoDialogOpener is also added to the page because the default behavior of a DojoDialog is to be hidden.</p>
+
+<p>A DojoToggle is set on the DojoDialog. A DojoToggle is an effect added when a DojoWidget is shown/hidden. There are three avalaible DojoToggle :</p>
+<ol>
+	<li>DojoExplodeToggle</li>
+	<li>DojoFadeToggle</li>
+	<li>DojoWipeToggle&nbsp;</li>
+</ol>
+
+
+<h1><a name="ModalDialog-HtmlSources"></a>Html Sources</h1>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;!DOCTYPE HTML PUBLIC <span class="code-quote">"-<span class="code-comment">//W3C//DTD HTML 4.01 Transitional//EN"</span>
+</span><span class="code-quote">"http:<span class="code-comment">//www.w3.org/TR/html4/loose.dtd"</span>&gt;
+</span>&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Untitled Document&lt;/title&gt;
+        &lt;meta http-equiv=<span class="code-quote">"Content-Type"</span> content=<span class="code-quote">"text/html; charset=iso-8859-1"</span>&gt;
+        &lt;style type=<span class="code-quote">"text/css"</span>&gt;
+        body { font-family : sans-serif; }
+        .dojoDialog {
+            background : #eee;
+            border : 1px solid #999;
+            -moz-border-radius : 5px;
+            padding : 4px;
+        }
+
+        form {
+            margin-bottom : 0;
+        }
+        &lt;/style&gt;
+    &lt;/head&gt;
+
+&lt;body&gt;
+    &lt;div wicket:id=<span class="code-quote">"dialogPanel"</span>&gt;
+    &lt;a wicket:id=<span class="code-quote">"closer"</span>&gt;[X]&lt;/a&gt;
+        panel contents here &lt;br/&gt;
+        Html could be placed in&lt;br/&gt;
+        &lt;p style=<span class="code-quote">"color: red;"</span>&gt;
+            What <span class="code-keyword">do</span> you want here...
+        &lt;/p&gt;
+    &lt;/div&gt;
+    &lt;a wicket:id=<span class="code-quote">"openner"</span>&gt;Open&lt;/a&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div></div><br clear="all" /></p>
+
+<h1><a name="ModalDialog-SeeitinAction"></a>See it in Action</h1>
+
+<p>Live Example : <a href="http://www.demay-fr.net:8080/WCD13/app/?wicket:bookmarkablePage=%3Awicket.contrib.dojo.examples.DialogShower">Dialog, opener and closer</a>&nbsp;</p>
+
+				    					    <br/>
+                        <div class="tabletitle">
+                            <a name="attachments">Attachments:</a>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/3932162/DojoDialog.png">DojoDialog.png</a> (image/png)
+                                <br/>
+                                                    </div>
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

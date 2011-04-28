@@ -1,0 +1,168 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : wicketstuff-merged-resources</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : wicketstuff-merged-resources
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Feb 04, 2010 by <font color="#0050B2">sfussenegger</font>.
+				    </div>
+
+				    <h1><a name="wicketstuff-merged-resources-About"></a>About</h1>
+
+<p>wicketstuff-merged-resources is a set of simple helper classes to improve Wicket interface loading performance. This is achieved with improved caching configuration and merging of shared resources without the need of touching any components (it's all done inside Application.init()). The initial code base was the outcome of Stefan Fussenegger's blog series called "<a href="http://tech.molindo.at/2008/08/wicket-interface-speed-up.html" title="Wicket Interface Speed-Up on http://tech.molindo.at/">Wicket Interface Speed-Up</a>".
+<br clear="all" /></p>
+
+<h1><a name="wicketstuff-merged-resources-Howtoget"></a>How to get</h1>
+
+<p>You can get wicketstuff-merged-resources using Maven:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"> &lt;repositories&gt;
+  &lt;repository&gt;
+    &lt;id&gt;wicket-snaps&lt;/id&gt;
+    &lt;url&gt;http:<span class="code-comment">//wicketstuff.org/maven/repository&lt;/url&gt;
+</span>    &lt;snapshots&gt;
+      &lt;enabled&gt;<span class="code-keyword">true</span>&lt;/enabled&gt;
+    &lt;/snapshots&gt;
+    &lt;releases&gt;
+      &lt;enabled&gt;<span class="code-keyword">true</span>&lt;/enabled&gt;
+    &lt;/releases&gt;
+  &lt;/repository&gt;
+&lt;/repositories&gt;
+&lt;dependencies&gt;
+  &lt;dependency&gt;
+    &lt;groupId&gt;org.wicketstuff&lt;/groupId&gt;
+    &lt;artifactId&gt;wicketstuff-merged-resources&lt;/artifactId&gt;
+    &lt;!-- use 2.1 or 2.2-SNAPSHOT <span class="code-keyword">for</span> Wicket 1.3 --&gt;
+    &lt;version&gt;3.0-SNAPSHOT&lt;/version&gt;
+  &lt;/dependency&gt;
+&lt;/dependencies&gt;</pre>
+</div></div>
+
+<h1><a name="wicketstuff-merged-resources-Howtouse"></a>How to use</h1>
+
+
+<h2><a name="wicketstuff-merged-resources-ResourceMount"></a>ResourceMount</h2>
+
+<p>Please <a href="http://tech.molindo.at/" title="tech.molindo.at">see my blog for instructions</a> (I'll try to add them into this page later). You can also find some example code in wicketstuff-merged-resources-examples project (<a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-merged-resources-examples/" title="wicketstuff-merged-resources-examples in Wicketstuff SVN">SVN</a>). But it basically cuts down to this:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">ResourceMount.mountWicketResources(<span class="code-quote">"script"</span>, <span class="code-keyword">this</span>);
+
+ResourceMount mount = <span class="code-keyword">new</span> ResourceMount()
+	.setResourceVersionProvider(<span class="code-keyword">new</span> RevisionVersionProvider());
+
+mount.clone()
+	.setPath(<span class="code-quote">"/style/all.css"</span>)
+	.addResourceSpecsMatchingSuffix(PanelOne.class, ComponentB.class, MyForm.class)
+	.mount(<span class="code-keyword">this</span>);
+
+mount.clone()
+	.setPath(<span class="code-quote">"/style/all.js"</span>)
+	.addResourceSpecsMatchingSuffix(PanelOne.class, ComponentB.class, MyForm.class)
+	.mount(<span class="code-keyword">this</span>);
+
+mount.clone()
+	.setPath(<span class="code-quote">"/img/"</span>)
+	.setDefaultAggresiveCacheDuration()
+	.setNoVersion()
+	.addResourceSpecs(IconScope.class, <span class="code-quote">"add.png"</span>, <span class="code-quote">"remove.png"</span>, <span class="code-quote">"submit.png"</span>)
+	.addResourceSpecs(ImgScope.class, <span class="code-quote">"background.jpg"</span>, <span class="code-quote">"image.jpg"</span>)
+	.mount(<span class="code-keyword">this</span>);</pre>
+</div></div>
+<p>The code above will give reference the following resources in you pages (only where needed of course):</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;link rel=<span class="code-quote">"stylesheet"</span> type=<span class="code-quote">"text/css"</span> href=<span class="code-quote">"style/all-42.css"</span> /&gt;
+&lt;script type=<span class="code-quote">"text/javascript"</span> src=<span class="code-quote">"script/all-42.js"</span>&gt;&lt;/script&gt;
+&lt;script type=<span class="code-quote">"text/javascript"</span> src=<span class="code-quote">"script/wicket-event-1.3.6.js"</span>&gt;&lt;/script&gt;
+&lt;script type=<span class="code-quote">"text/javascript"</span> src=<span class="code-quote">"script/wicket-ajax-1.3.6.js"</span>&gt;&lt;/script&gt;</pre>
+</div></div>
+<p>Note that you still use the resources as you are used to, e.g.</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">add(HeaderContributor.forCss(MyForm.class, <span class="code-quote">"MyForm.css"</span>));
+add(HeaderContributor.forJavaScript(MyForm.class, <span class="code-quote">"MyForm.js"</span>));</pre>
+</div></div>
+<p>As you see, it's very simple to get versioned resouces that are cacheable forever on the client-side. This relieves bandwidth and server and - even more important - considerably speeds up page rendering once the user's cache is primed (which it is for a year instead of an hour). Additionally, changed resources will be used as soon as they are available (i.e. after startup) - no stale data in (proxy) caches for an hour.</p>
+
+<h3><a name="wicketstuff-merged-resources-@JsContributionand@CssContribution"></a>@JsContribution and @CssContribution</h3>
+
+<p>Starting from version 2.1 and 3.0 respectively, wicketstuff-merged-resources supports mounting of resources from annotations. It depends on <a href="wicketstuff-annotation.html" title="Wicket Stuff Wiki: wicketstuff-annotation">wicketstuff-annotation</a>, hence you may need to add another dependency to your pom.xml (Note: wicketstuff-annotation depends on spring-core. See <a href="wicketstuff-annotation.html" title="Wicket Stuff Wiki: wicketstuff-annotation">wicketstuff-annotation</a> for details):</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;dependency&gt;
+  &lt;groupId&gt;org.wicketstuff&lt;/groupId&gt;
+  &lt;artifactId&gt;wicketstuff-annotation&lt;/artifactId&gt;
+  &lt;version&gt;1.1&lt;/version&gt;
+&lt;/dependency&gt;</pre>
+</div></div>
+<p>To use it, simply annotate your components with @JsContribution and @CssContribution:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">@JsContribution
+@CssContribution(media = <span class="code-quote">"print"</span>)
+<span class="code-keyword">public</span> class PanelOne <span class="code-keyword">extends</span> Panel {
+
+    <span class="code-keyword">public</span> PanelOne(<span class="code-object">String</span> id) {
+        <span class="code-keyword">super</span>(id);
+        <span class="code-comment">// ...
+</span>    }
+}</pre>
+</div></div>
+<p>The example above mounts and merges PanelOne.js (default is simple name of class + ".js") into all.js (another default) and PanelOne-print.js into print.css which will be included with scope print. All that's left is to scan for annotations in your Application's init code:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">ResourceMount.mountAnnotatedPackageResources(<span class="code-quote">"/files"</span>, <span class="code-quote">"com.example.components"</span>, <span class="code-keyword">this</span>, mount);</pre>
+</div></div>
+<p>The example above will scan all components in package com.example.components (including sub-packages) for annotations and mount them using the given ResourceMount. (Additionally, it will add a new IComponentInstantiationListener to inject the necessary ResourceContributors into components.)</p>
+
+<h2><a name="wicketstuff-merged-resources-ResourceMountHelper%28deprecated%29"></a>ResourceMountHelper (deprecated)</h2>
+
+<p>ResourceMountHepler has been replaced by ResourceMount in Version 2.0 and I'd encourage everybody to switch - ResourceMount is much easier to use, more flexible and offers lots of customization possibilities. However, here is how things were done with ResourceMountHelper (requires wicketstuff-merged-resources 2.0)</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">ResourceMountHelper.mountWicketResources(<span class="code-quote">"script"</span>, <span class="code-keyword">this</span>);
+
+<span class="code-comment">// TODO use your own implementation of IResourceVersionProvider
+</span>IResourceVersionProvider p = <span class="code-keyword">new</span> RevisionVersionProvider();
+ResourceMountHelper h = <span class="code-keyword">new</span> ResourceMountHelper(<span class="code-keyword">this</span>, p);
+
+h.mountMergedSharedResource(<span class="code-quote">"style"</span>, <span class="code-quote">"all.css"</span>, <span class="code-keyword">true</span>,
+  <span class="code-keyword">new</span> <span class="code-object">Class</span>&lt;?&gt;[] {PanelOne.class, ComponentB.class, MyForm.class},
+  <span class="code-keyword">new</span> <span class="code-object">String</span>[] {<span class="code-quote">"PanelOne.css"</span>, <span class="code-quote">"ComponentB.css"</span>, <span class="code-quote">"MyForm.css"</span> });
+
+h.mountMergedSharedResource(<span class="code-quote">"script"</span>, <span class="code-quote">"all.js"</span>, <span class="code-keyword">true</span>,
+  <span class="code-keyword">new</span> <span class="code-object">Class</span>&lt;?&gt;[] {PanelOne.class, ComponentB.class, MyForm.class},
+  <span class="code-keyword">new</span> <span class="code-object">String</span>[] {<span class="code-quote">"PanelOne.js"</span>, <span class="code-quote">"ComponentB.js"</span>, <span class="code-quote">"MyForm.js"</span> });</pre>
+</div></div>
+
+<h1><a name="wicketstuff-merged-resources-Links%3A"></a>Links:</h1>
+
+<ul>
+	<li><a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-merged-resources/" title="wicketstuff-merged-resources in Wicketstuff SVN">SVN</a></li>
+	<li><a href="http://wicketstuff.org/jira/browse/WMR" title="JIRA">JIRA</a></li>
+	<li><a href="http://wicketstuff.org/teamcity/viewType.html?buildTypeId=bt26" title="Teamcity">Teamcity</a></li>
+	<li><a href="http://wicketstuff.org/maven/repository/org/wicketstuff/wicketstuff-merged-resources/" title="Maven repository">Maven repository (download)</a></li>
+	<li><a href="http://tech.molindo.at/" title="tech.molindo.at">Blog</a> (I'll post updates there)</li>
+</ul>
+
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

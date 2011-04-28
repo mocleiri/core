@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : Wicket-Security</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : Wicket-Security
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Jul 19, 2009 by <font color="#0050B2">olger</font>.
+				    </div>
+
+				    <p><br clear="all" />
+<div class="panel" style="background-color: #FFFFCE;border-color: #ccc;border-style: dashed;border-width: 1px;"><div class="panelHeader" style="border-bottom-width: 1px;border-bottom-style: dashed;border-bottom-color: #ccc;background-color: #F7D6C1;"><b>Overview</b></div><div class="panelContent" style="background-color: #FFFFCE;">
+<p>Wicket-Security is an attempt to create an out of the box reusable authenticating and authorization framework for Wicket. It contains several projects which van be used stand alone or in conjunction with each other.</p>
+
+<p>Version <a href="Wicket-Security 1.3.0.html" title="Wicket-Security 1.3.0">1.3.0</a> has just been released and works with Wicket 1.3.x. Work has been done on the 1.3.1 release, the 1.3.1 is merged with the effort to release a wicket 1.4 compatible security framework <a href="Wicket-Security 1.4.0.html" title="Wicket-Security 1.4.0">1.4.0</a>.<br/>
+Unfortunately that means 1.3.0 and 1.4.0 are not binary compatible, we did however try our best to make the migration as easy as possible. An older migration guide to 1.3.1 is available <a href="Wicket-Security 1.3.1.html#Wicket-Security1.3.1-migrateto1.3.1">migration guide</a>.</p>
+
+<p>Wicket-Security uses the available security mechanisms from Wicket to build upon and expand the authentication and authorization mechanisms. In order to maximize flexibility and customization a new API, called WASP, was build on top of Wicket.</p>
+</div></div><br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /></p>
+
+<h2><a name="Wicket-Security-WASP"></a>WASP</h2>
+
+<p>Wicket Abstract Security Platform, or Wasp for short, builds on the IAuthorisationStrategies provided by Wicket and allows individual components or models to do their own authentication and or authorization checks.</p>
+
+<p>Like Wicket it uses actions to grant permissions, however where Wicket uses string based actions (render and enable) we use full blown java objects. We also decided to add the following 2 actions:</p>
+<ul>
+	<li>access, checks for component instantiation rights</li>
+</ul>
+
+
+<ul>
+	<li>inherit, allows container components like Page and Panel to make certain permissions inheritable to all their children</li>
+</ul>
+
+
+<p>An ActionFactory makes it possible to define your own custom actions.</p>
+
+<h2><a name="Wicket-Security-Actions%26nbsp%3B"></a>Actions&nbsp;</h2>
+
+<p>Wicket is only aware of the render and enable actions. They are used for making components invisible (render), read only and clickable (enable). Swarm adds the access action for component instantiation and the inherit action for permission inheritance.<br/>
+Actions can imply other actions by default all actions imply the access action and the enable action implies the render action. This means if you specify that a permission has the "enable" action what you really get is&nbsp; "access, render, enable". This also means that if you specify a permission without any explicit actions you will automatically get the "access" action.</p>
+
+<h2><a name="Wicket-Security-Authentication"></a>Authentication</h2>
+
+<p>Authentication in Wasp is handled by the WaspAuthorizationStrategy which provides you with a general login / logoff method. By using an unspecified "context" object you can use not only username password authentication but pretty much everything you can think of. You can even use multi-login as is often used in online banking.</p>
+
+<h2><a name="Wicket-Security-Authorization"></a>Authorization</h2>
+
+<p>As briefly mentioned above Wasp allows your individual components to handle their own authentication authorization requirements.</p>
+
+<p>To enable security on a component there are 3 paths to choose from:</p>
+<ul>
+	<li>Enhance an existing component by adding an ISecurityCheck like the SecureComponentCheck. This gives you a fair amount of control with the least amount of effort.</li>
+</ul>
+
+
+<ul>
+	<li>Use an ISecureModel on the component. Giving you control over reading and writing to and from components as you require.</li>
+</ul>
+
+
+<ul>
+	<li>Have your component implement the ISecureComponent interface allowing you complete control every step of the way.</li>
+</ul>
+
+
+<p>As you might have guessed from the section above Wasp uses ISecuityChecks to dictate how to handle a component, only one check may be placed on a component but by chaining or wrapping them in other checks you can go as complex as you like. For ease of use and re usability most ISecurityChecks will not know anything about how to actually authorize or authenticate, but the IAuthorizationStrategy does so most should just redirect (possibly doing some stuff of their own). The picture below tries to clarify this a bit.</p>
+
+<p><a href='http://wicketstuff.org/confluence/download/attachments/7602178/wasp-flow.PNG' target='wasp-flow.PNG' onClick='window.open("http://wicketstuff.org/confluence/download/attachments/7602178/wasp-flow.PNG", "wasp-flow.PNG", "height=951,width=718,menubar=no,status=no,toolbar=no"); return false;'><img src="download/thumbnails/7602178/wasp-flow.PNG" align="absmiddle" border="0" title="the security flow in wasp"/></a><br/>
+&nbsp; (fig 1 default flow in wasp)</p>
+
+<p>It may seem strange at first that the ISecureModel is only queried if an ISecurityCheck is absent, but once you realize that the ISecuityCheck itself could query the model&nbsp; it becomes clear that this offers greater flexibility by allowing you the choice of an And or Or check.</p>
+
+<p>Note that if the component implements the ISecureComponent interface that will be used instead of the ISecurityCheck.&nbsp;</p>
+
+<p>Besides an API to implement by yourself Wicket-Security also contains a default implementation, called SWARM, so you can get started right away, or at least you have a reference&nbsp; to build your own</p>
+
+<h2><a name="Wicket-Security-Moreinformation%26nbsp%3B"></a>More information&nbsp;</h2>
+
+<p>Documentation for version <a href="Wicket-Security 1.3.0.html" title="Wicket-Security 1.3.0">1.3.0</a><br/>
+Documentation for version <a href="Wicket-Security 1.3.1.html" title="Wicket-Security 1.3.1">1.3.1</a><br/>
+Read how to get started <a href="Getting started with Swarm.html" title="Getting started with Swarm">here</a> (Swarm guide)<br/>
+Acegi integration <a href="Swarm and Acegi HowTo.html" title="Swarm and Acegi HowTo">here</a><br/>
+Examples are available <a href="Wicket-Security Examples.html" title="Wicket-Security Examples">here</a><br/>
+FAQ is located <a href="Swarm FAQ.html" title="Swarm FAQ">here</a><br/>
+A SlideShow is located <a href="http://www.slideshare.net/mrmean/wicket-security-presentation/">here</a></p>
+
+<h2><a name="Wicket-Security-Latestrelease%2Fbuild"></a>Latest release / build</h2>
+
+<p>Latest stable release is 1.3.0.</p>
+
+<p>Work is underway for 1.4.0 (only available as 1.4-SNAPSHOT from the maven repository)&nbsp;</p>
+
+<p>The latest releases are available at&nbsp;<a href="http://sourceforge.net/project/showfiles.php?group_id=134391">SourceForge</a><br/>
+The latest builds are available at <a href="http://wicketstuff.org/maven/repository/org/apache/wicket/wicket-security/">http://wicketstuff.org/maven/repository/org/apache/wicket/wicket-security/</a></p>
+
+<h2><a name="Wicket-Security-Maven2"></a>Maven 2</h2>
+
+<p>Wasp and Swarm can be downloaded from wicket-stuff maven repository by including the following fragments in your project pom.<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;repository&gt;
+   &lt;id&gt;wicket-snaps&lt;/id&gt;
+   &lt;url&gt;http:<span class="code-comment">//wicketstuff.org/maven/repository&lt;/url&gt;
+</span>   &lt;snapshots&gt;
+      &lt;enabled&gt;<span class="code-keyword">true</span>&lt;/enabled&gt;
+   &lt;/snapshots&gt;
+   &lt;releases&gt;
+      &lt;enabled&gt;<span class="code-keyword">true</span>&lt;/enabled&gt;
+   &lt;/releases&gt;
+&lt;/repository&gt;</pre>
+</div></div><br clear="all" />
+<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;dependency&gt;
+   &lt;groupId&gt;org.apache.wicket.wicket-security&lt;/groupId&gt;
+   &lt;artifactId&gt;swarm&lt;/artifactId&gt;
+   &lt;version&gt;1.3.0&lt;/version&gt;
+   &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+</div></div><br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /></p>
+
+<p>A separate dependency on Wasp is not necessary since maven will automatically fetch it with Swarm. However if you are only interested in Wasp you can use the following fragment.<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;dependency&gt;
+   &lt;groupId&gt;org.apache.wicket.wicket-security&lt;/groupId&gt;
+   &lt;artifactId&gt;wasp&lt;/artifactId&gt;
+   &lt;version&gt;1.3.0&lt;/version&gt;
+   &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;</pre>
+</div></div><br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /></p>
+
+<h2><a name="Wicket-Security-Projectmaintainers"></a>Project maintainers</h2>
+
+<p>Maurice Marrink</p>
+
+<h2><a name="Wicket-Security-SVNRepository"></a>SVN Repository</h2>
+
+<p>The SVN repository of the project (1.4-SNAPSHOT) is available at<br/>
+<a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-security">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-security</a></p>
+
+<p>The sourcecode for 1.3.0 is available at<br/>
+<a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/branches/wicket-security-1.3.0-final/wasp/wicket-security-wasp">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/branches/wicket-security-1.3.0-final/wasp/wicket-security-wasp</a>&nbsp;<br/>
+<a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/branches/wicket-security-1.3.0-final/swarm/wicket-security-swarm">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/branches/wicket-security-1.3.0-final/swarm/wicket-security-swarm</a><br/>
+<a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/branches/wicket-security-1.3.0-final/examples/wicket-security-examples">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/branches/wicket-security-1.3.0-final/examples/wicket-security-examples</a></p>
+
+<h2><a name="Wicket-Security-Bugreports%26nbsp%3B"></a>Bug reports&nbsp;</h2>
+
+<p>Bugs can be filed or monitored at the wicket stuff jira:<br/>
+<a href="http://wicketstuff.org/jira/browse/WSWASP">Wasp</a>&nbsp;<br/>
+<a href="http://wicketstuff.org/jira/browse/WSSWARM">Swarm</a>&nbsp;</p>
+
+				    					    <br/>
+                        <div class="tabletitle">
+                            <a name="attachments">Attachments:</a>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/7602178/wasp-flow.PNG">wasp-flow.PNG</a> (image/png)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/7602178/logo1.gif">logo1.gif</a> (image/x-citrix-gif)
+                                <br/>
+                                                    </div>
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

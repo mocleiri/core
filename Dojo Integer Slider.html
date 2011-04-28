@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : Dojo Integer Slider</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : Dojo Integer Slider
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Mar 31, 2007 by <font color="#0050B2">vdemay</font>.
+				    </div>
+
+				    <h1><a name="DojoIntegerSlider-DojoIntegerSliderfeature"></a>DojoIntegerSlider feature</h1>
+
+<p>DojoIntegerSlider allows user to select an integer in a range with a graphic slider. This component is a form component. <img src="download/attachments/3932167/IntegerSlider.png" align="absmiddle" border="0"/><br/>
+&nbsp;</p>
+
+<h1><a name="DojoIntegerSlider-JavaSources"></a>Java Sources</h1>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-keyword">package</span> wicket.contrib.dojo.examples;
+
+<span class="code-keyword">import</span> wicket.PageParameters;
+<span class="code-keyword">import</span> wicket.contrib.dojo.markup.html.form.sliders.DojoIntegerSlider;
+<span class="code-keyword">import</span> wicket.markup.html.WebPage;
+<span class="code-keyword">import</span> wicket.markup.html.form.Form;
+<span class="code-keyword">import</span> wicket.model.PropertyModel;
+
+<span class="code-keyword">public</span> class SliderSample <span class="code-keyword">extends</span> WebPage {
+    <span class="code-keyword">private</span> <span class="code-object">int</span> value = 12;
+
+    <span class="code-keyword">public</span> SliderSample(PageParameters params) <span class="code-keyword">throws</span> Exception {
+        <span class="code-keyword">if</span> (params.containsKey(<span class="code-quote">"value"</span>))
+            value = params.getInt(<span class="code-quote">"value"</span>);
+        Form form = <span class="code-keyword">new</span> Form(<span class="code-quote">"form"</span>) {
+            <span class="code-keyword">protected</span> void onSubmit() {
+                PageParameters params = <span class="code-keyword">new</span> PageParameters();
+                params.add(<span class="code-quote">"value"</span>, <span class="code-object">Integer</span>.toString(value));
+                setResponsePage(SliderSample.class, params);
+            }
+        };
+        DojoIntegerSlider slider = <span class="code-keyword">new</span> DojoIntegerSlider(<span class="code-quote">"slider1"</span>, <span class="code-keyword">new</span> PropertyModel(<span class="code-keyword">this</span>, <span class="code-quote">"value"</span>));
+        slider.setStart(0);
+        slider.setEnd(100);
+        add(form);
+        form.add(slider);
+    }
+
+    <span class="code-keyword">public</span> <span class="code-object">int</span> getValue() {
+        <span class="code-keyword">return</span> value;
+    }
+
+    <span class="code-keyword">public</span> void setValue(<span class="code-object">int</span> value) {
+        <span class="code-keyword">this</span>.value = value;
+    }
+}</pre>
+</div></div><br clear="all" /></p>
+
+<h1><a name="DojoIntegerSlider-HtmlSources"></a>Html Sources</h1>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;!DOCTYPE HTML PUBLIC <span class="code-quote">"-<span class="code-comment">//W3C//DTD HTML 4.01 Transitional//EN"</span>
+</span><span class="code-quote">"http:<span class="code-comment">//www.w3.org/TR/html4/loose.dtd"</span>&gt;
+</span>&lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Untitled Document&lt;/title&gt;
+        &lt;meta http-equiv=<span class="code-quote">"Content-Type"</span> content=<span class="code-quote">"text/html; charset=iso-8859-1"</span>&gt;
+        &lt;style type=<span class="code-quote">"text/css"</span>&gt;
+        &lt;/style&gt;
+    &lt;/head&gt;
+
+&lt;body&gt;
+     &lt;form wicket:id=<span class="code-quote">"form"</span>&gt;
+            &lt;span wicket:id=<span class="code-quote">"slider1"</span> type=<span class="code-quote">"text"</span>&gt;&lt;/span&gt;
+
+        &lt;input value=<span class="code-quote">"Submit"</span> name=<span class="code-quote">"Submit"</span> type=<span class="code-quote">"submit"</span> /&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+</div></div><br clear="all" /></p>
+
+<h1><a name="DojoIntegerSlider-SeeItinAction"></a>See It in Action</h1>
+
+<p><br clear="all" />
+Live examples : <a href="http://www.demay-fr.net:8080/WCD13/app/?wicket:bookmarkablePage=%3Awicket.contrib.dojo.examples.SliderSample">Integer Slider sample </a></p>
+
+				    					    <br/>
+                        <div class="tabletitle">
+                            <a name="attachments">Attachments:</a>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/3932167/IntegerSlider.png">IntegerSlider.png</a> (image/png)
+                                <br/>
+                                                    </div>
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : wicketstuff-spinner</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : wicketstuff-spinner
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Sep 06, 2007 by <font color="#0050B2">faceman</font>.
+				    </div>
+
+				    <p><div class="panel" style="background-color: #FFFFCE;border-color: #ccc;border-style: dashed;border-width: 1px;"><div class="panelHeader" style="border-bottom-width: 1px;border-bottom-style: dashed;border-bottom-color: #ccc;background-color: #F7D6C1;"><b>Overview</b></div><div class="panelContent" style="background-color: #FFFFCE;">
+<p>wicketstuff-spinner integrates the spinner control from ken snyder (<a href="http://kendsnyder.com/sandbox/Spinner/demo.1.0.html">http://kendsnyder.com/sandbox/Spinner/demo.1.0.html</a>) as a wicket behavior, which may be added to TextField objects (or it's subclasses).
+<br clear="all" /></p>
+
+<p>wicketstuff-spinner is licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache Software License 2.0</a></p>
+</div></div><br clear="all" /></p>
+
+<h2><a name="wicketstuff-spinner-Documentation"></a>Documentation</h2>
+
+<p>If you want basic spinning controls (-/&#43; buttons to the left and right of the textfield), just do:
+<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">myTextField.add(<span class="code-keyword">new</span> Spinner());</pre>
+</div></div><br clear="all" /></p>
+
+<p>with the result of something like this:
+<br clear="all" />
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre> -------------------
+| - |     0     | + |
+ -------------------
+</pre>
+</div></div><br clear="all" /></p>
+
+<p>The &#45;/&#43; buttons are generated automatically, but you can provide your own Components to be used as SpinButtons:
+<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-keyword">final</span> Component downLabel;
+add(downLabel = <span class="code-keyword">new</span> Label(<span class="code-quote">"down"</span>, <span class="code-quote">"get down"</span>).setOutputMarkupId(<span class="code-keyword">true</span>));
+<span class="code-keyword">final</span> Component upLabel;
+add(upLabel = <span class="code-keyword">new</span> Label(<span class="code-quote">"up"</span>, <span class="code-quote">"rise up"</span>).setOutputMarkupId(<span class="code-keyword">true</span>));
+myTextField.add(<span class="code-keyword">new</span> Spinner() {
+	@Override
+	<span class="code-keyword">protected</span> Component getSpinDownComponent()
+	{
+		<span class="code-keyword">return</span> downLabel;
+	}
+
+	@Override
+	<span class="code-keyword">protected</span> Component getSpinUpComponent()
+	{
+		<span class="code-keyword">return</span> upLabel;
+	}
+});</pre>
+</div></div><br clear="all" /></p>
+
+<p>The previous code results in the following ouput (assuming that the labels are placed to the left and the right of the input in the markup file):
+<br clear="all" />
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>          -----------
+get down |     0     | rise up
+          -----------
+</pre>
+</div></div><br clear="all" /></p>
+
+<p>I admit, this is not the best excample, but you can still click the labels ("get down", "rise up") and the value in the textbox is de-/increased.</p>
+
+<p>&nbsp;<br/>
+You can further customize the spinner (see Spinner#configure(Properties)) by setting the following properties:
+<br clear="all" />
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>interval     The amount to increment
+round        The number of decimal points to which to round
+min          The lowest allowed value, false for no min
+max          The highest allowed value, false for no max
+prefix       String to prepend when updating
+suffix       String to append when updating
+data         An array giving a list of items through which to iterate
+onIncrement  Function to call after incrementing
+onDecrement  Function to call after decrementing
+afterUpdate  Function to call after update of the value
+onStop       Function to call on click or mouseup
+</pre>
+</div></div><br clear="all" /></p>
+
+<h2><a name="wicketstuff-spinner-Latestrelease"></a>Latest release</h2>
+
+<p>There is no release available yet, but you can check it out from the wicketstuff-minis <a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-minis">SVN Repository</a></p>
+
+<h2><a name="wicketstuff-spinner-Projectmaintainers"></a>Project maintainers</h2>
+
+<p>Gerolf Seitz (gerolf.seitz at gmail dot com)</p>
+
+<h2><a name="wicketstuff-spinner-SVN"></a>SVN</h2>
+
+<p>wicketstuff-spinner is part of <a href="wicketstuff-minis.html" title="wicketstuff-minis">wicketstuff&#45;minis</a>, the relevant source code can be found <a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-minis/src/main/java/org/wicketstuff/minis/spinner">here</a>.</p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

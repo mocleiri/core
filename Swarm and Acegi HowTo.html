@@ -1,0 +1,526 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : Swarm and Acegi HowTo</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : Swarm and Acegi HowTo
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Nov 15, 2007 by <font color="#0050B2">mrmean</font>.
+				    </div>
+
+				    <div class="panel" style="background-color: #FFFFCE;border-color: #ccc;border-style: dashed;border-width: 1px;"><div class="panelHeader" style="border-bottom-width: 1px;border-bottom-style: dashed;border-bottom-color: #ccc;background-color: #F7D6C1;"><b>Introduction</b></div><div class="panelContent" style="background-color: #FFFFCE;">
+<p>This howto shows you how to setup swarm to let acegi handle the authentication for you.<br/>
+It is advisable to have some basic knowledge of acegi as this howto will only show you the basics and you will want to customize the here used acegi configuration to your personal taste.</p>
+
+<p>All the code and spring configuration is available in the <a href="Wicket-Security Examples.html" title="Wicket-Security Examples">Wicket&#45;Security Examples</a></p>
+</div></div>
+
+<h2><a name="SwarmandAcegiHowTo-Somehelpfullinks"></a>Some helpful links</h2>
+
+<p>This howto is based on 2 other howto's, namely 'wicket-spring' and 'Acegi and Wicket-Auth-Roles'. So if you need some more information, in particular on spring configuration you might want to check them out.</p>
+
+<p><a href="http://cwiki.apache.org/confluence/display/WICKET/Spring">Wicket-Spring</a><br/>
+<a href="http://cwiki.apache.org/WICKET/acegi-and-wicket-auth-roles.html">acegi-and-wicket-auth-roles</a><br/>
+<a href="http://www.acegisecurity.org/guide/springsecurity.html">Acegi security documentation</a></p>
+
+<h2><a name="SwarmandAcegiHowTo-%26nbsp%3BRequirements"></a>&nbsp;Requirements</h2>
+
+<p>I use the following libraries and versions but any newer version should work too.</p>
+
+<p>Wasp 0.1 (latest snapshot)<br/>
+Swarm 0.1 (latest snapshot)<br/>
+Wicket 1.3 (latest snapshot)<br/>
+Wicket-Spring 1.3 (latest snapshot)<br/>
+Acegi 1.0.5<br/>
+EHCache 1.2.4&nbsp;</p>
+
+<p>I recommend&nbsp; adding them to your maven pom to download them and any dependencies they have automatically.</p>
+
+<h2><a name="SwarmandAcegiHowTo-HowTo%26nbsp%3B"></a>HowTo&nbsp;</h2>
+
+
+<h3><a name="SwarmandAcegiHowTo-ThebasicApplication%26nbsp%3B"></a>The basic Application&nbsp;</h3>
+
+<p>&nbsp;Have your application extend SwarmWebApplication and implement the abstract methods as described in the <a href="Getting started with Swarm.html" title="Getting started with Swarm">Getting started with Swarm</a>. If you plan to do more with Spring you can alternatively extend SpringWebApplication and implement WaspApplication yourself.</p>
+
+
+<h3><a name="SwarmandAcegiHowTo-Springconfiguration"></a>Spring configuration</h3>
+
+<p>Time to add some Spring. Note that i am using the "Application Object Approach" from the Wicket-Spring tutorial.</p>
+
+<p>Configure your web.xml as follows:<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;!DOCTYPE web-app PUBLIC <span class="code-quote">"-<span class="code-comment">//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"</span> <span class="code-quote">"http://java.sun.com/dtd/web-app_2_3.dtd"</span>&gt;
+</span>&lt;web-app&gt;
+    &lt;display-name&gt;Wicket Security Examples&lt;/display-name&gt;
+    &lt;!-- Additional Spring config --&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;/WEB-INF/applicationContext.xml&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    &lt;!-- Spring Wicket app--&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;acegi&lt;/filter-name&gt;
+        &lt;filter-class&gt;
+            org.apache.wicket.protocol.http.WicketFilter
+        &lt;/filter-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;applicationFactoryClassName&lt;/param-name&gt;
+            &lt;param-value&gt;
+                org.apache.wicket.spring.SpringWebApplicationFactory
+            &lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/filter&gt;
+    &lt;!-- regular mapping <span class="code-keyword">for</span> spring wicket app --&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;acegi&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/acegi/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+    &lt;!-- Listener <span class="code-keyword">for</span> Spring --&gt;
+    &lt;listener&gt;
+        &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+&lt;/web-app&gt;</pre>
+</div></div><br clear="all" /></p>
+
+<p>This tells Wicket to use the SpringWebApplicationFactory to create your webapp and tells spring to look in the applicationContext.xml for additional configuration. We'll add some more Acegi configuration later but first lets have a look at the applicationContext.xml:<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;?xml version=<span class="code-quote">"1.0"</span> encoding=<span class="code-quote">"UTF-8"</span>?&gt;
+&lt;beans xmlns=<span class="code-quote">"http:<span class="code-comment">//www.springframework.org/schema/beans"</span>
+</span>       xmlns:xsi=<span class="code-quote">"http:<span class="code-comment">//www.w3.org/2001/XMLSchema-instance"</span>
+</span>       xsi:schemaLocation=<span class="code-quote">"http:<span class="code-comment">//www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"</span>&gt;
+</span>
+&lt;!-- setup wicket application --&gt;
+&lt;bean id=<span class="code-quote">"wicketApplication"</span> class=<span class="code-quote">"org.apache.wicket.security.examples.acegi.MyAcegiApplication"</span>&gt;
+&lt;property name=<span class="code-quote">"authenticationManager"</span> ref=<span class="code-quote">"authenticationManager"</span>/&gt;
+&lt;/bean&gt;
+&lt;/beans&gt;</pre>
+</div></div><br clear="all" /></p>
+
+<p>&nbsp;As you can see this were we specify which application the factory is supposed to return. You'll also notice property specifying an authenticationManager. This is actually the first bit of Acegi we are dealing with and does nothing more then tell Spring that our application has a property named "authenticationManager" which Spring will inject for us. Now i can already here you think: "wait we don't have that property in our application". And you are right so lets do that now.<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-keyword">import</span> org.acegisecurity.AuthenticationManager; <span class="code-keyword">public</span> class MyAcegiApplication <span class="code-keyword">extends</span> SwarmWebApplication
+{
+    <span class="code-comment">// To be injected by Spring
+</span>    <span class="code-keyword">private</span> AuthenticationManager authenticationManager;
+
+    <span class="code-keyword">public</span> MyAcegiApplication()
+    {          .....
+    }     <span class="code-keyword">public</span> AuthenticationManager getAuthenticationManager()
+    {
+	<span class="code-keyword">return</span> authenticationManager;
+    }     <span class="code-keyword">public</span> void setAuthenticationManager(<span class="code-keyword">final</span> AuthenticationManager authenticationManager)
+    {
+	<span class="code-keyword">this</span>.authenticationManager = authenticationManager;
+    } ......</pre>
+</div></div><br clear="all" /></p>
+
+<p>&nbsp;The AuthenticationManager handles all request for authentication and will be used later in our LoginContext. The getters and setters are for Spring and they also allow us to get to the manager from our logincontext.</p>
+
+<h3><a name="SwarmandAcegiHowTo-Acegiconfiguration%26nbsp%3B"></a>Acegi configuration&nbsp;</h3>
+
+<p>&nbsp;Time to add the remainder of the configuration in web.xml. When you add the filtermapping for Acegi (shown in a moment) it is <b>important to place it before the wicket filtermapping</b>. The complete web.xml looks like this:<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;!DOCTYPE web-app PUBLIC <span class="code-quote">"-<span class="code-comment">//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"</span> <span class="code-quote">"http://java.sun.com/dtd/web-app_2_3.dtd"</span>&gt;
+</span>&lt;web-app&gt;
+    &lt;display-name&gt;Wicket Security Examples&lt;/display-name&gt;
+    &lt;!-- Additional Spring config --&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;/WEB-INF/applicationContext.xml&lt;/param-value&gt;
+    &lt;/context-param&gt;
+    &lt;!-- acegi filter--&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;Acegi HTTP Request Security Filter&lt;/filter-name&gt;
+        &lt;filter-class&gt;org.acegisecurity.util.FilterToBeanProxy&lt;/filter-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;targetClass&lt;/param-name&gt;
+            &lt;param-value&gt;org.acegisecurity.util.FilterChainProxy&lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/filter&gt;
+    &lt;!-- Spring Wicket app--&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;acegi&lt;/filter-name&gt;
+        &lt;filter-class&gt;
+            org.apache.wicket.protocol.http.WicketFilter
+        &lt;/filter-class&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;applicationFactoryClassName&lt;/param-name&gt;
+            &lt;param-value&gt;
+                org.apache.wicket.spring.SpringWebApplicationFactory
+            &lt;/param-value&gt;
+        &lt;/init-param&gt;
+    &lt;/filter&gt;
+    &lt;!-- Acegi filter first, only <span class="code-keyword">for</span> /acegi urls --&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;Acegi HTTP Request Security Filter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/acegi/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+    &lt;!-- regular mapping <span class="code-keyword">for</span> spring wicket app --&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;acegi&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/acegi/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+    &lt;!-- Listener <span class="code-keyword">for</span> Spring --&gt;
+    &lt;listener&gt;
+        &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+&lt;/web-app&gt;</pre>
+</div></div><br clear="all" /></p>
+
+<p>You can either use the same url pattern as your wicket app or /&#42; to have all urls go through the acegi filter.</p>
+
+<p>The remainder of the Acegi configuration is placed inside applicationContext.xml. First some general configuration to set up caching etc. Don't ask me what it is for, i don't know i just copied it from the "Acegi and Wicket-Auth_roles" tutorial <img class="emoticon" src="images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/><br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;!-- Maintains security context between requests (using the session). --&gt;
+  &lt;bean id=<span class="code-quote">"httpSessionContextIntegrationFilter"</span>
+    class=<span class="code-quote">"org.acegisecurity.context.HttpSessionContextIntegrationFilter"</span>&gt;
+    &lt;property name=<span class="code-quote">"forceEagerSessionCreation"</span> value=<span class="code-quote">"<span class="code-keyword">true</span>"</span>/&gt;
+  &lt;/bean&gt;
+
+   &lt;!-- Users cache <span class="code-keyword">for</span> Acegi (Ehcache). --&gt;
+   &lt;bean id=<span class="code-quote">"userCache"</span> class=<span class="code-quote">"org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache"</span>&gt;
+      &lt;property name=<span class="code-quote">"cache"</span>&gt;
+         &lt;bean class=<span class="code-quote">"org.springframework.cache.ehcache.EhCacheFactoryBean"</span>&gt;
+            &lt;property name=<span class="code-quote">"cacheManager"</span> ref=<span class="code-quote">"cacheManager"</span>/&gt;
+            &lt;property name=<span class="code-quote">"cacheName"</span> value=<span class="code-quote">"your.application.name.USER_CACHE"</span>/&gt;
+         &lt;/bean&gt;
+      &lt;/property&gt;
+   &lt;/bean&gt;
+   &lt;bean id=<span class="code-quote">"cacheManager"</span> class=<span class="code-quote">"org.springframework.cache.ehcache.EhCacheManagerFactoryBean"</span>/&gt;</pre>
+</div></div><br clear="all" /></p>
+
+<p>&nbsp;Next the configuration of our "authenticationManger" specified earlier in our config file.<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;!-- Authentication manager, configured with one provider that retrieves authentication information
+        from test data. --&gt;
+&lt;bean id=<span class="code-quote">"authenticationManager"</span> class=<span class="code-quote">"org.acegisecurity.providers.ProviderManager"</span>&gt;
+        &lt;property name=<span class="code-quote">"providers"</span>&gt;
+            &lt;list&gt;
+                &lt;ref local=<span class="code-quote">"testAuthenticationProvider"</span>/&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- Authentication provider <span class="code-keyword">for</span> test authentication. --&gt;
+    &lt;bean id=<span class="code-quote">"testAuthenticationProvider"</span> class=<span class="code-quote">"org.acegisecurity.providers.TestingAuthenticationProvider"</span>&gt;
+    &lt;/bean&gt;</pre>
+</div></div><br clear="all" /></p>
+
+<p>&nbsp;As you can see our "authenticationManager" is actually is actually a ProviderManager which means he will delegate authentication to a AuthenticationProvider. In our case a TestingAuthenticationProvider. The Wicket-Auth-Roles tutorial uses a LdapAuthenticationProvider so check there if you want to see something a little more complex. The principal remains the same however.</p>
+
+<p>The complete applicationContext.xml now looks like this:<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;?xml version=<span class="code-quote">"1.0"</span> encoding=<span class="code-quote">"UTF-8"</span>?&gt;
+&lt;beans xmlns=<span class="code-quote">"http:<span class="code-comment">//www.springframework.org/schema/beans"</span>
+</span>       xmlns:xsi=<span class="code-quote">"http:<span class="code-comment">//www.w3.org/2001/XMLSchema-instance"</span>
+</span>       xsi:schemaLocation=<span class="code-quote">"http:<span class="code-comment">//www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd"</span>&gt;
+</span>
+&lt;!-- setup wicket application --&gt;
+&lt;bean id=<span class="code-quote">"wicketApplication"</span> class=<span class="code-quote">"org.apache.wicket.security.examples.acegi.MyAcegiApplication"</span>&gt;
+&lt;property name=<span class="code-quote">"authenticationManager"</span> ref=<span class="code-quote">"authenticationManager"</span>/&gt;
+&lt;/bean&gt;
+
+&lt;!-- acegi config --&gt;
+&lt;!-- Proxy to a set of filters that enforce authentication and authorization. --&gt;
+  &lt;bean id=<span class="code-quote">"filterChainProxy"</span> class=<span class="code-quote">"org.acegisecurity.util.FilterChainProxy"</span>&gt;
+    &lt;property name=<span class="code-quote">"filterInvocationDefinitionSource"</span>&gt;
+      &lt;value&gt;
+        CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+        PATTERN_TYPE_APACHE_ANT
+        /**=httpSessionContextIntegrationFilter
+      &lt;/value&gt;
+    &lt;/property&gt;
+  &lt;/bean&gt;
+
+  &lt;!-- Maintains security context between requests (using the session). --&gt;
+  &lt;bean id=<span class="code-quote">"httpSessionContextIntegrationFilter"</span>
+    class=<span class="code-quote">"org.acegisecurity.context.HttpSessionContextIntegrationFilter"</span>&gt;
+    &lt;property name=<span class="code-quote">"forceEagerSessionCreation"</span> value=<span class="code-quote">"<span class="code-keyword">true</span>"</span>/&gt;
+  &lt;/bean&gt;
+
+   &lt;!-- Users cache <span class="code-keyword">for</span> Acegi (Ehcache). --&gt;
+   &lt;bean id=<span class="code-quote">"userCache"</span> class=<span class="code-quote">"org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache"</span>&gt;
+      &lt;property name=<span class="code-quote">"cache"</span>&gt;
+         &lt;bean class=<span class="code-quote">"org.springframework.cache.ehcache.EhCacheFactoryBean"</span>&gt;
+            &lt;property name=<span class="code-quote">"cacheManager"</span> ref=<span class="code-quote">"cacheManager"</span>/&gt;
+            &lt;property name=<span class="code-quote">"cacheName"</span> value=<span class="code-quote">"your.application.name.USER_CACHE"</span>/&gt;
+         &lt;/bean&gt;
+      &lt;/property&gt;
+   &lt;/bean&gt;
+   &lt;bean id=<span class="code-quote">"cacheManager"</span> class=<span class="code-quote">"org.springframework.cache.ehcache.EhCacheManagerFactoryBean"</span>/&gt;
+
+   &lt;!-- Authentication manager, configured with one provider that retrieves authentication information
+        from test data. --&gt;
+   &lt;bean id=<span class="code-quote">"authenticationManager"</span> class=<span class="code-quote">"org.acegisecurity.providers.ProviderManager"</span>&gt;
+        &lt;property name=<span class="code-quote">"providers"</span>&gt;
+            &lt;list&gt;
+                &lt;ref local=<span class="code-quote">"testAuthenticationProvider"</span>/&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;!-- Authentication provider <span class="code-keyword">for</span> test authentication. --&gt;
+    &lt;bean id=<span class="code-quote">"testAuthenticationProvider"</span> class=<span class="code-quote">"org.acegisecurity.providers.TestingAuthenticationProvider"</span>&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;</pre>
+</div></div><br clear="all" /></p>
+
+<h3><a name="SwarmandAcegiHowTo-%26nbsp%3BSwarmintegration"></a>&nbsp;Swarm integration</h3>
+
+<p>&nbsp;Time to integrate all this with Swarm.</p>
+
+<p>At some point in your application you will have received a username and password (or some other credentials) from a user. Swarm uses a LoginContext and usually you would just supply that with the username and password. But Acegi requires&nbsp; AuthenticationTokens (which have to match with the AuthenticationProvider). So instead of passing the username and password to our LoginContext we wrap them inside a TestingAuthenticationToken. Remember you can use any other provider / tokens you like.<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-keyword">public</span> <span class="code-object">boolean</span> signIn(<span class="code-keyword">final</span> <span class="code-object">String</span> username, <span class="code-keyword">final</span> <span class="code-object">String</span> password)
+{
+       <span class="code-comment">// authentication in swarm is handled by contexts, which are
+</span>       <span class="code-comment">// disposed after use.
+</span>       LoginContext context = <span class="code-keyword">new</span> AcegiLoginContext(<span class="code-keyword">new</span> TestingAuthenticationToken(
+              username, password, getAuthorities(username, password)));
+       <span class="code-keyword">try</span>
+       {
+              ((WaspSession)getSession()).login(context);
+       }
+       <span class="code-keyword">catch</span> (LoginException e)
+       {
+              log.error(e.getMessage(), e);
+              <span class="code-keyword">return</span> <span class="code-keyword">false</span>;
+       }
+       <span class="code-keyword">return</span> <span class="code-keyword">true</span>;
+}
+
+/**
+  * This example uses the TestingAuthenticationToken therefore we
+  * need to provide the authorities up front. Other
+  * AuthenticationTokens will get <span class="code-keyword">this</span> from a database or wherever
+  * they are designed to get it from.
+  *
+  * @param username
+  * @param password
+  * @<span class="code-keyword">return</span>
+  */
+<span class="code-keyword">private</span> GrantedAuthority[] getAuthorities(<span class="code-object">String</span> username, <span class="code-object">String</span> password)
+{
+       GrantedAuthority[] authorities = <span class="code-keyword">null</span>;
+       <span class="code-keyword">if</span> (username != <span class="code-keyword">null</span> &amp;&amp; Objects.equal(username, password))
+       {
+             authorities = <span class="code-keyword">new</span> GrantedAuthority[1];
+             <span class="code-keyword">if</span> (<span class="code-quote">"ceo"</span>.equals(username))
+             {
+                    authorities[0] = <span class="code-keyword">new</span> GrantedAuthorityImpl(<span class="code-quote">"organisation.rights"</span>);
+             }
+             <span class="code-keyword">else</span>
+                    authorities[0] = <span class="code-keyword">new</span> GrantedAuthorityImpl(<span class="code-quote">"department.rights"</span>);
+             <span class="code-comment">// the subject returned in AcegiLoginContext knows how to
+</span>             <span class="code-comment">// convert these names to principals
+</span>       }
+       <span class="code-keyword">return</span> authorities;
+ }</pre>
+</div></div><br clear="all" /></p>
+
+<p>&nbsp;In Swarm authorization is handled by Principals and Permissions but Acegi uses GrantedAuthorities. Normally these are assigned to the user by the AuthenticationManager or the AuthenticationProvider. However we are using a TestingAuthenticationProvider which like its name suggests is used for testing. Therefor the provider does nothing and all granted authorities need to be assigned up front. I am using a simple check based on username to decide what kind of GrantedAuthority to assign to the token. The Strings "organisation.rights" and "department.rights" correspond to Principals defined in the policy file:<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">grant principal org.apache.wicket.security.examples.authorization.MyPrincipal <span class="code-quote">"organisation.rights"</span>
+{
+    ....
+};
+grant principal org.apache.wicket.security.examples.authorization.MyPrincipal <span class="code-quote">"department.rights"</span>
+{
+    ....
+};</pre>
+</div></div><br clear="all" /></p>
+
+<p>&nbsp;A specialized AcegiLoginContext takes a token and uses it to authenticate the user with the AuthenticationManager in the application.<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">/**
+ * A general purpose wrapper to authenticate a user with Swarm through Acegi. It
+ * does not support multi-login. Provided as is without warranty or
+ * responsibility <span class="code-keyword">for</span> damage.
+ *
+ * @author marrink
+ */
+<span class="code-keyword">public</span> <span class="code-keyword">final</span> class AcegiLoginContext <span class="code-keyword">extends</span> LoginContext
+{
+    <span class="code-keyword">private</span> AbstractAuthenticationToken token;
+
+    /**
+     *
+     * Constructor <span class="code-keyword">for</span> logoff purposes.
+     */
+    <span class="code-keyword">public</span> AcegiLoginContext()
+    {
+
+    }
+
+    /**
+     * Constructs a <span class="code-keyword">new</span> LoginContext with the provided Acegi
+     * AuthenticationToken.
+     *
+     * @param token
+     *            contains credentials like username and password
+     */
+    <span class="code-keyword">public</span> AcegiLoginContext(AbstractAuthenticationToken token)
+    {
+        <span class="code-keyword">this</span>.token = token;
+    }
+
+    /**
+     * @see org.apache.wicket.security.hive.authentication.LoginContext#login()
+     */
+    <span class="code-keyword">public</span> Subject login() <span class="code-keyword">throws</span> LoginException
+    {
+        <span class="code-keyword">if</span> (token == <span class="code-keyword">null</span>)
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> LoginException(<span class="code-quote">"Insufficient information to login"</span>);
+        <span class="code-comment">// Attempt authentication.
+</span>        <span class="code-keyword">try</span>
+        {
+            AuthenticationManager authenticationManager = ((MyAcegiApplication)Application.get())
+                    .getAuthenticationManager();
+            <span class="code-keyword">if</span> (authenticationManager == <span class="code-keyword">null</span>)
+                <span class="code-keyword">throw</span> <span class="code-keyword">new</span> LoginException(
+                        <span class="code-quote">"AuthenticationManager is not available, check <span class="code-keyword">if</span> your spring config contains a property <span class="code-keyword">for</span> the authenticationManager in your wicketApplication bean."</span>);
+            Authentication authResult = authenticationManager.authenticate(token);
+            setAuthentication(authResult);
+        }
+        <span class="code-keyword">catch</span> (AcegiSecurityException e)
+        {
+            setAuthentication(<span class="code-keyword">null</span>);
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> LoginException(e);
+
+        }
+
+        <span class="code-keyword">catch</span> (RuntimeException e)
+        {
+            setAuthentication(<span class="code-keyword">null</span>);
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> LoginException(e);
+        }
+        <span class="code-comment">// cleanup
+</span>        token = <span class="code-keyword">null</span>;
+        <span class="code-comment">// <span class="code-keyword">return</span> result
+</span>        <span class="code-keyword">return</span> <span class="code-keyword">new</span> AcegiSubject();
+    }
+
+    /**
+     * Sets the acegi authentication.
+     *
+     * @param authentication
+     *            the authentication or <span class="code-keyword">null</span> to clear
+     */
+    <span class="code-keyword">private</span> void setAuthentication(Authentication authentication)
+    {
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+    }
+
+    /**
+     * Notify Acegi.
+     *
+     * @see org.apache.wicket.security.hive.authentication.LoginContext#notifyLogoff(org.apache.wicket.security.hive.authentication.Subject)
+     */
+    <span class="code-keyword">public</span> void notifyLogoff(Subject subject)
+    {
+        setAuthentication(<span class="code-keyword">null</span>);
+    }
+}</pre>
+</div></div><br clear="all" /></p>
+
+<p>&nbsp;The result of the authentication is placed inside a SecurityContextHolder which is stored somewhere in the session. The Subject gets the GrantedAuthorities from that context and translates them into Principals.<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">/**
+ * Subject that gets is principals from the authenticated user in the
+ * {@link SecurityContextHolder}. This class is converts all authorities to
+ * {@link MyPrincipal}s but could serve as a template <span class="code-keyword">for</span> your implementation.
+ *
+ * @author marrink
+ */
+<span class="code-keyword">public</span> class AcegiSubject <span class="code-keyword">extends</span> DefaultSubject
+{
+    <span class="code-keyword">private</span> <span class="code-keyword">static</span> <span class="code-keyword">final</span> <span class="code-object">long</span> serialVersionUID = 1L;
+
+    /**
+     * Constructor.
+     */
+    <span class="code-keyword">public</span> AcegiSubject()
+    {
+        GrantedAuthority[] authorities = SecurityContextHolder.getContext().getAuthentication()
+                .getAuthorities();
+        <span class="code-keyword">if</span> (authorities != <span class="code-keyword">null</span>)
+        {
+            Principal principal;
+            <span class="code-keyword">for</span> (<span class="code-object">int</span> i = 0; i &lt; authorities.length; i++)
+            {
+                principal = convert(authorities[i]);
+                <span class="code-keyword">if</span> (principal != <span class="code-keyword">null</span>)
+                    addPrincipal(principal);
+            }
+        }
+    }
+
+    /**
+     * Converts a {@link GrantedAuthority} to a {@link Principal}
+     *
+     * @param authority
+     * @<span class="code-keyword">return</span> principal or <span class="code-keyword">null</span> <span class="code-keyword">if</span> the authority could not be converted
+     */
+    <span class="code-keyword">protected</span> Principal convert(GrantedAuthority authority)
+    {
+        <span class="code-keyword">return</span> <span class="code-keyword">new</span> MyPrincipal(authority.getAuthority());
+    }
+}</pre>
+</div></div><br clear="all" /></p>
+
+<h3><a name="SwarmandAcegiHowTo-%26nbsp%3BRunningyourwebapp"></a>&nbsp;Running your webapp</h3>
+
+<p>&nbsp;Before you try and run your webapp there is a small matter of dependencies.</p>
+
+<p>It appears that Maven also places a lot of Spring 1.x depencies on your classpath (through Acegi). So make sure your webapp classpath only contains the following dependencies:</p>
+<ul>
+	<li>asm-1.5.3.jar</li>
+	<li>cglib-nodep-2.1_3.jar</li>
+	<li>commons-codec-1.3.jar</li>
+	<li>commons-collections-3.1.jar</li>
+	<li>commons-lang-2.1.jar</li>
+	<li>commons-logging-1.1.jar</li>
+	<li>log4j-1.2.12.jar (or any other logging framework)</li>
+	<li>ehcache-1.2.4.jar</li>
+	<li>acegi-security-1.0.5.jar</li>
+	<li>wicket-ioc-1.3.0-SNAPSHOT.jar</li>
+	<li>swarm-0.1-SNAPSHOT.jar</li>
+	<li>wasp-0.1-SNAPSHOT.jar</li>
+	<li>wicket-spring-1.3.0-SNAPSHOT.jar</li>
+	<li>wicket-1.3.0-SNAPSHOT.jar</li>
+	<li>slf4j-api-1.4.2.jar</li>
+	<li>slf4j-log4j12-1.4.2.jar (or any other implementation)</li>
+	<li>spring-2.0.jar</li>
+</ul>
+
+
+<h2><a name="SwarmandAcegiHowTo-Questions%3F"></a>Questions?</h2>
+
+<p>Please send questions to the wicket mailing list&nbsp; (users@wicket.apache.org)</p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

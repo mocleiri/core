@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : wicketstuff-minis-prototip</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : wicketstuff-minis-prototip
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Aug 24, 2009 by <font color="#0050B2">perchrh</font>.
+				    </div>
+
+				    <h1><a name="wicketstuff-minis-prototip-PrototipBehaviour"></a>Prototip Behaviour</h1>
+
+
+<h2><a name="wicketstuff-minis-prototip-Sowhatisit%3F"></a>So what is it?</h2>
+
+<p>Prototip behaviour allows you to add tooltips based on the <a href="http://www.nickstakenburg.com/projects/prototip/">prototip library</a>without having to write any javascript.&nbsp; The contents of the tooltip can be either a string, or any wicket component (eg a panel).</p>
+
+<h2><a name="wicketstuff-minis-prototip-Requirements"></a>Requirements</h2>
+
+<p>&nbsp;The prototip.js file requires both prototype and scriptaculous, neither are included so you will need to include them yourself.&nbsp; It also requires wicket 1.3 and Java 5 or newer.&nbsp; The actual prototip javascript and css files are included so you dont need to worry about including them.</p>
+
+<h2><a name="wicketstuff-minis-prototip-Usage%26nbsp%3B"></a>Usage&nbsp;</h2>
+
+<p>&nbsp;The most simple usage example is that of adding a string tooltip to a label, which can be done as so:<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">Label toolTargetWithString = <span class="code-keyword">new</span> Label(<span class="code-quote">"toolTargetWithString"</span>, <span class="code-quote">"I am a label which has a string tooltip"</span>);
+toolTargetWithString.add(<span class="code-keyword">new</span> PrototipBehaviour(<span class="code-quote">"I am a string tooltip"</span>));
+add(toolTargetWithString);</pre>
+</div></div><br clear="all" /> <br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /></p>
+
+<p>Or to add a wicket panel as the tooltip contents:<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-comment">// Label with panel as a tooltip
+</span>Label toolTargetWithPanel = <span class="code-keyword">new</span> Label(<span class="code-quote">"toolTargetWithPanel"</span>, <span class="code-quote">"I am a label which has another wicket panel as a tooltip"</span>);
+add(toolTargetWithPanel);
+
+ <span class="code-comment">//This is the panel which will be added as a tooltip
+</span> <span class="code-comment">//It needs adding to the page, but does not need hiding
+</span> Panel tooltipPanel = <span class="code-keyword">null</span>;
+ add(tooltipPanel = <span class="code-keyword">new</span> MyToolTipPanel(<span class="code-quote">"toolTipPanel"</span>));
+
+<span class="code-comment">//A panel tooltip
+</span><span class="code-keyword">final</span> PrototipBehaviour panelTip = <span class="code-keyword">new</span> PrototipBehaviour(tooltipPanel);
+toolTargetWithPanel.add(panelTip);</pre>
+</div></div><br clear="all" /> <br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /></p>
+
+<p>&nbsp;Prototip has lots of options.&nbsp; To set these create a PrototipSettings object, set the settings you require (see the prototip.js page for more info on what these mean) and add the settings to your PrototipBehaviour.<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-comment">//Because prototip has lots of settings, these settings are set up in a <span class="code-keyword">new</span> class,
+</span><span class="code-comment">// <span class="code-keyword">this</span> allows sharing of the same setting between different tooltips
+</span>PrototipSettings settings = <span class="code-keyword">new</span> PrototipSettings();
+settings.setEffect(<span class="code-quote">"blind"</span>).setDelay(<span class="code-quote">"0.2"</span>);
+
+<span class="code-comment">//A string tooltip to add to the first label
+</span><span class="code-keyword">final</span> PrototipBehaviour stringTip = <span class="code-keyword">new</span> PrototipBehaviour(<span class="code-quote">"I am a string tooltip"</span>).setSettings(settings);
+toolTargetWithString.add(stringTip);</pre>
+</div></div><br clear="all" /> <br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /></p>
+
+<p>&nbsp;To remove a prototip with an ajax click call the PrototipBehaviour objects remove method, passing in the AjaxRequestTarget:<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">add(<span class="code-keyword">new</span> AjaxLink(<span class="code-quote">"remove"</span>){
+	@Override
+	<span class="code-keyword">public</span> void onClick(AjaxRequestTarget target)
+	{
+		<span class="code-object">System</span>.out.println(<span class="code-quote">"removed both tool tips"</span>);
+		stringTip.remove(target);
+		panelTip.remove(target);
+	}
+});</pre>
+</div></div><br clear="all" /> <br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /></p>
+
+<p>&nbsp;It is possible to add PrototipBehaviour to a component via ajax, even if you havent added any other PrototipBehaviour on this page, the prototip.js and prototip.css files are still referenced automatically:<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-comment">// Label with no initial tool tip
+</span><span class="code-keyword">final</span> Label toolTargetWithNoTooltip = <span class="code-keyword">new</span> Label(<span class="code-quote">"toolTargetWithNoTooltip"</span>, <span class="code-quote">"I am a label which starts out without any tooltips"</span>);
+add(toolTargetWithNoTooltip);
+<span class="code-comment">//since <span class="code-keyword">this</span> it to have a tooltip added via ajax it needs a markup id
+</span>toolTargetWithNoTooltip.setOutputMarkupId(<span class="code-keyword">true</span>);AjaxLink addLink = <span class="code-keyword">new</span> AjaxLink(<span class="code-quote">"add"</span>){
+	@Override
+	<span class="code-keyword">public</span> void onClick(AjaxRequestTarget target)
+	{
+		<span class="code-comment">//add the behaviour
+</span>		toolTargetWithNoTooltip.add(<span class="code-keyword">new</span> PrototipBehaviour(<span class="code-quote">"I was added via ajax!!"</span>));
+
+		<span class="code-comment">//add the label to the ajax request target
+</span>		target.addComponent(toolTargetWithNoTooltip);
+	}
+};</pre>
+</div></div><br clear="all" /> <br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /></p>
+
+<p>&nbsp;If you are already using the prototip library on your page, or want to include the javascript and css files yourself then you can force the PrototipBehaviour to not contribute the javascript and css files like this:<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">panelTip.setOverrideHeaderContributor(<span class="code-keyword">true</span>);</pre>
+</div></div><br clear="all" /> <br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /></p>
+
+<p>&nbsp;There are three different versions of prototip.js included, a normal one, a minified one and a minified and gziped one.&nbsp; By default the minified one is contributed to the page, you can override this like so:<br clear="all" /></p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">PrototipBehaviour.setSelectedJsType(JS_TYPE.NORMAL);</pre>
+</div></div>
+<p>This affects all PrototipBehaviour objects in the system.
+<br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /></p>
+
+<h2><a name="wicketstuff-minis-prototip-%26nbsp%3BQuestionsorproblems%3F"></a>&nbsp;Questions or problems?</h2>
+
+<p>&nbsp;Either email me at richardjohnwilkinson (at) gmail (dot) com or fix it yourself and contribute the changes <img class="emoticon" src="images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/></p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

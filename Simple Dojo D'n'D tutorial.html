@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : Simple Dojo D'n'D tutorial</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : Simple Dojo D'n'D tutorial
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Mar 05, 2007 by <font color="#0050B2">vdemay</font>.
+				    </div>
+
+				    <h2><a name="SimpleDojoD%27n%27Dtutorial-Drag%27n%27Dropfeature"></a>Drag'n'Drop feature</h2>
+
+<p>The following example comes from wicket-contrib-dojo-example, you can check-out it on svn.</p>
+
+<p>Dojo Drag'n'Drop allows users to define areas where container can be drop and some others can be drag. DojoDragContainer can only be drop on DojoDropContainer.</p>
+
+<h3><a name="SimpleDojoD%27n%27Dtutorial-JavaSources"></a>Java Sources</h3>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-keyword">public</span> class DnDShower <span class="code-keyword">extends</span> WebPage {
+
+	<span class="code-keyword">public</span> DnDShower(PageParameters parameters){ 				<span class="code-comment">//Create a DojoDropContainer
+</span>		DojoDropContainer dropContainer = <span class="code-keyword">new</span> DojoDropContainer(<span class="code-quote">"dropContainer"</span>){
+
+			<span class="code-keyword">public</span> void onDrop(AjaxRequestTarget target, DojoDragContainer container, <span class="code-object">int</span> position) {
+				<span class="code-object">System</span>.out.println(<span class="code-quote">"position = "</span> + position);
+				<span class="code-object">System</span>.out.println(<span class="code-quote">"DojoDragContainer"</span> + container.getId());
+
+			}
+
+		};
+		add(dropContainer);
+		<span class="code-comment">//Create some DojoDragContainer on the page
+</span>		DojoDragContainer dragContainer1 = <span class="code-keyword">new</span> DojoDragContainer(<span class="code-quote">"dragContainer1"</span>);
+		DojoDragContainer dragContainer2 = <span class="code-keyword">new</span> DojoDragContainer(<span class="code-quote">"dragContainer2"</span>);
+		DojoDragContainer dragContainer3 = <span class="code-keyword">new</span> DojoDragContainer(<span class="code-quote">"dragContainer3"</span>);
+		add(dragContainer1);
+		add(dragContainer2);
+		add(dragContainer3);
+
+		<span class="code-comment">//Add some DojoDragContainer in the DojoDropContainer
+</span>		DojoDragContainer dragContainer4 = <span class="code-keyword">new</span> DojoDragContainer(<span class="code-quote">"dragContainer4"</span>);
+		DojoDragContainer dragContainer5 = <span class="code-keyword">new</span> DojoDragContainer(<span class="code-quote">"dragContainer5"</span>);
+		dropContainer.add(dragContainer4);
+		dropContainer.add(dragContainer5);
+				<span class="code-comment">//More friendly <span class="code-keyword">for</span> <span class="code-keyword">this</span> sample : add some images in containers
+</span>		dragContainer1.add(<span class="code-keyword">new</span> Image(<span class="code-quote">"pic1"</span>));
+		dragContainer2.add(<span class="code-keyword">new</span> Image(<span class="code-quote">"pic2"</span>));
+		dragContainer3.add(<span class="code-keyword">new</span> Image(<span class="code-quote">"pic3"</span>));
+		dragContainer4.add(<span class="code-keyword">new</span> Image(<span class="code-quote">"pic4"</span>));
+		dragContainer5.add(<span class="code-keyword">new</span> Image(<span class="code-quote">"pic5"</span>));
+	}
+}</pre>
+</div></div>
+<p>In this exemple we add Some DojoDragContainer in the page and in the DojoDropContainer. All these DojoDragContainer can be moved with the mouse.</p>
+
+<p>The DojoDropContainer is the only area of the page where DojoDragContainer can be put. If you are dragging a DojoDragContainer and if you drop it out of the DojoDropContainer, the DojoDragContainer will return to its original position else it will be added on the DojoDropContainer and the DojoDropContainer.onDrop() will be triggered.</p>
+
+<p>The DojoDragContainer will also trigger its onDrag() method when you start to drag it.&nbsp;</p>
+
+<p>If you want to be hable to drag back DojoDragContainer at their first position, you should add an other DojoDropContainer containing the 3 firsts DojoDragContainer. &nbsp;</p>
+
+<h3><a name="SimpleDojoD%27n%27Dtutorial-%26nbsp%3BHtmlSources"></a>&nbsp;Html Sources</h3>
+
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;div&gt;
+		&lt;div class=<span class="code-quote">"drag"</span> wicket:id=<span class="code-quote">"dragContainer1"</span>&gt;&lt;img wicket:id=<span class="code-quote">"pic1"</span> src=<span class="code-quote">"pic1.jpg"</span>/&gt;&lt;/div&gt;
+		&lt;div class=<span class="code-quote">"drag"</span> wicket:id=<span class="code-quote">"dragContainer2"</span>&gt;&lt;img wicket:id=<span class="code-quote">"pic2"</span> src=<span class="code-quote">"pic2.jpg"</span>/&gt;&lt;/div&gt;
+		&lt;div class=<span class="code-quote">"drag"</span> wicket:id=<span class="code-quote">"dragContainer3"</span>&gt;&lt;img wicket:id=<span class="code-quote">"pic3"</span> src=<span class="code-quote">"pic3.jpg"</span>/&gt;&lt;/div&gt;
+	&lt;/div&gt;
+	&lt;hr/&gt;
+	&lt;div wicket:id=<span class="code-quote">"dropContainer"</span> style=<span class="code-quote">"background-color:blue;"</span>&gt;
+		&lt;div class=<span class="code-quote">"drag"</span> wicket:id=<span class="code-quote">"dragContainer4"</span>&gt;&lt;img wicket:id=<span class="code-quote">"pic4"</span> src=<span class="code-quote">"pic4.jpg"</span>/&gt;&lt;/div&gt;
+		&lt;div class=<span class="code-quote">"drag"</span> wicket:id=<span class="code-quote">"dragContainer5"</span>&gt;&lt;img wicket:id=<span class="code-quote">"pic5"</span> src=<span class="code-quote">"pic5.jpg"</span>/&gt;&lt;/div&gt;
+	&lt;/div&gt;</pre>
+</div></div>
+
+<h3><a name="SimpleDojoD%27n%27Dtutorial-Seeitinaction"></a>See it in action</h3>
+
+<p><a href="http://www.demay-fr.net:8080/WCD13/app/?wicket:bookmarkablePage=%3Awicket.contrib.dojo.examples.DnDShower">Live example : Drag'n'Drop </a></p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

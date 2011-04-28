@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : wicketstuff-animator</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : wicketstuff-animator
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Sep 05, 2007 by <font color="#0050B2">faceman</font>.
+				    </div>
+
+				    <h1><a name="wicketstuff-animator-Introduction"></a>Introduction</h1>
+
+<p>wicketstuff-animator integrates <a href="http://berniecode.com/writing/animator.html">animator.js</a> into wicket.</p>
+
+<h1><a name="wicketstuff-animator-Documentation"></a>Documentation</h1>
+
+<p>most of the api provided by the javascript class is already implemented, including:</p>
+<ul>
+	<li>setting general animation options (duration, interval, transition)</li>
+	<li>adding StyleSubjects (the who (target) and what of the animation):
+	<ul>
+		<li><em>NumericalStyleSubject</em>: animates a pixel-based style property between two integer values (eg. margin-left)</li>
+		<li><em>ColorStyleSubject</em>: animates a color based style property between two hex values (eg. background-color)</li>
+		<li><em>DiscreteStyleSubject</em>: Animates discrete styles, i.e. ones that do not scale but have discrete values that can't be interpolated (eg. font-weight from normal to bold)</li>
+		<li><em>CssStyleSubject</em>: animates between two styles or css classes</li>
+		<li>JavascriptSubject: represents the body of an update function, in which you can refer to the variable "value", representing the current state of the animation (between 0 and 1):<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">function(value) { /* JavascriptSubject will be planted here */ }</pre>
+</div></div><br clear="all" />
+<br clear="all" />
+<br clear="all" /></li>
+	</ul>
+	</li>
+	<li>attaching the animator to components using the Animator.attachTo method. since the animator can be attached to any number of components reacting to different events and performing different actions (play, reverse, toggle, ...), the Animator class takes care of adding a behavior to the desired component (instead of adding the animator to the component).</li>
+</ul>
+
+
+<p><b>attention</b>: do not mix up the targets of the animation and the component the animator is attached to. the targets describe who gets animated. attaching the animator to a component is just the means to get the animation started (or whatever action is used).</p>
+
+<p>fwiw, i encourage you to visit the original page of <a href="http://berniecode.com/writing/animator.html">animator.js</a> to understand how it works. after that, it shouldn't be that difficult to comprehend the java version of it.</p>
+
+<h1><a name="wicketstuff-animator-Example%26nbsp%3B"></a>Example&nbsp;</h1>
+
+<p>let's have a look at how you can use the animator to turn the color of a label (it's actually a div) from red to blue on the first click, and back to red on the second click, and again to blue on another click, ...</p>
+
+<p>MyPage.html:
+<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">... &lt;div wicket:id=<span class="code-quote">"label"</span>&gt;my label&lt;/div&gt; ...</pre>
+</div></div><br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /> MyPage.java
+<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">... <span class="code-comment">// somewhere in the constructor
+</span>Label label = <span class="code-keyword">new</span> Label(<span class="code-quote">"label"</span>);
+add(label);
+Animator animator = <span class="code-keyword">new</span> Animator().addCssStyleSubject(<span class="code-keyword">new</span> MarkupIdModel(label),  <span class="code-quote">"red"</span>, <span class="code-quote">"blue"</span>);
+animator.attachTo(label, <span class="code-quote">"onclick"</span>, Action.toggle());
+...</pre>
+</div></div><br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /> What can we see here:</p>
+<ol>
+	<li>create a new Animator object.</li>
+	<li>add CssStyleSubject to the animator. this changes target (here 'label', wrapped in a MarkupIdModel which simply extracts the MarkupId, hence the name...) from css-class 'red' to css-class 'blue'.</li>
+	<li>attach the animator to the click event of the label (this actually generates an AttributeAppender-behavior).</li>
+	<li>don't forget to define the styles 'red' and 'blue' somewhere <img class="emoticon" src="images/icons/emoticons/wink.gif" height="20" width="20" align="absmiddle" alt="" border="0"/></li>
+</ol>
+
+
+<h1><a name="wicketstuff-animator-Maintainers%26nbsp%3B"></a>Maintainers&nbsp;</h1>
+
+<p>Gerolf Seitz&nbsp;</p>
+
+<h1><a name="wicketstuff-animator-Sourcecode"></a>Sourcecode</h1>
+
+<p> <a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-animator/">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-animator/</a></p>
+
+<h1><a name="wicketstuff-animator-License"></a>License</h1>
+
+<p>wicketstuff-animator is provided under the terms of the <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</a>&nbsp;</p>
+
+<p>animator.js is released under the terms of the BSD License&nbsp;</p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

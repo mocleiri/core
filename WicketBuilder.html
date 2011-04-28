@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : WicketBuilder</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : WicketBuilder
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Mar 21, 2007 by <font color="#0050B2">kgalligan@gmail.com</font>.
+				    </div>
+
+				    <p>Groovy Wicket Builder</p>
+
+<p>The Wicket Builder utility implements a <a href="http://groovy.codehaus.org/Builders">Groovy Builder</a> for constructing Wicket Component trees.</p>
+
+<p>While using the builder makes building Component trees easier and more clear to the reader, the original driver was the fact that Groovy does not allow anonymous inner classes.&nbsp; Wicket relies on overriding methods to provide custom functionality for many Component types.&nbsp; Groovy can be used to code Wicket page classes, but each class that is overridden needs a named class definition.&nbsp; Possible, but clunky.</p>
+
+<p>The WicketBuilder simulates these overrides with named Closures.&nbsp; <a href="http://groovy.codehaus.org/Closures">Closures</a> are, essentially, portable code blocks.&nbsp; Under the hood, the builder creates dynamic class overrides and runs the closures when the named method is called.</p>
+
+<p>Some example code.&nbsp; First Java:</p>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">Form form = <span class="code-keyword">new</span> Form(<span class="code-quote">"contactForm"</span>){
+    <span class="code-keyword">protected</span> void onSubmit()
+    {
+        <span class="code-keyword">try</span> {
+            ((Contact)getModel().getModelObject()).save();
+        }
+        <span class="code-keyword">catch</span>(SomeCrazyException e) {
+            <span class="code-keyword">throw</span> <span class="code-keyword">new</span> RuntimeException(<span class="code-quote">"I don't know what to <span class="code-keyword">do</span> with <span class="code-keyword">this</span>.  Just fail."</span>, e);
+        }
+    }
+};
+
+form.add(<span class="code-keyword">new</span> RequiredTextField(<span class="code-quote">"firstname"</span>);
+form.add(<span class="code-keyword">new</span> RequiredTextField(<span class="code-quote">"lastname"</span>).add(StringValidator.maximumLength(32));
+
+add(form);</pre>
+</div></div><br clear="all" /> <br clear="all" />
+<br clear="all" /></p>
+
+<p>&nbsp;And Groovy, with the WicketBuilder:</p>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">WicketBuilder builder = <span class="code-keyword">new</span> WicketBuilder(<span class="code-keyword">this</span>)
+builder.form(<span class="code-quote">"contactForm"</span>, model:<span class="code-keyword">new</span> CompoundPropertyModel(contact),
+    onSubmit:{ model.modelObject.save() })
+{
+    requiredTextField(<span class="code-quote">"firstname"</span>)
+    requiredTextField(<span class="code-quote">"lastname"</span>)
+    {add(StringValidator.maximumLength(32))}
+}</pre>
+</div></div><br clear="all" /> <br clear="all" />
+<br clear="all" /></p>
+
+<p>&nbsp;The builder structure follows a tree pattern, so the code winds up being laid out more like how it will look in the actual html page.</p>
+
+<p>The name of each pretended method (in bold above) is resolved to a Wicket Component object, and added in a parent/child structure.</p>
+
+<p>Named closures in the attributes list (see 'onSubmit' above, italicized and underlined) tip off the builder to produce a dynamic subclass, overriding that method and using the closure provided as the body of the method.</p>
+
+<p>Custom components can be used as well.&nbsp; If in the same package, just make sure the Wicket default constructor is available (SomeClass(String key)).&nbsp; Then, simply use the class name with the first character in lower case.</p>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">builder.form(<span class="code-quote">"someForm"</span>)
+{
+    someClass(<span class="code-quote">"some other thing"</span>)
+    ...
+}</pre>
+</div></div><br clear="all" /> <br clear="all" />
+<br clear="all" /></p>
+
+<p>&nbsp;If the custom Components are in other packages, a configuration object needs to be provided (more to come...)</p>
+
+<p>The WicketBuilder code is currently in the 1.3 branch only.<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">https:<span class="code-comment">//wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/branches/wicket-1.3/wicket-contrib-groovy</span></pre>
+</div></div><br clear="all" /></p>
+
+<p>Wordy explanation of the idea:</p>
+
+<p><a href="http://bigheadco.blogspot.com/2007/03/wicket-and-groovy.html">http://bigheadco.blogspot.com/2007/03/wicket-and-groovy.html</a>;</p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

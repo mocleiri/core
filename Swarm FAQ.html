@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : Swarm FAQ</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : Swarm FAQ
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Feb 29, 2008 by <font color="#0050B2">mrmean</font>.
+				    </div>
+
+				    <p>In this section we try to answer the most frequently asked questions from users. If your question is not here or you would like additional information you can always post your questions on the mailinglist.</p>
+<ol>
+	<li><a href="#SwarmFAQ-q1">What do all these actions do?</a></li>
+	<li><a href="#SwarmFAQ-q2">Why is my component (not) being checked for class instantiation?</a></li>
+	<li><a href="#SwarmFAQ-q3">Does every secure component need to implement ISecureComponent?</a></li>
+	<li><a href="#SwarmFAQ-q4">Why is my SwarmModel not being used to check permissions of the user?</a></li>
+	<li><a href="#SwarmFAQ-q5">I am receiving a NullPointerException in WaspSession because the StrategyFactory is not instantiated</a></li>
+</ol>
+
+
+<p><a name="SwarmFAQ-q1"></a></p>
+
+<h5><a name="SwarmFAQ-1Whatdoalltheseactionsdo%3F"></a>1 What do all these actions do?</h5>
+
+<ul>
+	<li>access is used to check if a component is allowed to be created.</li>
+	<li>render is used to check if a component is allowed to be rendered.</li>
+	<li>enable is used to check if a component is allowed to be enabled, for links this means: can the user click on them, for components that take user input (like a textfield) this means: can the user write to them.</li>
+</ul>
+
+
+<ul>
+	<li>inherit, is for container components and specifies that all the actions for this container are inherited by its childs, meaning you do not need to specify permissions for each component individually.</li>
+</ul>
+
+
+<p><a name="SwarmFAQ-q2"></a></p>
+
+<h5><a name="SwarmFAQ-2Whyismycomponent%28not%29beingcheckedforclassinstantiation%3F"></a>2 Why is my component (not) being checked for class instantiation?</h5>
+
+<p>By default only components implementing ISecurePage are checked if the class is allowed to be created. If your pages extend from SecurePage or SecureWebPage this will happen automatically for them. To check if every ISecureComponent is allowed to be created would be overkill and a burden to maintain since every (anonymous) subclass of such a component must then be specified in your policy file. You may however change which classes are being checked by overridding the setupStrategyFactory method from SwarmWebApplication with the following line
+<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">setStrategyFactory(<span class="code-keyword">new</span> SwarmStrategyFactory(MyClassHere,getHiveKey()));</pre>
+</div></div><br clear="all" /></p>
+
+<p><a name="SwarmFAQ-q3"></a></p>
+
+<h5><a name="SwarmFAQ-3DoeseverysecurecomponentneedtoimplementISecureComponent%3F"></a>3 Does every secure component need to implement ISecureComponent?</h5>
+
+<p>No, ISecureComponent is just a convenient&nbsp; interface to handle most common manipulations of secure components. Any component can be made secure by storing an ISecurityCheck or a SwarmModel on it. The models can be set through the setModel method or constructors from the component and the checks can be stored on a component with the SecureComponentHelper helper class.</p>
+
+<p><a name="SwarmFAQ-q4"></a></p>
+
+<h5><a name="SwarmFAQ-4WhyismySwarmModelnotbeingusedtocheckpermissionsoftheuser%3F"></a>4 Why is my SwarmModel not being used to check permissions of the user?</h5>
+
+<p>By default Swarm only uses the secure model if there is no securitycheck on the component or if the check itself consults the model. For instance ComponentSecurityCheck has such an option.</p>
+
+<p><a name="SwarmFAQ-q5"></a></p>
+
+<h5><a name="SwarmFAQ-5IamreceivingaNullPointerExceptioninWaspSessionbecausetheStrategyFactoryisnotinstantiated"></a>5 I am receiving a NullPointerException in WaspSession because the StrategyFactory is not instantiated</h5>
+
+<p>This is most likely caused because you forgot to call super.init() in your application's init method.
+<br clear="all" /></p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

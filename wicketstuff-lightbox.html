@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : wicketstuff-lightbox</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : wicketstuff-lightbox
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on May 09, 2008 by <font color="#0050B2">scrissman</font>.
+				    </div>
+
+				    <h1><a name="wicketstuff-lightbox-Overview"></a>Overview</h1>
+
+<p>Wicketstuff-lightbox provides a means to simply include <a href="http://en.wikipedia.org/wiki/Lightbox_%28JavaScript%29">lightbox </a> behavior into your wicket applications.&nbsp; The project includes a wicket behavior to add all the required javascript to your pages by itself, as well as components to make programmatic addition of images using the behavior very simple.&nbsp; As of release 1.02, wicket resources can also be used to provide the images.</p>
+
+<h1><a name="wicketstuff-lightbox-Usage"></a>Usage</h1>
+
+
+<h4><a name="wicketstuff-lightbox-LightboxImageData"></a>LightboxImageData</h4>
+
+<p>Regardless of which component you use to render the lightbox images, the first step in creating them is to create a LightboxImageData structure.&nbsp; The only thing you must provide is a url to the enlarged image. A number of other parameters affecting how it is displayed can optionally be provided.
+<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">...
+
+<span class="code-comment">// Only the enlarged image url is required, all other attributes can optionally be added.
+</span>LightboxImageData d = <span class="code-keyword">new</span> LightboxImageData.Builder(<span class="code-quote">"images/apic.jpg"</span>)
+                                            .thumbUrl(<span class="code-quote">"images/apic-thumb.jpg"</span>)
+                                            .group(<span class="code-quote">"main"</span>)
+                                            .caption(<span class="code-quote">"A beautiful picture."</span>)
+                                            .build();
+
+...</pre>
+</div></div><br clear="all" /></p>
+
+<h4><a name="wicketstuff-lightbox-SimpleLightboxImages"></a>Simple LightboxImages</h4>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">...
+
+<span class="code-comment">// Create the model...
+</span>IModel model = <span class="code-keyword">new</span> LightboxImageData.Builder(<span class="code-quote">"images/big.jpg"</span>)
+                     .thumbUrl(<span class="code-quote">"images/thumb.jpg"</span>).model();
+
+<span class="code-comment">// Add the component using one of the following methods...
+</span>add( <span class="code-keyword">new</span> LightboxImage(<span class="code-quote">"mywicketid"</span>, model)); <span class="code-comment">// Adds the image inline...
+</span>add( <span class="code-keyword">new</span> LightboxImagePanel(<span class="code-quote">"mypanelid"</span>, model)); <span class="code-comment">// Adds the image wrapped in a div...
+</span>
+...</pre>
+</div></div><br clear="all" /></p>
+
+<h4><a name="wicketstuff-lightbox-PoppingUpfromaTextLink"></a>Popping Up from a Text Link</h4>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">...
+
+<span class="code-comment">// Create the model...
+</span>IModel model = <span class="code-keyword">new</span> LightboxImageData.Builder(<span class="code-quote">"images/big.jpg"</span>)
+                    .linkText(<span class="code-quote">"click me"</span>).model();
+
+<span class="code-comment">// Add the component...
+</span>add(<span class="code-keyword">new</span> LightboxImage(<span class="code-quote">"mywicketid"</span>, model));
+
+...</pre>
+</div></div><br clear="all" /></p>
+
+<h4><a name="wicketstuff-lightbox-UsingtheLightboxImageRepeater"></a>Using the LightboxImageRepeater</h4>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">...
+
+ArrayList&lt;LightboxImageData&gt; imgs = <span class="code-keyword">new</span> ArrayList&lt;LightboxImageData&gt;();
+
+imgs.add(<span class="code-keyword">new</span> LightboxImageData.Builder(<span class="code-quote">"images/img1.jpg"</span>).group(<span class="code-quote">"main"</span>).build());
+imgs.add(<span class="code-keyword">new</span> LightboxImageData.Builder(<span class="code-quote">"images/img2.jpg"</span>).group(<span class="code-quote">"main"</span>).build());
+
+add(<span class="code-keyword">new</span> LightboxImageRepeater(<span class="code-quote">"repeaterid"</span>, imgs, <span class="code-keyword">true</span>));
+
+...</pre>
+</div></div><br clear="all" /></p>
+
+<h1><a name="wicketstuff-lightbox-Versions"></a>Versions</h1>
+
+<table class='confluenceTable'><tbody>
+<tr>
+<th class='confluenceTh'> wicketstuff-lightbox <br clear="all" /> </th>
+<th class='confluenceTh'> released <br clear="all" /> </th>
+<th class='confluenceTh'> wicket <br clear="all" /> </th>
+<th class='confluenceTh'> lightbox <br clear="all" /> </th>
+<th class='confluenceTh'> comments <br clear="all" /> </th>
+<th class='confluenceTh'> extra credit <br clear="all" /> </th>
+</tr>
+<tr>
+<td class='confluenceTd'> v.1.02 </td>
+<td class='confluenceTd'> 05/10/2008 <br clear="all" /> </td>
+<td class='confluenceTd'> v.1.3.1 <br clear="all" /> </td>
+<td class='confluenceTd'> v.2.03.3 <br clear="all" /> </td>
+<td class='confluenceTd'> Adds wicket resource functionality <br clear="all" /> </td>
+<td class='confluenceTd'> Thanks Roland&#33; <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> v.1.01 </td>
+<td class='confluenceTd'> 03/01/2008 <br clear="all" /> </td>
+<td class='confluenceTd'> v.1.3.1 <br clear="all" /> </td>
+<td class='confluenceTd'> v.2.03.3 <br clear="all" /> </td>
+<td class='confluenceTd'> Initial release <br clear="all" /> </td>
+<td class='confluenceTd'>&nbsp;</td>
+</tr>
+</tbody></table>
+
+<h1><a name="wicketstuff-lightbox-SVNRepository"></a>SVN Repository</h1>
+
+<p>The SVN repository of this project is available at <a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-lightbox/">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-lightbox/</a></p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

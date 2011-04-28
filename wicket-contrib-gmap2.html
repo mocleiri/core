@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : wicket-contrib-gmap2</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : wicket-contrib-gmap2
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Feb 24, 2009 by <font color="#0050B2">antony.stubbs@gmail.com</font>.
+				    </div>
+
+				    <h1><a name="wicket-contrib-gmap2-Gmap2WicketComponent"></a>Gmap2 Wicket Component</h1>
+
+<p>Yet another wicket GMap project.</p>
+
+<h2><a name="wicket-contrib-gmap2-Features"></a>Features</h2>
+
+<ul>
+	<li><b>More than one GMap on a page</b></li>
+	<li><b>Components may become controls of the GMap</b>: Any Component capable of firing events can become a controller. The controls are executed whenever the named event is fired by the Component. Currently ZooOut, ZoomIn, PanDirection, AddOverlay and OpenInfoWindow are implemented.</li>
+	<li><b>Listeners may be added to the GMap</b>: These are called whenever the GMap fires the corresponding Events. So far a ClickListener and a MoveEndListener are implemented. This  allows to dynamically update any Component and the GMap itself.  The events and the controls always do a round trip from the browser to the server and back, this way any call can be intercepted and controlled on the server side. The network traffic is kept down, since all needed JavaScript functions are defined in a js-file. So only arguments have to be transfered.</li>
+</ul>
+
+
+<h2><a name="wicket-contrib-gmap2-Status"></a>Status</h2>
+
+<p>Consolidating.<br/>
+With the features in mind this project basically cut right through any API ahead of it<br/>
+without taking care of any design principles. So if you ever find the time to look into the code, give feedback&#33; It is feared that this project is in need for a lot of feedback.</p>
+
+<h2><a name="wicket-contrib-gmap2-Installation."></a>Installation.</h2>
+
+<p>There is no release currently planned. The code compiles against the<br/>
+current HEAD of wicket. So get wicket from svn as described in<br/>
+<a href="http://incubator.apache.org/wicket/building-from-svn.html">http://incubator.apache.org/wicket/building-from-svn.html</a> first.</p>
+
+<p>Even though this project relies on the well maintained structure of wickets pom.xml<br/>
+files, it is suficient to have wicket-1.3.0-incubating-SNAPSHOT.jar present in the local mvn repository.</p>
+
+<p>If the examples don't run consider getting a recent wicket SNAPSHOT.</p>
+
+<h2><a name="wicket-contrib-gmap2-GetingtheSource"></a>Geting the Source</h2>
+
+<p>Component's source code can be checked out from the subversion repo using the following code:</p>
+
+<p><b>TODO: Source has moved?&nbsp;</b> &#45;&gt; where?</p>
+<blockquote>
+<p><del>svn co</del> <del><a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-gmap2">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicket-contrib-gmap2</a></del></p>
+
+<p>svn co <a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-core">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-core</a></p></blockquote>
+<p>And the examples accessed by using:</p>
+<blockquote>
+<p>svn co <a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-core/gmap2-parent/gmap2-examples">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-core/gmap2-parent/gmap2-examples</a></p></blockquote>
+<p>This should do the install and get a jetty started for the examples:</p>
+<blockquote>
+<p>mvn &#45;f wicket-contrib-gmap2/pom.xml install<br/>
+mvn &#45;f wicket-contrib-gmap2-examples/pom.xml jetty:run</p></blockquote>
+<p>After performing the above steps, you should be able to browse to <a href="http://localhost:8080/wicket-contrib-gmap2-examples/gmap/">http://localhost:8080/wicket-contrib-gmap2-examples/gmap/</a> and click around.</p>
+
+<p>If things don't work, don't hesitate to drop a line to the wicket-user mailing list or, even better. Place a bugreport.<br/>
+<a href="http://wicketstuff.org/jira/secure/Dashboard.jspa">http://wicketstuff.org/jira/secure/Dashboard.jspa</a></p>
+
+<h2><a name="wicket-contrib-gmap2-Latestrelease"></a>Latest release</h2>
+
+<p>The latest release is available at</p>
+
+<h2><a name="wicket-contrib-gmap2-Projectmaintainers"></a>Project maintainers</h2>
+
+<p>Martin Funk: funkattack@users.sourceforge.net</p>
+
+<h2><a name="wicket-contrib-gmap2-SVNRepository"></a>SVN Repository</h2>
+
+<p>The SVN repository of this project is available at </p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

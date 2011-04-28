@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : wicket-contrib-gmap</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : wicket-contrib-gmap
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Aug 13, 2008 by <font color="#0050B2">weliwarmer</font>.
+				    </div>
+
+				    <h2><a name="wicket-contrib-gmap-About"></a>About</h2>
+
+<p>Wicket GMap Contribution enables you to create <a href="http://www.google.com/apis/maps/">Google Maps</a> on your wicket page. Further more it enables you to pickup user moves on the map and populate the map accordingly.
+<br clear="all" /></p>
+
+<h2><a name="wicket-contrib-gmap-Features"></a>Features</h2>
+
+<ul>
+	<li>Control your gmap</li>
+	<li>catch user actions and populate accordingly</li>
+	<li>Tested with FF2,FF1.5,Safari,IE6</li>
+	<li>Updates done via Ajax</li>
+	<li>Create externalized the ajaxlink so you for example can add a progress meter</li>
+	<li>Add custom markers</li>
+	<li>lots more</li>
+</ul>
+
+
+<h2><a name="wicket-contrib-gmap-Usedby"></a>Used by</h2>
+
+<p>Please insert your site here if using the contrib and its possible for you.&nbsp;</p>
+<ul>
+	<li><a href="http://tgt.dk">Turen Gaar til</a>click "kort" on the main page, for inserting POI's etc you need to login</li>
+	<li><a href="http://www.szeretgom.hu/portal/terkep">Szeretgom.hu</a></li>
+	<li><a href="http://locator.link.co.uk" title="Written by www.crystalmark.co.uk">UK ATM Web Locator</a></li>
+</ul>
+
+
+<h2><a name="wicket-contrib-gmap-ShortExample"></a>Short Example</h2>
+
+<p>Insert this on your page and bling bling you got your gmap<img class="emoticon" src="images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/> , rembember to pickup a key at <a href="http://www.google.com/apis/maps/signup.html">google key signup</a>, none are needed if you are running on localhost. &nbsp;&nbsp; &nbsp;&nbsp;
+<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-keyword">final</span> GMap gMap = <span class="code-keyword">new</span> GMap(<span class="code-keyword">new</span> GLatLng(0d, 0d), 1);
+
+        gMap.setTypeControl(<span class="code-keyword">true</span>);
+
+        gMap.setOverviewMapControl(<span class="code-keyword">true</span>);
+
+        gMap.setLargeMapControl(<span class="code-keyword">true</span>);
+
+        <span class="code-comment">// setup world bounds
+</span>
+        GLatLngBounds bounds = <span class="code-keyword">new</span> GLatLngBounds(<span class="code-keyword">new</span> GLatLng(-90, -180),
+
+                <span class="code-keyword">new</span> GLatLng(90, 180));
+
+        gMap.setBounds(bounds);
+
+        gMapPanel = <span class="code-keyword">new</span> GMapPanel(<span class="code-quote">"gmap"</span>, gMap, 440, 450,
+
+                <span class="code-quote">"yourSiteKey"</span>));
+
+        GMapListener listener = <span class="code-keyword">new</span> GMapListener() {
+
+            <span class="code-keyword">public</span> void onClick(AjaxRequestTarget target, GMap arg1) {
+
+
+                <span class="code-comment">// user has ended a map move, need to update map\!
+</span>
+            <span class="code-comment">// clear all the markers.
+</span>
+        gMap.getOverlays().clear();
+
+        gMap.addOverlay(<span class="code-keyword">new</span> GMarker(<span class="code-keyword">new</span> GLatLng(0,0),<span class="code-keyword">new</span> Label(<span class="code-quote">"info"</span>,<span class="code-quote">"heey thats my marker"</span>)));
+ }};
+
+        gMapPanel.setDragEndListener(listener);
+
+        add(gMapPanel);</pre>
+</div></div><br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /></p>
+
+<h3><a name="wicket-contrib-gmap-Matchinghtml%26nbsp%3B"></a>Matching html&nbsp;</h3>
+
+<p><br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;div wicket:id=<span class="code-quote">"gmap"</span>&gt;&lt;/div&gt;</pre>
+</div></div><br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" />
+<br clear="all" /></p>
+
+<h2><a name="wicket-contrib-gmap-SVN"></a>SVN</h2>
+
+<p>/branches/WICKET_1_2/<font color="black"><b>wicket</b></font>&#45;contrib&#45;<font color="black"><b>gmap</b></font>/<font color="black"><b>wicket</b></font>&#45;contrib&#45;<font color="black"><b>gmap</b></font>/&nbsp;
+<br clear="all" />
+See more about checking out from svn <a href="http://wicketstuff.org/confluence/display/STUFFWEB/Home#Home-HowdoIcheckthelatestcodeoutofSubversion%3F">here</a>&nbsp;</p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

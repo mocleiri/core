@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : Table</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : Table
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Oct 08, 2009 by <font color="#0050B2">pedrosans</font>.
+				    </div>
+
+				    <h2><a name="Table-Documentation"></a>Documentation</h2>
+
+<p>Table component that uses TableModel and RowSorter to render, like JTable on swing framework. It is a good component to present data that don't need complex layout presentation, has an dynamic number of columns, or the cell may to be editable or not depending on a not obvious condition.<br clear="all" /></p>
+
+<p>Example:</p>
+
+<p>You can create your table model and pass it to Table constructor. Settings as column names, editable cells, values and operations will to be managed by Table.<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">TableModel tableModel = <span class="code-keyword">new</span> DefaultTableModel(values.length, values[0].length)
+{
+	@Override
+	<span class="code-keyword">public</span> <span class="code-object">boolean</span> isCellEditable(<span class="code-object">int</span> row, <span class="code-object">int</span> column)
+	{
+		<span class="code-keyword">return</span> column == 2;
+	}
+
+	@Override
+	<span class="code-keyword">public</span> <span class="code-object">Object</span> getValueAt(<span class="code-object">int</span> row, <span class="code-object">int</span> column)
+	{
+		<span class="code-keyword">return</span> values[row][column];
+	}
+
+	@Override
+	<span class="code-keyword">public</span> void setValueAt(<span class="code-object">Object</span> aValue, <span class="code-object">int</span> row, <span class="code-object">int</span> column)
+	{
+		values[row][column] = aValue;
+		editionLabel.setDefaultModelObject(<span class="code-quote">"value changed to "</span> + aValue);
+		AjaxRequestTarget.get().addComponent(editionLabel);
+	}
+};
+table = <span class="code-keyword">new</span> Table(<span class="code-quote">"table"</span>, tableModel)
+{
+	@Override
+	<span class="code-keyword">protected</span> void onSelection(AjaxRequestTarget target)
+	{
+		target.addComponent(viewSelection);
+		target.addComponent(modelSelection);
+	}
+};</pre>
+</div></div><br clear="all" /></p>
+
+<p>It is possible to specify that the table will use an RowSorter (from swing api) to access the TableModel values at an specific order. If so, the component will start to handle column headers events to update ordering rules.</p>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">table.setRowSorter(sorter);</pre>
+</div></div><br clear="all" /></p>
+
+<p>It is important to note that the sorter object maintain his state during the session and need to be serializable. This project has an SerializableTableRowSorter that can to be used.<br/>
+The simplest way to get you table sorted is simple call setAutoCreateRowSorter method from the Table class&#33;<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">table.setAutoCreateRowSorter(<span class="code-keyword">true</span>);</pre>
+</div></div><br clear="all" /></p>
+
+<p>The component can have navigator for his rows and columns. Factory methods are avaliable for this:<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">table.setRowsPerPage(4);
+add(table.getRowsAjaxPagingNavigator(<span class="code-quote">"rowsPaging"</span>));
+table.setColumnsPerPage(4);
+add(table.getColumnsAjaxPagingNavigator(<span class="code-quote">"columnsPaging"</span>));</pre>
+</div></div><br clear="all" /></p>
+
+<p>It is possible to specify the table selection mode available at ListSelectionMode. Once SINGLE_INTERVAL_SELECTION or MULTIPLE_INTERVAL_SELECTION are specified, the selection handler will test shiftKey and the ctrlKey pressed with the mouse, allowing the user interation looks like the one with desktop tables.</p>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">table.setSelectionMode(ListSelectionMode.SINGLE_INTERVAL_SELECTION);</pre>
+</div></div><br clear="all" /></p>
+
+<p>&nbsp;To customize the way that table display the cells values:</p>
+
+<p><a href="Add Renders and Editors to Table.html" title="How to customize the way that cell values will to be presented">Renders and editors to table</a>&nbsp;</p>
+
+<h2><a name="Table-Preview"></a>Preview</h2>
+
+<p>&nbsp;<br/>
+<img src="download/attachments/29065240/tablecss.jpg" align="absmiddle" border="0"/></p>
+
+<h2><a name="Table-Projectmaintainers"></a>Project maintainers</h2>
+
+<p>Pedro Santos<br/>
+pedrosans@gmai.com</p>
+
+<h2><a name="Table-SVNRepository"></a>SVN Repository</h2>
+
+<p><a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/table-parent/table">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/table-parent/table</a></p>
+
+<h2><a name="Table-Example"></a>Example</h2>
+
+<p>The example project are available at:<br/>
+<a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/table-parent/table-examples/">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/table-parent/table-examples/</a></p>
+
+<p>Make sure you have installed the table project on your local maven repository and you can start the example with:</p>
+
+<p>mvn jetty:run</p>
+
+<p>and access the example page at:</p>
+
+<p><a href="http://localhost:8080/table-examples/">http://localhost:8080/table-examples/</a></p>
+
+				    					    <br/>
+                        <div class="tabletitle">
+                            <a name="attachments">Attachments:</a>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/29065240/table.jpg">table.jpg</a> (image/jpeg)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/29065240/table.jpg">table.jpg</a> (image/jpeg)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/29065240/tablepageable.jpg">tablepageable.jpg</a> (image/jpeg)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/29065240/table.jpg">table.jpg</a> (image/jpeg)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/29065240/tablecss.jpg">tablecss.jpg</a> (image/jpeg)
+                                <br/>
+                                                    </div>
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

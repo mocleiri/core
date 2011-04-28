@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : DojoSimpleWiperTutorial</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : DojoSimpleWiperTutorial
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Feb 03, 2007 by <font color="#0050B2">almaw</font>.
+				    </div>
+
+				    <h2><a name="DojoSimpleWiperTutorial-AbasicWiper"></a>A basic Wiper</h2>
+
+<p>In this tutorial we will discuss how to make a basic Wiper in wicket. The wiper handler add's a wiping functionallity to Wicket components. This can be very handy when i.e. making a pulldownsection in a menu. Ok it's just eyecandy, but who doesn't like their webapplications being decorated <img class="emoticon" src="images/icons/emoticons/smile.gif" height="20" width="20" align="absmiddle" alt="" border="0"/><br/>
+This tutorial will teach you how to attach a simple Wiper to a WebMarkupContainer.</p>
+
+<p>(We assume you have either checked out CVS (wicket.contrib.dojo), or downloaded a released version before beginning this tutorial)</p>
+
+<p>After this tutorial, your MarkupContainer looks like this:</p>
+
+<p><div align="center"><img src="download/attachments/786476/wipe-animation.gif" border="0"/></div><br/>
+&nbsp;</p>
+
+<p>Without some style it might not look like much, but with a bit of creativity you can use Wipers to make really cool components.<br/>
+You might want to check out our other tutorials for more ideas.</p>
+
+<h3><a name="DojoSimpleWiperTutorial-AddaWiper"></a>Add a Wiper</h3>
+
+<p>In general, the only thing you need to do to add a Wiper to your wicket app, is add the following line:</p>
+
+<p><div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>componentToBeWiped.add(new FXOnClickWiper(duration, targetComponent));
+</pre>
+</div></div><br clear="all" /> where of course the duration is the time of the animation and targetComponent is the trigger you wan't to attach the wiper to. You can even add a third attribute: true. This will set the visibilty of the component true when the page is loaded, so when true is added the componentToBeWiped will start wiped-in.</p>
+
+<h3><a name="DojoSimpleWiperTutorial-Example%3AWipeaWebMarkupContainer"></a>Example: Wipe a WebMarkupContainer</h3>
+
+<p>Suppose you have a Label which you want to click which triggers a WebMarkupContainer to wipe in. 	All you would need is the following code:</p>
+
+<p>In yourPage.java</p>
+
+<p><div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>        //create and add the components
+	add(testtrigger=new Label("testtrigger","click me"));
+	componentToBeWiped = new WebMarkupContainer("componentToBeWiped");
+	componentToBeWiped.add(new Label("label1","LABEL 1"));
+	componentToBeWiped.add(new Label("label2","LABEL 2"));
+	componentToBeWiped.add(new Label("label3","LABEL 3"));
+	componentToBeWiped.add(new Label("label4","LABEL 4"));
+
+	//actually add the wiper
+	componentToBeWiped.add(new FXOnClickWiper(500, testtrigger));
+</pre>
+</div></div><br clear="all" /> In yourPage.html</p>
+
+<p><div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>	&lt;div wicket:id="testtrigger"&gt;a nice trigger &lt;/div&gt;
+	&lt;div wicket:id="componentToBeWiped"&gt;
+  	&lt;div wicket:id="label1"&gt;&lt;/div&gt;
+	&lt;div wicket:id="label2"&gt;&lt;/div&gt;
+	&lt;div wicket:id="label3"&gt;&lt;/div&gt;
+	&lt;div wicket:id="label4"&gt;&lt;/div&gt;
+	&lt;/div&gt;
+</pre>
+</div></div><br clear="all" /> And voila, you're done&#33;</p>
+
+				    					    <br/>
+                        <div class="tabletitle">
+                            <a name="attachments">Attachments:</a>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/786476/wipe-animation.gif">wipe-animation.gif</a> (image/gif)
+                                <br/>
+                                                    </div>
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : WicketStuff Core - Migration Guide</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : WicketStuff Core - Migration Guide
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Nov 28, 2008 by <font color="#0050B2">jthomerson</font>.
+				    </div>
+
+				    <p>In November 2008 an initiative was started to organize the most used WicketStuff projects into a single tree that shared parent poms and a build and release cycle.&nbsp; The goal was to make a more standard way of organizing WS projects and to make numbered releases of all of these projects that matched Wicket Core's release cycle.&nbsp; For instance, when Wicket releases 1.4.0 final, our goal is to release the main WS projects as 1.4.0 final as well.</p>
+
+<p>This effort is only focusing on the current WicketStuff trunk, targeting the 1.4-SNAPSHOT release.&nbsp; When 1.4 final is released, this project will follow the example of Wicket and change trunk to point to the 1.5 release and create a branch dedicated to 1.4 development.</p>
+
+<p>The <a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-core/" title="View wicketstuff-core SVN">wicketstuff-core</a> folder was created in trunk to house all of the core projects that are participating in the unified release cycle.</p>
+
+<p>If you would like to include your project in the wicketstuff-core, you need to do the following: (all of the following assumes you are working from a checked out version of WicketStuff trunk)</p>
+<ol>
+	<li><b>SVN MOVE -</b> the first step is to move your project into the correct directory structure
+	<ol>
+		<li>Note that we are getting rid of the "wicket-", "wicket-contrib-", and "wicketstuff-" prefixes for all projects that participate in the ws-core.&nbsp; So, if you had wicket-contrib-yourproject, your svn command would be "svn move wicket-contrib-yourproject wicketstuff-core/yourproject".&nbsp;</li>
+		<li><b>PROJECTS WITH EXAMPLES (MULTI MODULE)</b>&nbsp;&#45; If you had "yourproject" and "yourproject-examples", we are consolidating those under a single parent.&nbsp; Now you would issue the following commands to do this:
+		<ol>
+			<li>mkdir wicketstuff-core/myproject-parent</li>
+			<li>svn add wicketstuff-core/myproject-parent</li>
+			<li>svn move wicket-contrib-myproject wicketstuff-core/myproject-parent/myproject</li>
+			<li>svn move wicket-contrib-myproject-examples wicketstuff-core/myproject-parent/myproject-examples</li>
+			<li>NOTE: naming is very important so that all maven plugins will work - especially the maven site plugin</li>
+		</ol>
+		</li>
+		<li><b>PROJECTS WITHOUT EXAMPLES</b> &#45; if you had just "wicket-yourproject", do the following:
+		<ol>
+			<li>svn move wicket-yourproject wicketstuff-core/yourproject (notice, no "wicket-")</li>
+		</ol>
+		</li>
+	</ol>
+	</li>
+	<li><b>POM adjustments</b> &#45; now you need to make some adjustments in the POM file to reflect the new module hierarchy
+	<ol>
+		<li><b>PROJECTS WITH EXAMPLES</b> &#45; if you had examples, you now have a folder named "yourproject" that contains the project itself and the examples as two subfolders.&nbsp; The folder "yourproject" needs a new POM file.&nbsp; Copy the example of the calendarviews POM (<a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-core/calendarviews-parent/pom.xml">link</a>), taking particular note of the following:
+		<ol>
+			<li>The parent node - copy it exactly, with no changes.</li>
+			<li>You should remove any declared groupId from this POM - your groupId must be org.wicketstuff (don't remove groupId from the parent node)</li>
+			<li>Remove any declared version from the POM - version will be inherited from the parent (don't remove version from the parent node)</li>
+			<li>Make your artifactId "yourproject-parent" and your packaging "pom"</li>
+			<li>Make the "modules" node, and include "yourproject" and "yourproject-examples" as "module" nodes under it.&nbsp; NOTE: The names MUST exactly match the directory names for the child directories or Maven will not handle it correctly, and it will limit our use of certain plugins.</li>
+		</ol>
+		</li>
+		<li><b>PROJECTS WITHOUT EXAMPLES</b> &#45; if you simply have one directory under wicketstuff-core that contains your project, make the following changes to your POM:
+		<ol>
+			<li>add a "parent" node with the following three children:
+			<ol>
+				<li>&lt;groupId&gt;org.wicketstuff&lt;/groupId&gt;</li>
+				<li>&lt;artifactId&gt;core-parent&lt;/artifactId&gt;</li>
+				<li>&lt;version&gt;1.4-SNAPSHOT&lt;/version&gt;</li>
+				<li>DO NOT include a relative path - it is not necessary since we follow naming conventions.&nbsp; It will break certain plugins.</li>
+			</ol>
+			</li>
+			<li>Remove any <ins>groupId</ins> that you have declared for your project - it will inherit this from the parent.</li>
+			<li>Remove any <ins>version</ins> that you have declared for your project - it will inherit this from the parent.</li>
+		</ol>
+		</li>
+		<li><b>ALL PROJECTS</b>
+		<ol>
+			<li><b>WICKET DEPENDENCIES</b>
+			<ol>
+				<li>All projects automatically inherit a dependency on the correct version of wicket.&nbsp; Remove any dependency you have declared on Wicket from your POM files.</li>
+				<li>If you depend on wicket-extensions, the version is declared as an optional dependency in the parent POM, so you need to remove the version from your POM files.&nbsp; See the inmethod-grid as an example.</li>
+			</ol>
+			</li>
+			<li><b>SCM INFO</b>
+			<ol>
+				<li>Remove any SCM info from all of your POM files.&nbsp; If you followed the naming conventions, the SCM info will be correctly inherited from the parent.</li>
+			</ol>
+			</li>
+		</ol>
+		</li>
+	</ol>
+	</li>
+	<li><b>PARENT POM ADJUSTMENTS</b>
+	<ol>
+		<li>In the wicketstuff-core parent POM, add your project as a module under the modules node.&nbsp; NOTE that the name added there must <ins>exactly</ins> match the directory name of your project.</li>
+	</ol>
+	</li>
+	<li><b>VERIFY BUILD</b>
+	<ol>
+		<li>From the wicketstuff-core directory, run the command "mvn clean install".&nbsp; Make sure everything builds successfully.</li>
+	</ol>
+	</li>
+	<li><b>COMMIT YOUR WORK</b> &#45; something along the lines of:
+	<ol>
+		<li>svn commit &#45;m "woo hoo - i made the move" .
+<br clear="all" /></li>
+	</ol>
+	</li>
+</ol>
+
+
+<p>Send questions to the wicket users list (users@wicket.apache.org) with a subject similar to: "[WS REORG] - this is broken for me" (using a meaningful description of what's broken).</p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : DojoBasicTooltipTutorial</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : DojoBasicTooltipTutorial
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Feb 03, 2007 by <font color="#0050B2">almaw</font>.
+				    </div>
+
+				    <p><br clear="all" /></p>
+
+<h2><a name="DojoBasicTooltipTutorial-ABasicTooltip"></a>A Basic Tooltip</h2>
+
+<p>For part or our assignment to make a set of Ajax components we chose  		to make a Tooltip. We have to admit that it is not really Ajax, in fact it has  		nothing to do with Ajax, but it provides a good base to begin with. This is  		that our Tooltip is based on a Panel. This gives the advantage of full  		customization (i.e. the same as a normal panel would allow).  	Now let us show you how to make a Tooltip in two simple steps.</p>
+
+<h3><a name="DojoBasicTooltipTutorial-HowtomakeabasicTooltipwithstaticHTML"></a>How to make a basic Tooltip with static HTML</h3>
+
+<p>First of all, you would start out with checking out the CVS repository of wicket-stuff contrib.dojo, or download a release  	which has the 	Tooltip.java and Tooltip.js (as weâ??ve said in the introduction, it has nothing to do with Dojo or  	Ajax, but it is our workspace).  	Step one: make a MyTooltip.java and MyTooltip.html as you would do when making a Panel. Make sure  	that MyTooltip.java extends TooltipPanel and has the necessary imports.</p>
+
+<h3><a name="DojoBasicTooltipTutorial-MyTooltip.java"></a>MyTooltip.java</h3>
+
+<p><div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>Package...
+	import wicket.contrib.markup.html.tooltip.Tooltip;
+	...
+
+	public class MyTooltip extends TooltipPanel
+	{
+
+	  //i want a default constructor with just a target and an id
+	  public MyTooltip(Component target)
+	  {
+
+	  super(target);
+	  add(new Label("label", "tooltip....!!!!"));
+	  add(new Image("dogimg", new Model("dog.gif")));
+	  }
+	}
+</pre>
+</div></div><br clear="all" /></p>
+
+<h3><a name="DojoBasicTooltipTutorial-MyTooltip.html"></a>MyTooltip.html</h3>
+
+<p><div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>&lt;html xmlns="http://www.w3.org/1999/xhtml" &gt;
+&lt;body&gt;
+&lt;wicket:panel&gt;
+  &lt;p style="border: 2px dotted #fc0; padding: 5px; background-color: rgb(255, 134, 20);"&gt;
+    &lt;span wicket:id="label"&gt;jow&lt;/span&gt;
+    &lt;img wicket:id="dogimg"/&gt;&lt;br/&gt;
+    Here are some Tooltip contents for ya.&lt;br /&gt;
+  &lt;/p&gt;
+&lt;/wicket:panel&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre>
+</div></div><br clear="all" /></p>
+
+<h3><a name="DojoBasicTooltipTutorial-Addthetooltip"></a>Add the tooltip</h3>
+
+<p>Step two: Simply add a new MyTooltip to your page, and provide it with a target component like this:<br/>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>New Tooltip("id", new SimpleTooltip(label, "Help!"));
+</pre>
+</div></div><br clear="all" /></p>
+
+<p>And in YourPage.html simply add something like this:<br/>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>&lt;span wicket:id="tooltip" &gt;tooltip contents come here&lt;/span&gt;
+</pre>
+</div></div><br clear="all" /></p>
+
+<p>When you hover over the target component (in this case the textfield)   the Tooltip appears. As you can see we have added some custom style to our   Tooltip paragraph. This is a wise thing to do because without any style,   our Tooltip will render transparent. This can look cool when you use transparent   image to shape your Tooltip, but mostly it's just annoying.  And now you're finished <img class="emoticon" src="images/icons/emoticons/wink.gif" height="20" width="20" align="absmiddle" alt="" border="0"/></p>
+
+<p>Note: In this example we have used a static Tooltip and the simple constructor. So the X and Y  offset are set to default values and there is no model attached. The Next tutorial will discuss  a dynamic Tooltip. <img src="download/attachments/1310723/basictooltip.jpg" align="absmiddle" border="0"/><br clear="all" /></p>
+
+				    					    <br/>
+                        <div class="tabletitle">
+                            <a name="attachments">Attachments:</a>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/1310723/basictooltip.jpg">basictooltip.jpg</a> (image/jpeg)
+                                <br/>
+                                                    </div>
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

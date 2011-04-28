@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : wicketstuff-progressbar</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : wicketstuff-progressbar
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Apr 16, 2008 by <font color="#0050B2">hlubek</font>.
+				    </div>
+
+				    <p><div class="panel" style="background-color: #FFFFCE;border-color: #ccc;border-style: dashed;border-width: 1px;"><div class="panelHeader" style="border-bottom-width: 1px;border-bottom-style: dashed;border-bottom-color: #ccc;background-color: #F7D6C1;"><b>Overview</b></div><div class="panelContent" style="background-color: #FFFFCE;">
+<p>Wicketstuff progressbar provides a progress bar component for wicket.<br/>
+<div align="center"><img src="download/attachments/19759106/progressbar-screen.jpg" border="0"/></div><br/>
+The component can be used both for displaying just a progress bar or for showing progress of a background task. The progress of a background task is updated via AJAX.
+<br clear="all" />
+The <em>wicketstuff-progressbar-spring</em> subproject is a task service implementation for the integration of user submitted background tasks in the service layer with the progress bar.
+<br clear="all" />
+<br clear="all" /></p>
+</div></div><br clear="all" /></p>
+
+<h2><a name="wicketstuff-progressbar-Documentation"></a>Documentation</h2>
+
+<p>The <tt>ProgressBar</tt> component uses a special model of type <tt>ProgressionModel</tt>. The current progress is encapsulated in a <tt>Progression</tt> value-object as the percentage of completion.</p>
+
+<p>The <tt>onFinished</tt> method is executed when the progress reaches 100 or more generally if the <tt>Progression</tt> object returns <tt>true</tt> for <tt>isDone</tt>.</p>
+
+<p>The progress bar is started to update itself with the start method and stops if the progress is done.</p>
+
+<p><em>SimpleProgressExamplePage.java</em>
+<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-keyword">private</span> <span class="code-object">int</span> progress = 0;
+
+<span class="code-keyword">public</span> SimpleProgressExamplePage() {
+    <span class="code-keyword">final</span> ProgressBar bar;
+    add(bar = <span class="code-keyword">new</span> ProgressBar(<span class="code-quote">"bar"</span>, <span class="code-keyword">new</span> ProgressionModel() {
+        <span class="code-keyword">protected</span> Progression getProgression() {
+            <span class="code-keyword">return</span> <span class="code-keyword">new</span> Progression(progress);
+        }
+    }) {
+        <span class="code-keyword">protected</span> void onFinished(AjaxRequestTarget target) {
+            setVisible(<span class="code-keyword">false</span>);
+            target.appendJavascript(<span class="code-quote">"alert('Task done!')"</span>);
+        }
+    });
+    ...
+    form.add(<span class="code-keyword">new</span> IndicatingAjaxButton(<span class="code-quote">"submit"</span>, form) {
+        <span class="code-keyword">protected</span> void onSubmit(AjaxRequestTarget target, Form form) {
+            bar.start(target);
+            <span class="code-keyword">new</span> <span class="code-object">Thread</span>() {
+                <span class="code-keyword">public</span> void run() {
+                    <span class="code-keyword">for</span>(<span class="code-object">int</span> i = 0; i &lt;= 100; i++) {
+                        <span class="code-keyword">try</span> {
+                            <span class="code-object">Thread</span>.sleep(200);
+                        } <span class="code-keyword">catch</span> (InterruptedException e) { }
+                            progress = i;
+                        }
+                }
+            }.start();
+        }
+    });
+    ...
+}</pre>
+</div></div><br clear="all" /></p>
+
+<p><b>Note:</b> The background process shouldn't be started as a new thread from within the page but rather in a seperate service (see wicketstuff-progress-spring).</p>
+
+<p>On the markup side, just use a div element for the progress bar:</p>
+
+<p><em>SimpleProgressExamplePage.html</em>
+<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">...
+&lt;div wicket:id=<span class="code-quote">"bar"</span>&gt;[Progress]&lt;/div&gt;
+...</pre>
+</div></div><br clear="all" /></p>
+
+<p>See <em>wicketstuff-progressbar-examples</em> for more and complete examples and the source code for documentation.</p>
+
+<h2><a name="wicketstuff-progressbar-Latestrelease"></a>Latest release</h2>
+
+<p>There is currently no release.</p>
+
+<h2><a name="wicketstuff-progressbar-Snapshots"></a>Snapshots</h2>
+
+<ul>
+	<li><a href="ProgressBar component.html" title="ProgressBar component">ProgressBar component</a></li>
+	<li><a href="ProgressBar Spring integration.html" title="ProgressBar Spring integration">ProgressBar Spring integration</a></li>
+	<li><a href="ProgressBar example.html" title="ProgressBar example">ProgressBar example</a></li>
+</ul>
+
+
+<h2><a name="wicketstuff-progressbar-Projectmaintainers"></a>Project maintainers</h2>
+
+<p>Christopher Hlubek (hlubek at users.sourceforge.net)</p>
+
+<h2><a name="wicketstuff-progressbar-SVNRepository"></a>SVN Repository</h2>
+
+<p>The SVN repository of this project is available at <a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-progressbar/">https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-progressbar/</a></p>
+
+				    					    <br/>
+                        <div class="tabletitle">
+                            <a name="attachments">Attachments:</a>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/19759106/progressbar-screen.jpg">progressbar-screen.jpg</a> (image/jpeg)
+                                <br/>
+                                                    </div>
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

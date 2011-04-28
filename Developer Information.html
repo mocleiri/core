@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : Developer Information</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : Developer Information
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Jan 22, 2011 by <font color="#0050B2">mocleiri</font>.
+				    </div>
+
+				    <p><b>NOTE:</b> Wicketstuff Development and wiki have moved to Github here: <br/>
+<a href="https://github.com/wicketstuff/core">https://github.com/wicketstuff/core</a><br/>
+<a href="https://github.com/wicketstuff/core/wiki">https://github.com/wicketstuff/core/wiki</a></p>
+
+<h2><a name="DeveloperInformation-Thispagedescribeshowtogetstartedasadeveloperforwicketstuff"></a>This page describes how to get started as a developer for wicketstuff</h2>
+<p><br clear="all" /></p>
+
+<p>As with wicket, wicketstuff too utilizes several technologies to ease burden of being a developer, and also of being a user.</p>
+
+<h3><a name="DeveloperInformation-Maven"></a>Maven</h3>
+
+<p>Developers are encouraged to use maven 2 as their build platform, if you choose otherwise you are on your own.&nbsp;</p>
+
+<h4><a name="DeveloperInformation-Repository"></a>Repository</h4>
+
+<p>Wicketstuff has it's own maven&nbsp;<a href="http://wicketstuff.org/maven/">repository</a>&nbsp;</p>
+
+<h4><a name="DeveloperInformation-Mavenparentpoms"></a>Maven parent poms</h4>
+
+<ul>
+	<li>wicketstuff-core - see the migration guide if you would like to create a new project and want it to be built and released with the core wicketstuff projects.&nbsp; (<a href="WicketStuff Core - Migration Guide.html" title="WicketStuff Core - Migration Guide">link to guide</a>)</li>
+</ul>
+
+
+<p>Inclusion of this pom is optional - if you don't want to use it, just don't create your project under the wicketstuff-core folder.</p>
+
+<h4><a name="DeveloperInformation-Miscpomsettings"></a>Misc pom settings</h4>
+
+<p>The following is required if you want TeamCity to deploy your project to the wicket stuff repository. <ins>Note the uniqueVersion=false property for snapshots</ins>.
+<br clear="all" /></p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;distributionManagement&gt;
+	&lt;snapshotRepository&gt;
+		&lt;id&gt;repo&lt;/id&gt;
+		&lt;name&gt;Local TeamCity/Tomcat repository&lt;/name&gt;
+		&lt;url&gt;
+			file:/home/wicket/tomcat/webapps/maven/repository/
+		&lt;/url&gt;
+		&lt;uniqueVersion&gt;<span class="code-keyword">false</span>&lt;/uniqueVersion&gt;
+	&lt;/snapshotRepository&gt;
+	&lt;repository&gt;
+		&lt;id&gt;repo&lt;/id&gt;
+		&lt;name&gt;Local TeamCity/Tomcat repository&lt;/name&gt;
+		&lt;url&gt;
+			file:/home/wicket/tomcat/webapps/maven/repository/
+		&lt;/url&gt;
+	&lt;/repository&gt;
+&lt;/distributionManagement&gt;</pre>
+</div></div>
+<p><br clear="all" />
+<br clear="all" /></p>
+
+<p>I am not sure if the following is required to build on TeamCity but it does not hurt to have it.
+<br clear="all" /></p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;ciManagement&gt;
+	&lt;system&gt;TeamCity&lt;/system&gt;
+	&lt;url&gt;http:<span class="code-comment">//wicketstuff.org/teamcity&lt;/url&gt;
+</span>&lt;/ciManagement&gt;</pre>
+</div></div>
+<p><br clear="all" />
+<br clear="all" /></p>
+
+<p>&nbsp;The wicket stuff repository.
+<br clear="all" /></p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&lt;repositories&gt;
+	&lt;repository&gt;
+		&lt;id&gt;wicket-snaps&lt;/id&gt;
+		&lt;url&gt;http:<span class="code-comment">//wicketstuff.org/maven/repository&lt;/url&gt;
+</span>		&lt;snapshots&gt;
+			&lt;enabled&gt;<span class="code-keyword">true</span>&lt;/enabled&gt;
+		&lt;/snapshots&gt;
+		&lt;releases&gt;
+			&lt;enabled&gt;<span class="code-keyword">true</span>&lt;/enabled&gt;
+		&lt;/releases&gt;
+	&lt;/repository&gt;
+&lt;/repositories&gt;</pre>
+</div></div>
+<p><br clear="all" />
+<br clear="all" /></p>
+
+<p>&nbsp;The above may or may not already have been included in the parent pom.</p>
+
+<h3><a name="DeveloperInformation-TeamCity"></a>TeamCity</h3>
+
+<p>In order to get your project automatically build and submitted to maven it must be setup with TeamCity.</p>
+
+<p>You can register yourself on our <a href="http://wicketstuff.org/teamcity">Teamcity server</a>.<br/>
+This doesn't give you the ability to add projects/build configurations, but it will make our lives much easier to grant you that ability.</p>
+
+<p>Registration is available to all project maintainers on Wicket Stuff and other Wicket related open source projects (Wicket Web Beans comes to mind).</p>
+
+<p>After adding your account, ask for support on the developer mailing list. Please provide the projects you are maintaining or want to maintain (this gives us an overview of who does what). One of the teamcity admins will grant you the ability to manage your own build configuration.</p>
+
+<h3><a name="DeveloperInformation-Jira"></a>Jira</h3>
+
+<p>You need to create an account here aswell. Before asking anyone on the wicket development list to create a project setup for you.</p>
+
+<p>Jira for wicketstuff are located <a href="http://wicketstuff.org/jira">here</a></p>
+
+<h3><a name="DeveloperInformation-HowdoIapplyforSubversioncommitaccess%3F"></a>How do I apply for Subversion commit access?</h3>
+
+<p>Please send an e-mail to the Wicket developer mailing list with a subject line of "Wicket Stuff commit access". Please provide your&nbsp;<a href="http://sourceforge.net/">sourceforge</a> account</p>
+
+<h3><a name="DeveloperInformation-Awordaboutlicensing"></a>A word about licensing</h3>
+
+<p>Wicket is Apache licensed, but Wicket Stuff is not. Anyone is free to contribute and the various modules are licensed under whatever terms their authors choose. This enables authors to use some cool libraries that can never be used in Wicket Core or Wicket Extensions because their licenses are incompatible the ASF one.</p>
+
+<h3><a name="DeveloperInformation-Ohloh%26nbsp%3B"></a>Ohloh&nbsp;</h3>
+
+<p>The Wicket stuff svn is monitored for statistics by <a href="http://www.ohloh.net/projects/5589">ohloh</a>. Signup now to claim the work you are doing for Wicket Stuff and build your online resume.</p>
+
+<h3><a name="DeveloperInformation-FishEye%26nbsp%3B"></a>FishEye&nbsp;</h3>
+
+<p>&nbsp;Also <a href="http://fisheye3.cenqua.com/browse/wicket-stuff">FishEye</a> is monitoring our svn.</p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : Wicket-Security 1.3.1</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : Wicket-Security 1.3.1
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Feb 27, 2008 by <font color="#0050B2">mrmean</font>.
+				    </div>
+
+				    <div class="panel" style="background-color: #FFFFCE;border-color: #ccc;border-style: dashed;border-width: 1px;"><div class="panelHeader" style="border-bottom-width: 1px;border-bottom-style: dashed;border-bottom-color: #ccc;background-color: #F7D6C1;"><b>Overview</b></div><div class="panelContent" style="background-color: #FFFFCE;">
+<p>With Wicket-Security 1.3.1 we are fixing the re usability of the sub projects, allowing you to use the same authentication / authorization framework in your soap calls as in your wicket application. In order to do that we drastically changed the way the projects were setup and we went from 2 projects (3 if you count the examples too) to 1 parent project with a total of 4 subprojects (not counting the examples).</p>
+</div></div>
+
+<h2><a name="Wicket-Security1.3.1-WiComSec"></a>WiComSec</h2>
+
+<p>Wicket Common Security, or WiComSec for short, contains common classes / interfaces required by most subprojects. It has no runtime dependencies.</p>
+
+<h2><a name="Wicket-Security1.3.1-WASP"></a>WASP</h2>
+
+<p>Wicket Abstract Security Platform, or Wasp for short, contains the api and some secure components you can use. It has runtime dependencies on WiComSec, Wicket, SLF4J and optionally Wicket-Extensions.&nbsp;</p>
+
+<h2><a name="Wicket-Security1.3.1-Hive"></a>Hive</h2>
+
+<p>Hive is just the name of this project, it does not mean anything like the other projects. Hive is a JAAS like security framework capable of supporting multiple security configuration in a single JVM. Its only runtime dependency is on WiComSec.</p>
+
+<h2><a name="Wicket-Security1.3.1-SWARM"></a>SWARM</h2>
+
+<p>Standard Wicket Authentication and Rights Management, or swarm for short, is the default implementation of Wasp. It has runtime dependencies on Wasp (and thus all its dependencies) and Hive.</p>
+
+<h2><a name="Wicket-Security1.3.1-1.3.0compatability"></a>1.3.0 compatability</h2>
+
+<p>We tried to keep the changes to both wasp and swarm api to a minimum but nonetheless 1.3.1 is not binary compatible with 1.3.0. We have compiled a list of changes here to ease the migration.&nbsp;</p>
+<ul>
+	<li>ActionFactory#getAction(org.apache.wicket.authorization.Action) was moved to WaspActionFactory</li>
+	<li>ActionFactory gained a method #getAction(org.apache.wicket.security.actions.WaspAction)</li>
+	<li>org.apache.wicket.security.actions.WaspAction no longer extends org.apache.wicket.authorization.Action</li>
+	<li>Subject#isClassAuthenticated(Class)<br/>
+&#43;Subject#isComponentAuthenticated(Component)<br/>
+&#43;Subject#isModelAuthenticated(IModel, Component) moved to a new interface org.apache.wicket.security.hive.authentication.WicketSubject</li>
+	<li>The constructor for ActionPermission(String, String) is replaced by ActionPermission(String, WaspAction)</li>
+	<li>org.apache.wicket.security.strategies.LoginException moved to a new package&nbsp; org.apache.wicket.security.authentication.LoginException</li>
+	<li>${ComponentPermission} and ${DataPermission} are now registered as alias in SwarmPolicyFileHiveFactory, PolicyFileHiveFactory has no knowledge of them anymore.</li>
+	<li>The constructor for PolicyFileHiveFactory() is replaced PolicyFileHiveFactory(ActionFactory)</li>
+	<li>The constructor for SwarmActionFactory() is replaced by SwarmActionFactory(String)</li>
+	<li>Primary means of locating an ActionFactory is now through the Actions singleton although the WaspApplication still provides a wrapper method to get the ActionFactory</li>
+	<li>Constructors for ImpliesOtherAction are deprecated and replaced by 2 more simpler constructors requiring less knowledge of the internals</li>
+</ul>
+
+
+<p><a name="Wicket-Security1.3.1-migrateto1.3.1"></a>Unless you are building your own Wasp implementation you only have to think about 2 things when migrating your webapplication to 1.3.1</p>
+<ul>
+	<li>Instead of the PolicyFileHiveFactory you must now use the SwarmPolicyFileHiveFactory in SwarmWebApplication#setUpHive</li>
+	<li>You have to change the import statement for the LoginException to: import org.apache.wicket.security.authentication.LoginException;</li>
+</ul>
+
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

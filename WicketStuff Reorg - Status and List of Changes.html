@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : WicketStuff Reorg - Status and List of Changes</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : WicketStuff Reorg - Status and List of Changes
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Dec 04, 2008 by <font color="#0050B2">jthomerson</font>.
+				    </div>
+
+				    <h1><a name="WicketStuffReorg-StatusandListofChanges-Overview%26nbsp%3B%26nbsp%3B"></a>Overview&nbsp;&nbsp;</h1>
+
+<p>This page describes the work done to reorganize Wicket Stuff, and get the projects&nbsp;that are currently building against Wicket 1.4 into a common build and release cycle that will be kept in sync with Wicket.&nbsp; The goal is to have numbered releases that match Wicket, so that if you depend on Wicket 1.4.1,&nbsp;&nbsp;you can also depend on "some-wicketstuff-project" 1.4.1.&nbsp; Certain conventions were also created, such as project / examples being grouped under a common project-parent module, as well as removing "wicket-", "wicketstuff-", and "wicket-contrib-" from all of the project names.</p>
+
+<h1><a name="WicketStuffReorg-StatusandListofChanges-Completedwork%26nbsp%3B%26nbsp%3B"></a>Completed work&nbsp;&nbsp;</h1>
+
+
+<h2><a name="WicketStuffReorg-StatusandListofChanges-MIGRATED"></a>MIGRATED</h2>
+
+<p>The following projects were rolled up into the wicketstuff-core project. The ones that had examples were rolled together into a single parent module for both the project and the examples:</p>
+<ul>
+	<li>wicketstuff-misc</li>
+	<li>wicket-contrib-tinymce</li>
+	<li>wicket-contrib-tinymce-examples</li>
+	<li>wicketstuff-annotation</li>
+	<li>wicketstuff-jquery</li>
+	<li>wicketstuff-jquery-examples</li>
+	<li>wicket-contrib-yui</li>
+	<li>wicket-contrib-yui-examples</li>
+	<li>wicket-phonebook</li>
+	<li>wicketstuff-calendarviews</li>
+	<li>wicketstuff-client-and-server-validation</li>
+	<li>wicketstuff-minis</li>
+	<li>wicketstuff-minis-example</li>
+	<li>inmethod-grid</li>
+	<li>wicket-contrib-input-events</li>
+	<li>wicket-contrib-input-events-example</li>
+	<li>wicket-contrib-openlayers</li>
+	<li>wicket-contrib-openlayers-examples</li>
+	<li>wicketstuff-scriptaculous</li>
+	<li>wicketstuff-scriptaculous-examples</li>
+	<li>wicketstuff-prototype</li>
+	<li>wicketstuff-simile-timeline</li>
+	<li>wicketstuff-objectautocomplete</li>
+	<li>wicket-contrib-gmap2</li>
+	<li>wicket-contrib-gmap2-examples</li>
+</ul>
+
+
+<h2><a name="WicketStuffReorg-StatusandListofChanges-ToMigrate"></a>To Migrate</h2>
+
+<p>The following projects are on my "TODO" list, although if the owner wanted to do them, I would be ecstatic&#33;:</p>
+<ul>
+	<li>wicket-iolite</li>
+	<li>wicket-persistence-template</li>
+</ul>
+
+
+<h2><a name="WicketStuffReorg-StatusandListofChanges-Movedtoatticordeleted"></a>Moved to attic or deleted</h2>
+
+<p>The following projects were moved to the attic because there was no work on them in trunk since the time the 1.3 branch was created.&nbsp; Work can continue on the 1.3 branch, and if someone wants to port them to 1.4, they should be copied back into trunk at that time.&nbsp; If you copy your project to trunk, consider joining it under the wicketstuff-core project.</p>
+<ul>
+	<li>quickmodels</li>
+	<li>teatime</li>
+	<li>wicket-contrib-beanpanels</li>
+	<li>wicket-contrib-datepicker</li>
+	<li>wicket-portlet-examples</li>
+	<li>wicket-portlets</li>
+	<li>wicket-seam-test</li>
+	<li>wicketstuff-rome</li>
+	<li>wicketstuff-rome-examples</li>
+	<li>wicketstuff-sifr</li>
+	<li>wicketstuff-suckerfish</li>
+	<li>wicketstuff-suckerfish-examples</li>
+	<li>wicket-template</li>
+	<li>wicket-googlecharts</li>
+	<li>wicketstuff-dojo</li>
+	<li>wicketstuff-dojo-examples</li>
+	<li>wicket-contrib-javaee</li>
+	<li>maven-hierarchy-plugin</li>
+	<li>wicketstuff-hibernate-behavior</li>
+	<li>wicket-spring-cattr</li>
+	<li>wicket-spring-cattr-examples</li>
+	<li>wicketstuff-crud</li>
+	<li>wicket-contrib-freemarker</li>
+	<li>wicket-contrib-database</li>
+	<li>wicket-contrib-groovy</li>
+	<li>wicket-benchmark</li>
+	<li>wicket-seam</li>
+	<li>wicket-contrib-gmap</li>
+	<li>wicket-contrib-gmap-examples</li>
+	<li>wicketstuff-archetypes</li>
+	<li>wicket-contrib-panel</li>
+	<li>wicket-flickr</li>
+</ul>
+
+
+<p>The following folders in trunk were deleted because they were empty:</p>
+<ul>
+	<li>wicketstuff-datatable-autocomplete</li>
+	<li>wicketstuff-datatable-autocomplete-examples</li>
+</ul>
+
+
+<p>The following was deleted because it is no longer referenced by other projects:</p>
+<ul>
+	<li>wicketstuff-parent</li>
+</ul>
+
+
+<h1><a name="WicketStuffReorg-StatusandListofChanges-NEEDINPUTFROMCOMMUNITY"></a>NEED INPUT FROM COMMUNITY</h1>
+
+
+<h2><a name="WicketStuffReorg-StatusandListofChanges-1.3projectsin%26nbsp%3Btrunk%28aka1.4%29%26nbsp%3B"></a>1.3 projects in&nbsp;trunk (aka 1.4)&nbsp;</h2>
+
+<p>The following projects are still depending on Wicket 1.3, but have work in the trunk since the 1.3 branch was created. I suggest that they are svn moved to the 1.3 branch where work can continue on them, and if / when they are ported to 1.4, they are copied into the 1.4 branch (which is currently trunk):</p>
+<ul>
+	<li>wicketstuff-progressbar</li>
+	<li>wicket-calendar</li>
+	<li>wicketstuff-animator</li>
+	<li>wicketstuff-jmx-panel</li>
+	<li>pickwick</li>
+	<li>wicket-contrib-jasperreports</li>
+	<li>wicketstuff-push</li>
+	<li>wicketstuff-push-examples</li>
+	<li>wicket-contrib-jamon</li>
+	<li>wicket-cluster</li>
+	<li>wicketstuff-dojo-1.1</li>
+	<li>wicketstuff-picnik</li>
+	<li>wicket-contrib-accordion</li>
+	<li>wicket-contrib-accordion-examples</li>
+	<li>wicket-contrib-bbcodecomponent</li>
+	<li>wicketstuff-lightbox</li>
+	<li>wicketstuff-merged-resources</li>
+	<li>wicketstuff-merged-resources-examples</li>
+	<li>wicket-contrib-mootools</li>
+	<li>wicket-contrib-mootools-examples</li>
+</ul>
+
+
+<h2><a name="WicketStuffReorg-StatusandListofChanges-Tomoveintocore%2Cbutneedownerapproval%26nbsp%3B"></a>To move into core, but need owner approval&nbsp;</h2>
+
+<p>I would recommend moving the following into wicketstuff-core with the others, but I need owner permission first:</p>
+<ul>
+	<li>active-widgets</li>
+	<li>active-widgets-examples</li>
+</ul>
+
+
+<h2><a name="WicketStuffReorg-StatusandListofChanges-Needinput%2Fowner"></a>Need input / owner</h2>
+
+<p>Unsure of what to do with this one without Maurice around. It doesn't seem that anyone has taken ownership of it and is committing the necessary time to it:</p>
+<ul>
+	<li>wicket-security</li>
+</ul>
+
+
+<h2><a name="WicketStuffReorg-StatusandListofChanges-"></a></h2>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

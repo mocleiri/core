@@ -1,0 +1,141 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : Security Framework Comparison</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : Security Framework Comparison
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Jun 27, 2009 by <font color="#0050B2">tauren</font>.
+				    </div>
+
+				    <p>As several frameworks exist to leverage wicket security and more could be on the way, it might be time for a comparison. The intention of this document is not to declare that this framework is better than another one but to provide you with the bare facts and let you decide what better suits your needs.</p>
+
+<h1><a name="SecurityFrameworkComparison-Theframeworks%26nbsp%3B"></a>The frameworks&nbsp;</h1>
+
+<p>In alphabetic order</p>
+<ul>
+	<li><a href="http://cwiki.apache.org/WICKET/acegi-and-wicket-auth-roles.html">Wicket Auth-Roles</a>&nbsp; (does anyone know of a better place for information ?, all i could find was this integration guide)</li>
+	<li><a href="Wicket-Security.html" title="Wicket-Security">Standard Wicket Authentication and Rights Management (Swarm)</a> (Swarm is an implementation of Wasp)</li>
+	<li><a href="http://wicketstuff.org/confluence/display/STUFFWIKI/wicket-shiro">Wicket with Apache Shiro</a> (previously Apache Ki and JSecurity)</li>
+	<li>Anybody knows of / is working on projects that should be mentioned here ?
+<br clear="all" />
+<br clear="all" />
+&nbsp;
+<table class='confluenceTable'><tbody>
+<tr>
+<th class='confluenceTh'> Category </th>
+<th class='confluenceTh'> Auth Roles </th>
+<th class='confluenceTh'> Swarm </th>
+</tr>
+<tr>
+<td class='confluenceTd'> Minimum JDK requirement? <br clear="all" /> </td>
+<td class='confluenceTd'> 1.5 / 1.4&#42; <br clear="all" /> </td>
+<td class='confluenceTd'> 1.4 <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Minimum Wicket version required? <br clear="all" /> </td>
+<td class='confluenceTd'> 1.2.x <br clear="all" /> </td>
+<td class='confluenceTd'> 1.3.x <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Location of security declarations? <br clear="all" /> </td>
+<td class='confluenceTd'> Decentralized (on the components) <br clear="all" /> </td>
+<td class='confluenceTd'> Centralized (default in a policy file) <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Location of security handling? <br clear="all" /> </td>
+<td class='confluenceTd'> Centralized (default in application) <br clear="all" /> </td>
+<td class='confluenceTd'> Decentralized in security checks on components <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Scope of IAuthorizationStrategy? <br clear="all" /> </td>
+<td class='confluenceTd'> Application </td>
+<td class='confluenceTd'> Session <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Combines authentication and authorization? <br clear="all" /> </td>
+<td class='confluenceTd'> Yes <br clear="all" /> </td>
+<td class='confluenceTd'> Yes <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Only secures Wicket (i.e. not other web services)? <br clear="all" /> </td>
+<td class='confluenceTd'> Yes </td>
+<td class='confluenceTd'> Yes <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Integration with other security frameworks possible to secure other web services? <br clear="all" /> </td>
+<td class='confluenceTd'> Acegi <br clear="all" /> </td>
+<td class='confluenceTd'> Acegi <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Actions based on? </td>
+<td class='confluenceTd'> Strings <br clear="all" /> </td>
+<td class='confluenceTd'> Classes (subclasses of WaspAction) <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Action inheritance structure? <br clear="all" /> </td>
+<td class='confluenceTd'> No </td>
+<td class='confluenceTd'> Yes <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Custom actions possible? <br clear="all" /> </td>
+<td class='confluenceTd'> Yes <br clear="all" /> </td>
+<td class='confluenceTd'> Yes <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Security at the component level? <br clear="all" /> </td>
+<td class='confluenceTd'> Yes <br clear="all" /> </td>
+<td class='confluenceTd'> Yes <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Security at the model level? <br clear="all" /> </td>
+<td class='confluenceTd'> No <br clear="all" /> </td>
+<td class='confluenceTd'> Yes <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Requires custom components to work? <br clear="all" /> </td>
+<td class='confluenceTd'> No <br clear="all" /> </td>
+<td class='confluenceTd'> No <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Has custom components? <br clear="all" /> </td>
+<td class='confluenceTd'> No? <br clear="all" /> </td>
+<td class='confluenceTd'> Yes <br clear="all" /> </td>
+</tr>
+<tr>
+<td class='confluenceTd'> Examples </td>
+<td class='confluenceTd'> <a href="http://www.wicket-library.com/wicket-examples/">online</a>&nbsp; <a href="http://sourceforge.net/project/showfiles.php?group_id=119783&amp;package_id=138752">download</a> </td>
+<td class='confluenceTd'> <a href="http://wicketstuff.org/wicketsecurity/">online</a>&nbsp;<a href="http://sourceforge.net/project/showfiles.php?group_id=134391&amp;package_id=236512">download</a> </td>
+</tr>
+</tbody></table>
+<p>&#42; = You need to build this yourself by removing all JDK 1.5 stuff from the code.</p></li>
+</ul>
+
+
+<p>Am i missing something, did i got something wrong? Feel free to edit this yourself if you have the permissions, or put it on the wicket mailing list.</p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

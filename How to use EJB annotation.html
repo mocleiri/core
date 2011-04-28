@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : How to use EJB annotation</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : How to use EJB annotation
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Jun 24, 2010 by <font color="#0050B2">aldaris</font>.
+				    </div>
+
+				    <h1><a name="HowtouseEJBannotation-Howtouse@EJBannotationinyourWicketcomponents"></a>How to use @EJB annotation in your Wicket components</h1>
+
+
+<h2><a name="HowtouseEJBannotation-Statelessexample"></a>Stateless example</h2>
+
+<p>1. Create your EJB, i.e.</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>@Local
+public interface ContactService {
+  //.....
+}
+</pre>
+</div></div>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>@Stateless
+public class ContactServiceImplementation implements ContactService {
+  //....
+}
+</pre>
+</div></div>
+<p>2. Package your EJB in a JAR file.<br/>
+3. Declare your EJB in the web.xml descriptor of the webapplication, i.e.</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>    &lt;ejb-local-ref&gt;
+    	&lt;ejb-ref-name&gt;ejb/contacts&lt;/ejb-ref-name&gt;
+    	&lt;ejb-ref-type&gt;Session&lt;/ejb-ref-type&gt;
+    	&lt;local&gt;wicket.javaee.service.ContactService&lt;/local&gt;
+    &lt;/ejb-local-ref&gt;
+</pre>
+</div></div>
+<p>4. Create your wicket page using the @EJB annotation to reference the developed EJB, i.e.</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>public class ListContacts extends WebPage {
+
+  @EJB(name="ejb/contacts") private ContactService contactService;
+
+  public ListContacts() {
+    List&lt;Contact&gt; contacts = contactService.getContacts();
+    //....
+</pre>
+</div></div>
+<p>5. Add the line</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>addComponentInstantiationListener(new JavaEEComponentInjector(this));
+</pre>
+</div></div>
+<p>inside the <b>init()</b> method of your Wicket WebApplication, like in the example:</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>public class WicketJavaEEApplication extends WebApplication {
+
+   protected void init() {
+      addComponentInstantiationListener(new JavaEEComponentInjector(this));
+   }
+}
+</pre>
+</div></div>
+<p>6. Package your web application in a WAR file.<br/>
+7. Package the EJB module and the webapplication in an EAR file.</p>
+
+<h2><a name="HowtouseEJBannotation-StatefulEJB%27s"></a>Stateful EJB's</h2>
+
+<p>By default you're using always the same EJB instance (it's cached), but if you want to cache your EJB for Wicket Sessions, then use the following code in your Wicket component:</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>  @EJB(name="ejb/contacts", description="stateful") private ContactService contactService;
+</pre>
+</div></div>
+<p>So whenever you want to use stateful beans in your component, you need to put the <em>stateful</em> description in the @EJB, so the injector could separate them from stateless beans.<br/>
+<b>Note:</b> for no-interface view stateful session beans you don't need to use the description attribute.</p>
+
+<h2><a name="HowtouseEJBannotation-SupportforGlobalJNDInames"></a>Support for Global JNDI names</h2>
+
+<p>Since Java EE Inject 1.4.10, you can use the Java EE 6 based Global JNDI names, such as:</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>java:global[/&lt;app-name&gt;]/&lt;module-name&gt;/&lt;bean-name&gt;[!&lt;fully-qualified-interface-name&gt;]
+java:app/&lt;module-name&gt;/&lt;bean-name&gt;[!&lt;fully-qualified-interface-name&gt;]
+java:module/&lt;bean-name&gt;[!&lt;fully-qualified-interface-name&gt;]
+</pre>
+</div></div>
+<p>The java:global namespace can be used globally (for example accessing other applications remote beans), the java:app namespace is for application-scope JNDI access and the java:module namespace is for modules, which contains the lookupable element.</p>
+
+<p>The app-name can be configured in the EAR files application.xml (&lt;application-name&gt; tag), and the module name can be configured with the &lt;module-name&gt; tags in both web.xml and ejb-jar.xml. These elements were not available in previous XSD's, so you need to check, whether your XML uses the latest schema.<br/>
+If you want to use Global JNDI names, then in your WicketApplication <b>init</b> method use one of the following codes:</p>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>addComponentInstantiationListener(new JavaEEComponentInjector(this,
+        new GlobalJndiNamingStrategy(APP_NAME, EJB_MODULE_NAME)));
+addComponentInstantiationListener(new JavaEEComponentInjector(this,
+        new AppJndiNamingStrategy(EJB_MODULE_NAME)));
+addComponentInstantiationListener(new JavaEEComponentInjector(this,
+        new ModuleJndiNamingStrategy()));
+</pre>
+</div></div>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

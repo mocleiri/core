@@ -1,0 +1,247 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : wicketstuff-annotation</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : wicketstuff-annotation
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Jan 22, 2010 by <font color="#0050B2">raboof</font>.
+				    </div>
+
+				    <h3><a name="wicketstuff-annotation-Introduction"></a>Introduction</h3>
+
+<p>The wicketstuff-annotation library is used to mount your pages declaratively via Java annotations instead of programatically via <tt>mount()</tt> calls in your <tt>WebApplication.init()</tt> method.
+<br clear="all" /></p>
+
+<h3><a name="wicketstuff-annotation-QuickOverview"></a>Quick Overview</h3>
+
+<p>A typical wicket application might have several pages mounted like the following:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-keyword">public</span> class MyWicketApplication <span class="code-keyword">extends</span> WebApplication
+{
+    @Override
+    <span class="code-keyword">protected</span> void init()
+    {
+        mountBookmarkablePage(<span class="code-quote">"terms"</span>, Terms.class);
+        mount(<span class="code-keyword">new</span> MixedParamUrlCodingStrategy(<span class="code-quote">"dogs"</span>, Dogs.class,
+                                              <span class="code-keyword">new</span> <span class="code-object">String</span>[] {<span class="code-quote">"sport"</span>, <span class="code-quote">"show"</span>}));
+    }
+}</pre>
+</div></div>
+<p>With wicketstuff-annotation, you annotate each page like this:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">@MountPath(path = <span class="code-quote">"terms"</span>)
+<span class="code-keyword">public</span> class Terms <span class="code-keyword">extends</span> WebPage { ... }
+
+@MountPath(path = <span class="code-quote">"terms"</span>)
+@MountMixedParam(parameterNames={<span class="code-quote">"sport"</span>, <span class="code-quote">"show"</span>})
+<span class="code-keyword">public</span> class Dogs <span class="code-keyword">extends</span> WebPage { ... }</pre>
+</div></div>
+<p>And use the <tt>AnnotatedMountScanner</tt> in your init method like this:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-keyword">public</span> class MyWicketApplication <span class="code-keyword">extends</span> WebApplication
+{
+    @Override
+    <span class="code-keyword">protected</span> void init()
+    {
+        <span class="code-keyword">new</span> AnnotatedMountScanner().scanPackage(<span class="code-quote">"com.acme.wicket.pages"</span>).mount(<span class="code-keyword">this</span>);
+    }
+}</pre>
+</div></div>
+
+<h3><a name="wicketstuff-annotation-Why"></a>Why</h3>
+
+<p>This library was created because of the desire for the following capabilities:</p>
+<ul>
+	<li>The ability to encapsulate how a page is mounted with the code for the page itself</li>
+	<li>Remove the need to edit the WebApplication class each time a new page is added.</li>
+</ul>
+
+
+<p>Java annotations and class-path scanning are a good way to achieve these goals.</p>
+
+<p><b>Note:</b> Not all developers like the use of annotations and not all Wicket applications may benefit from this library.  Our goal is to offer a nice alternative way to address the need to mount pages in wicket in order to create nice URLs.</p>
+
+<h3><a name="wicketstuff-annotation-HowitWorks"></a>How it Works</h3>
+
+<p>The <tt>AnnotatedMountScanner</tt> does all the work.  It uses another wicketstuff-annotation class, <tt>MatchingResources</tt> to scan the class path looking for classes annotated with <tt>@MountPath</tt>.  See the <tt>MatchingResources</tt> section for details on this class.</p>
+
+<p>The entire class path is not necessarily scanned.  You can limit what packages to look in.  In the example above, only classes under <tt>com.acme.wicket.pages</tt> are searched.  The class path scanning is very efficient by itself and limiting the search only makes it faster.</p>
+
+<p>The <tt>@MountPath</tt> annotation specifies the primary and alternate paths that the page should be mounted on.  The primary path is the one chosen when Wicket maps a page to a path.  The primary and alternate paths are used when Wicket maps paths back to pages.</p>
+
+<p>The next step is to determine which URL encoding strategy to use.  Unless one is explicity specified, the default used is <tt>BookmarkablePageRequestTargetUrlCodingStrategy</tt>.  In the example above, the <tt>Terms</tt> page uses the default.</p>
+
+<p>You can explicitly define one by using one of the strategy-specific annotations.  In the example above, the <tt>Dogs</tt> page uses the <tt>@MountMixedParam</tt> annotation which is associated with the <tt>MixedParamUrlCodingStrategy</tt> strategy.  There is an annotation for each page-specific strategy that comes with Wicket (see next section).</p>
+
+<h3><a name="wicketstuff-annotation-StrategyAnnotations"></a>Strategy Annotations</h3>
+
+<p>The following table lists the strategy-specific annotation in wicketstuff-annotation and the corresponding strategy class:</p>
+<table class='confluenceTable'><tbody>
+<tr>
+<th class='confluenceTh'> Annotation </th>
+<th class='confluenceTh'> Strategy </th>
+</tr>
+<tr>
+<td class='confluenceTd'> @MountBookmarkablePageRequestTarget </td>
+<td class='confluenceTd'> BookmarkablePageRequestTargetUrlCodingStrategy </td>
+</tr>
+<tr>
+<td class='confluenceTd'> @MountHybrid </td>
+<td class='confluenceTd'> HybridUrlCodingStrategy </td>
+</tr>
+<tr>
+<td class='confluenceTd'> @MountIndexedHybrid </td>
+<td class='confluenceTd'> IndexedHybridUrlCodingStrategy </td>
+</tr>
+<tr>
+<td class='confluenceTd'> @MountIndexedParam </td>
+<td class='confluenceTd'> IndexedParamUrlCodingStrategy </td>
+</tr>
+<tr>
+<td class='confluenceTd'> @MountMixedParam </td>
+<td class='confluenceTd'> MixedParamUrlCodingStrategy </td>
+</tr>
+<tr>
+<td class='confluenceTd'> @MountQueryString </td>
+<td class='confluenceTd'> QueryStringUrlCodingStrategy </td>
+</tr>
+</tbody></table>
+<p>You can define your own annotation.  The Javadoc explains this in more detail.  The best way to implement your own is to follow the example of an existing annotation.</p>
+
+<h3><a name="wicketstuff-annotation-%7B%7BMatchingResources%7D%7D"></a><tt>MatchingResources</tt></h3>
+
+<p>Matching is done via Spring's <a href="http://static.springframework.org/spring/docs/2.5.x/api/org/springframework/core/io/support/PathMatchingResourcePatternResolver.html">PathMatchingResourcePatternResolver</a> class.  This means that wicketstuff-annotation has a dependency on Spring.  When we build, we use <tt>spring-core 2.5.2</tt>, but this class has been part of Spring since 1.0.2, so MatchingReources should work with almost any version of Spring.</p>
+
+<p>The <tt>MatchingResources</tt> class is useful for finding any resources on the path.  It was adapted from Donohoe Digital's core architecture and contributed as part of this library.  Technically, it does not depend on wicket, so it could at some point be moved into another package.</p>
+
+<p>The wicketstuff-annotation project uses the <tt>getAnnotatedMatches()</tt> method to find classes with the <tt>@MountPath</tt> annotation.  Note that Spring does not load the class to determine this information.  Instead, it uses a meta-data reader to determine this (which is faster than going through class loading).</p>
+
+<h3><a name="wicketstuff-annotation-ReleaseHistory"></a>Release History</h3>
+
+<table class='confluenceTable'><tbody>
+<tr>
+<td class='confluenceTd'> 1.0 </td>
+<td class='confluenceTd'> May 6, 2008 </td>
+<td class='confluenceTd'> Initial Release </td>
+</tr>
+<tr>
+<td class='confluenceTd'> 1.1 </td>
+<td class='confluenceTd'> August 11, 2008 </td>
+<td class='confluenceTd'> Added <tt>getPatternMatches()</tt> and <tt>getPackageMatches()</tt> API to allow for easier testing </td>
+</tr>
+</tbody></table>
+
+<h3><a name="wicketstuff-annotation-Maven"></a>Maven</h3>
+
+<p>To get wicketstuff-annotation via maven, you need to specify the wicketstuff repository:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-xml"><span class="code-tag">&lt;repositories&gt;</span>
+  <span class="code-tag">&lt;repository&gt;</span>
+    <span class="code-tag">&lt;id&gt;</span>wicket-snaps<span class="code-tag">&lt;/id&gt;</span>
+    <span class="code-tag">&lt;url&gt;</span>http://wicketstuff.org/maven/repository<span class="code-tag">&lt;/url&gt;</span>
+    <span class="code-tag">&lt;snapshots&gt;</span>
+      <span class="code-tag">&lt;enabled&gt;</span>true<span class="code-tag">&lt;/enabled&gt;</span>
+    <span class="code-tag">&lt;/snapshots&gt;</span>
+    <span class="code-tag">&lt;releases&gt;</span>
+      <span class="code-tag">&lt;enabled&gt;</span>true<span class="code-tag">&lt;/enabled&gt;</span>
+    <span class="code-tag">&lt;/releases&gt;</span>
+  <span class="code-tag">&lt;/repository&gt;</span>
+<span class="code-tag">&lt;/repositories&gt;</span></pre>
+</div></div>
+<p>And include this dependency:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-xml"><span class="code-tag">&lt;dependency&gt;</span>
+  <span class="code-tag">&lt;groupId&gt;</span>org.wicketstuff<span class="code-tag">&lt;/groupId&gt;</span>
+  <span class="code-tag">&lt;artifactId&gt;</span>wicketstuff-annotation<span class="code-tag">&lt;/artifactId&gt;</span>
+  <span class="code-tag">&lt;version&gt;</span>1.1<span class="code-tag">&lt;/version&gt;</span>
+<span class="code-tag">&lt;/dependency&gt;</span></pre>
+</div></div>
+
+<h3><a name="wicketstuff-annotation-DirectDownload"></a>Direct Download</h3>
+
+<p>You can download directly from the <a href="http://wicketstuff.org/maven/repository/org/wicketstuff/wicketstuff-annotation/1.1/">wicketstuff repository</a></p>
+<ul>
+	<li><a href="http://wicketstuff.org/maven/repository/org/wicketstuff/wicketstuff-annotation/1.1/wicketstuff-annotation-1.1.jar">wicketstuff-annotation.jar</a></li>
+	<li><a href="http://wicketstuff.org/maven/repository/org/wicketstuff/wicketstuff-annotation/1.1/wicketstuff-annotation-1.1-sources.jar">source code</a></li>
+	<li><a href="http://wicketstuff.org/maven/repository/org/wicketstuff/wicketstuff-annotation/1.1/wicketstuff-annotation-1.1-javadoc.jar">javadoc</a></li>
+</ul>
+
+
+<h3><a name="wicketstuff-annotation-SourceCode"></a>Source Code</h3>
+
+<p>You can <a href="https://wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-annotation">browse the source</a> or get the source using subversion:</p>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">$ svn co http:<span class="code-comment">//wicket-stuff.svn.sourceforge.net/svnroot/wicket-stuff/trunk/wicketstuff-annotation</span></pre>
+</div></div>
+
+<h3><a name="wicketstuff-annotation-Javadoc"></a>Javadoc</h3>
+
+<table class='confluenceTable'><tbody>
+<tr>
+<td class='confluenceTd'> <a href="http://www.ddpoker.com/"><img src="download/attachments/24051719/pokericon32.jpg" align="absmiddle" border="0"/></a> </td>
+<td class='confluenceTd'> Browse <a href="http://www.ddpoker.com/javadoc/wicketstuff-annotation/1.1/">wicketstuff-annotation javadoc</a> hosted courtesy of <a href="http://www.ddpoker.com/">DD Poker</a> and <a href="http://www.donohoedigital.com">Donohoe Digital LLC</a> </td>
+</tr>
+</tbody></table>
+
+<h3><a name="wicketstuff-annotation-Dependencies"></a>Dependencies</h3>
+
+<ul>
+	<li>jdk 1.5 or higher (because we use annotations and generics)</li>
+	<li>spring-core 2.5.2 (what we tested with, but earlier versions of spring should work)</li>
+	<li>wicket 1.3.3 (haven't tested with 1.4 pre-release yet, but should work)</li>
+</ul>
+
+
+<h3><a name="wicketstuff-annotation-License"></a>License</h3>
+
+<p>Just like Wicket itself, the wicketstuff-annotation library is licensed under <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>.</p>
+
+<h3><a name="wicketstuff-annotation-ProjectsUsingwicketstuffannotation"></a>Projects Using wicketstuff-annotation</h3>
+
+<table class='confluenceTable'><tbody>
+<tr>
+<td class='confluenceTd'> <a href="http://www.ddpoker.com/"><img src="download/attachments/24051719/pokericon32.jpg" align="absmiddle" border="0"/></a> </td>
+<td class='confluenceTd'> <a href="http://online.ddpoker.com">DD Poker Online Games Portal</a> </td>
+</tr>
+</tbody></table>
+
+<h3><a name="wicketstuff-annotation-Author"></a>Author</h3>
+
+<p>Doug Donohoe of <a href="http://www.donohoedigital.com/">Donohoe Digital LLC</a> is the author of wicketstuff-annotation.  He can be reached at doug (at) donohoe (dot) info.</p>
+
+				    					    <br/>
+                        <div class="tabletitle">
+                            <a name="attachments">Attachments:</a>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/24051719/pokericon32.jpg">pokericon32.jpg</a> (image/jpeg)
+                                <br/>
+                                                    </div>
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

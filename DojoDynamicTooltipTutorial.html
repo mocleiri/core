@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : DojoDynamicTooltipTutorial</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : DojoDynamicTooltipTutorial
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Feb 04, 2007 by <font color="#0050B2">almaw</font>.
+				    </div>
+
+				    <p><br clear="all" /></p>
+
+<h2><a name="DojoDynamicTooltipTutorial-AmoredynamicTooltip"></a>A more dynamic Tooltip</h2>
+
+<p>In the first example we have shown you how to make a basic Tooltip,  	it looks nice but you would probably want a lot more when you're working with Wicket. 	This tutorial will show you how to make a more dynamic Tooltip.</p>
+
+<h3><a name="DojoDynamicTooltipTutorial-HowtomakeadynamicTooltip"></a>How to make a dynamic Tooltip</h3>
+
+<p>The case: Imagine you have a student administration application and you would like          to have information tooltips popup when you point at the student's name.</p>
+
+<p>Step one: 	Let's say you'll have a simple student model like this:<br/>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>	...
+
+	public class StudentModel implements Serializable
+	{
+		//instant fields are set to create a simple student for testing purposes
+		private int studentID;
+		private String lastName;
+		private String firstName;
+		private char sex;
+
+	public StudentModel(int SID, String lname, String fname, char sex)
+	{
+		this.studentID = SID;
+		this.lastName = lname;
+		this.firstName = fname;
+		this.sex = sex;
+	}
+
+	//
+	...
+	//getters and setters here, nothing fancy
+	...
+	}
+</pre>
+</div></div><br clear="all" /></p>
+
+<p>make a StudentTooltip.java and StudentTooltip.html something like this.  	Make sure that StudentTooltip.java extends TooltipPanel and has the necessary imports. 	You can also see here that we use a constructor which requires an ID, a target component,  	a model, an X-offset and a Y-offset. The x and Y offsets are the offsets from the targets  	upper-left corner. So it positions your tooltip relatively to it's target.</p>
+
+<h3><a name="DojoDynamicTooltipTutorial-StudentTooltip.Java"></a>StudentTooltip.Java</h3>
+
+<p><div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>	public class StudentTooltip extends TooltipPanel{
+
+	//and I want a constructor with an x, y and a model
+	public StudentTooltip(IModel model, Component target, int x, int y)
+	{
+
+	super(model, target, x, y);
+
+	StudentModel thisStudent = (StudentModel)getModelObject();
+
+	//simply add the components to match the HTML
+	add(new Label("studentid", thisStudent.getStudentID()));
+
+	//add a picture which name matches the studentID
+	add(new Image("photo", new Model(thisStudent.getStudentID() + ".jpg")));
+	add(new Label("lname", thisStudent.getLastName()));
+	add(new Label("fname", thisStudent.getFirstName()));
+	add(new Label("sex", thisStudent.getSex()));
+	}
+
+	}
+</pre>
+</div></div><br clear="all" /></p>
+
+<h3><a name="DojoDynamicTooltipTutorial-StudentTooltip.html"></a>StudentTooltip.html</h3>
+
+<p><div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>	&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+	&lt;html xmlns="http://www.w3.org/1999/xhtml" &gt;
+
+	&lt;body&gt;
+	 &lt;wicket:panel&gt;
+	 	&lt;p style="border: 2px ridge rgb(0, 96, 255); padding: 5px; background-color: rgb(193, 234, 249);"&gt;
+	 	&lt;table&gt;
+	 		&lt;tr&gt;
+	 			&lt;td colspan="2"' align="center"&gt;&lt;b&gt;Student&lt;/b&gt;&lt;/td&gt;
+	 		&lt;/tr&gt;
+	 		&lt;tr&gt;
+	 			&lt;td&gt;&lt;i&gt;Student ID: &lt;/i&gt;&lt;span wicket:id="studentid"&gt;id here&lt;/span&gt;&lt;/td&gt;&lt;td rowspan="4"&gt;&lt;img wicket:id="photo"/&gt;&lt;/td&gt;
+	 		&lt;/tr&gt;
+	 		&lt;tr&gt;
+	 			&lt;td&gt;&lt;i&gt;Last name: &lt;/i&gt;&lt;span wicket:id="lname" align="right"&gt;last name here&lt;/span&gt;&lt;/td&gt;
+	 		&lt;/tr&gt;
+	 		&lt;tr&gt;
+	 			&lt;td&gt;&lt;i&gt;First name: &lt;/i&gt;&lt;span wicket:id="fname"&gt;first name here&lt;/span&gt;&lt;/td&gt;
+	 		&lt;/tr&gt;
+	 		&lt;tr&gt;
+	 			&lt;td&gt;&lt;i&gt;Sex: &lt;/i&gt;&lt;span wicket:id="sex"&gt;sex&lt;/span&gt;&lt;/td&gt;
+	 		&lt;/tr&gt;
+	 	&lt;/table&gt;
+	 	&lt;/p&gt;
+
+	 &lt;/wicket:panel&gt;
+	&lt;/body&gt;
+	&lt;/html&gt;
+</pre>
+</div></div><br clear="all" /></p>
+
+<p>As you see, the student Tooltip is nothing more than a panel holding a table, with some labels and an image.  	The Tooltip contents will be fetched from the supplied student model.</p>
+
+<h3><a name="DojoDynamicTooltipTutorial-Addthetooltips"></a>Add the tooltips</h3>
+
+<p>Step two: Simply add a new StudentTooltip to your page,  	and provide it with target components like this:<br/>
+<div class="preformatted panel" style="border-width: 1px;"><div class="preformattedContent panelContent">
+<pre>        //add targets for the Student Example
+	add(stlabel = new Label("stlabel", "Marco van de Haar"));
+	add(stlabel2 = new Label("stlabel2", "Ruud Booltink"));
+	...
+	//Create 2 students to serve as modelObjects for the tooltips
+	StudentModel student1 = new StudentModel(1234, "van de Haar", "Marco", "m");
+	StudentModel student1 = new StudentModel(1235, "Booltink", "Ruud", "m");
+
+	//add the tooltips for the student and give a StudentModel to use with hte tooltip
+	add(new Tooltip("studenttooltip", new StudentTooltip(new CompoundPropertyModel(student1), stlabel, 100, 20)));
+	dd(new Tooltip("studenttooltip2", new StudentTooltip(new CompoundPropertyModel(student1), stlabel, 100, 20)));
+
+And in yourpage.html simply add something like this:	&lt;!--student labels--&gt;
+	&lt;span wicket:id="stlabel"&gt;label&lt;/span&gt;
+	&lt;span wicket:id="stlabel2"&gt;label&lt;/span&gt;
+
+	&lt;!--student tooltips--&gt;
+	&lt;span wicket:id="studenttooltip"&gt;tooltipcontent&lt;/span&gt;
+	&lt;span wicket:id="studenttooltip2"&gt;tooltipcontent&lt;/span&gt;
+</pre>
+</div></div><br clear="all" /></p>
+
+<p>When you hover over the target component (in this case the student name labels)  	the Tooltip appears. As you can see we've added some custom style to our Tooltip paragraph.  	This is a wise thing to do because without any style, our Tooltip will render transparent.  	This can look cool when you use transparent image to shape your Tooltip, but mostly it is  	just annoying. <img src="download/attachments/1310725/tooltip_dynamic.gif" align="absmiddle" border="0"/></p>
+
+				    					    <br/>
+                        <div class="tabletitle">
+                            <a name="attachments">Attachments:</a>
+                        </div>
+
+                        <div class="greybox" align="left">
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/1310725/tooltip_dynamic.gif">tooltip_dynamic.gif</a> (image/gif)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/1310725/sample.tiff">sample.tiff</a> (image/pjpeg)
+                                <br/>
+                                                            <img src="images/icons/bullet_blue.gif" height="8" width="8" alt=""/>
+                                <a href="download/attachments/1310725/Sample.jpg">Sample.jpg</a> (image/pjpeg)
+                                <br/>
+                                                    </div>
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>

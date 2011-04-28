@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <title>Wicket Stuff Wiki : Build a custom dojo to fit to your application</title>
+	    <link rel="stylesheet" href="styles/site.css" type="text/css" />
+        <META http-equiv="Content-Type" content="text/html; charset=UTF-8">	    
+    </head>
+
+    <body>
+	    <table class="pagecontent" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+		    <tr>
+			    <td valign="top" class="pagebody">
+				    <div class="pageheader">
+					    <span class="pagetitle">
+                            Wicket Stuff Wiki : Build a custom dojo to fit to your application
+                                                    </span>
+				    </div>
+				    <div class="pagesubheading">
+					    This page last changed on Jul 26, 2007 by <font color="#0050B2">jbq</font>.
+				    </div>
+
+				    <p>WicketStuff-Dojo is released with an embedded Dojo. The embedded Dojo is not compiled and by the way not optimized for your application.</p>
+
+<p>WicketStuff-Dojo can be optimized to better fit to your application needs, the following tutorial explains how to build a such Dojo build and how to use it.</p>
+
+<h1><a name="Buildacustomdojotofittoyourapplication-BuildacustomDojoinWicketStuffDojo"></a>Build a custom Dojo in WicketStuff-Dojo</h1>
+
+<p>First of all, you need to be aware of which Dojo modules are used in your application. You can see all files in <a href="https://addons.mozilla.org/fr/firefox/addon/1843">Firebug</a> (using Firefox). <a href="http://dojotoolkit.org/node/16">Dojo website</a> can help you to understand what is a Dojo build.</p>
+
+<p>WicketStuff-Dojo includes a full Dojo build system. You can find it in buildDojo folder.</p>
+
+<p>To build a custom Dojo, fill the file <em>buildDojo/profile.js</em> with modules and files you want to compile. The following is a sample of this file :</p>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java"><span class="code-keyword">var</span> dependencies = [
+         <span class="code-quote">"dojo.widget.*"</span>,
+         <span class="code-quote">"dojo.io.*"</span>,
+         <span class="code-quote">"dojo.string.*"</span>,
+         <span class="code-quote">"dojo.date.*"</span>,
+         <span class="code-quote">"dojo.dnd.*"</span>,
+         <span class="code-quote">"dojo.lfx.*"</span>,
+
+         <span class="code-quote">"dojo.widget.Menu2"</span>,
+         <span class="code-quote">"dojo.widget.FloatingPane"</span>,
+         <span class="code-quote">"dojo.widget.DropDownDatePicker"</span>,
+         <span class="code-quote">"dojo.widget.LayoutContainer"</span>,
+
+         <span class="code-quote">"dojoWicket.widget.ErrorDisplayer"</span>,
+         <span class="code-quote">"dojoWicket.widget.SelectableTable"</span>
+
+];
+
+dependencies.prefixes = [
+   [<span class="code-quote">"dojoWicket"</span>,<span class="code-quote">"../dojo-wicket"</span>]
+];
+
+load(<span class="code-quote">"getDependencyList.js"</span>);</pre>
+</div></div><br clear="all" /> <br clear="all" />
+When your custom <em>profile.js</em> is done, run the <em>ant makeMyDojo</em> task in <em>dojoBuild</em> folder.<br/>
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">&gt;[dojoBuild]&gt; ant makeMyDojo</pre>
+</div></div><br clear="all" /></p>
+
+<p><br clear="all" />
+This task will checkout Dojo, apply some needed patches on it and run the Dojo build, it can take some minutes.<br/>
+When the task end you can find your custom Dojo in <em>buildDojo/myRelease</em>. Note this folder contains two folders (dojo and dojo-wicket). The first contains your compiled dojo.js file and all dojo files, the second contains all of WicketStuff-Dojo.<br clear="all" /></p>
+
+<p><b>Note.</b> To use a custom compilation profile from another directory, use <tt>ant &#45;Dprofile.path=/path/to/profile.js</tt>&nbsp;<br clear="all" /></p>
+
+<h1><a name="Buildacustomdojotofittoyourapplication-UsethecustomDojobuild"></a>Use the custom Dojo build</h1>
+
+<p>&nbsp;Now your custom Dojo build is ready to be used.</p>
+
+<p>Copy the buildDojo/myRelease content in a folder somewhere in your classpath (in our exemple we will call it dojo-custom), so you get the following folder structure :</p>
+
+<p><div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">[aPackage]
+   OneClass.java
+   dojo-custom
+      dojo
+         [...]
+      dojo-wicket
+         [...]</pre>
+</div></div><br clear="all" /> <br clear="all" />
+Now you just need to set the new Dojo Path in your application :
+<br clear="all" />
+<div class="code panel" style="border-width: 1px;"><div class="codeContent panelContent">
+<pre class="code-java">CompressedResourceReference myCustomDojo =
+	<span class="code-keyword">new</span> CompressedResourceReference(OneClass.class, <span class="code-quote">"dojo-custom/dojo/dojo.js"</span>);
+setMetaData(AbstractDefaultDojoBehavior.USE_CUSTOM_DOJO_DIST, myCustomDojo);</pre>
+</div></div><br clear="all" /> <br clear="all" />
+Lets run the applcation and have fun <img class="emoticon" src="images/icons/emoticons/wink.gif" height="20" width="20" align="absmiddle" alt="" border="0"/><br clear="all" /></p>
+
+				    
+                    			    </td>
+		    </tr>
+	    </table>
+	    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+			<tr>
+				<td height="12" background="http://wicketstuff.org/confluence/images/border/border_bottom.gif"><img src="images/border/spacer.gif" width="1" height="1" border="0"/></td>
+			</tr>
+		    <tr>
+			    <td align="center"><font color="grey">Document generated by Confluence on Apr 11, 2011 12:08</font></td>
+		    </tr>
+	    </table>
+    </body>
+</html>
