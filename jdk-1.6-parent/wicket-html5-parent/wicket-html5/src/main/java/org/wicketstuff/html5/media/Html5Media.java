@@ -11,7 +11,6 @@ import java.util.List;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
 import org.apache.wicket.markup.html.WebMarkupContainer;
-import org.apache.wicket.markup.html.internal.HtmlHeaderContainer;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.util.string.AppendingStringBuffer;
 import org.wicketstuff.html5.Html5UtilsBehavior;
@@ -25,7 +24,7 @@ public class Html5Media extends WebMarkupContainer
 
 	private static final long serialVersionUID = 1L;
 
-	private IModel<List<MediaSource>> sources;
+	private final IModel<List<MediaSource>> sources;
 
 /*
  * public Html5Media(final String id) { this(id, new WildcardListModel<MediaSource>(new
@@ -46,25 +45,18 @@ public class Html5Media extends WebMarkupContainer
 	 */
 	public List<MediaSource> getSources()
 	{
-		List<MediaSource> sources = (this.sources != null) ? this.sources.getObject() : null;
-		if (sources == null)
+		List<MediaSource> sources;
+		if (this.sources != null)
+		{
+			sources = this.sources.getObject();
+		}
+		else
 		{
 			throw new NullPointerException(
 				"List of sources is null - Was the supplied 'Sources' model empty?");
 		}
 
 		return sources;
-	}
-
-	/**
-	 * Check the associated markup file for a wicket header tag
-	 * 
-	 * @see org.apache.wicket.Component#renderHead(org.apache.wicket.markup.html.internal.HtmlHeaderContainer)
-	 */
-	@Override
-	public void renderHead(HtmlHeaderContainer container)
-	{
-		super.renderHead(container);
 	}
 
 	/**
