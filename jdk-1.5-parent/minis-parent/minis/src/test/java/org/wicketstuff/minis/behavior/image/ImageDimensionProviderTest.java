@@ -36,7 +36,7 @@ public class ImageDimensionProviderTest
 
 		IMarkupFragment markup = Markup.of("<div><img wicket:id=\"" + image.getId() + "\" /></div>");
 
-		tester.startComponent(image);
+		tester.startComponent(image, markup);
 
 		TagTester tagTester = tester.getTagByWicketId(image.getId());
 
