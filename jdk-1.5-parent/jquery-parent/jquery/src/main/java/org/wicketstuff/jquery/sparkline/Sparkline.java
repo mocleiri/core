@@ -21,6 +21,7 @@ import java.util.Iterator;
 
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.MarkupStream;
+import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebComponent;
 import org.apache.wicket.markup.parser.XmlTag;
@@ -28,7 +29,7 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.request.resource.PackageResourceReference;
 import org.wicketstuff.jquery.JQueryBehavior;
 
-public class Sparkline extends WebComponent
+public class Sparkline extends WebComponent implements IHeaderContributor
 {
 	private static final long serialVersionUID = 1L;
 

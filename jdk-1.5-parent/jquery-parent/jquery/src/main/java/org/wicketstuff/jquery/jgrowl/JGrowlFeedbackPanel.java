@@ -3,6 +3,7 @@ package org.wicketstuff.jquery.jgrowl;
 import org.apache.wicket.Component;
 import org.apache.wicket.feedback.FeedbackMessage;
 import org.apache.wicket.feedback.IFeedbackMessageFilter;
+import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.panel.FeedbackPanel;
@@ -16,7 +17,8 @@ import org.wicketstuff.jquery.Options;
  * 
  * @author martin-g
  */
-public class JGrowlFeedbackPanel extends FeedbackPanel
+@SuppressWarnings("serial")
+public class JGrowlFeedbackPanel extends FeedbackPanel implements IHeaderContributor
 {
 
 	private static final long serialVersionUID = 1L;
@@ -78,7 +80,6 @@ public class JGrowlFeedbackPanel extends FeedbackPanel
 	{
 		final JGrowlFeedbackMessage jgrowlFeedbackMessage = new JGrowlFeedbackMessage(message)
 		{
-			private static final long serialVersionUID = 1L;
 
 			@Override
 			protected Options newFatalOptions()

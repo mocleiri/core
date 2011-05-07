@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Component;
+import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -19,7 +21,7 @@ import org.wicketstuff.simile.timeline.json.JsonUtils;
 import org.wicketstuff.simile.timeline.model.BandInfoParameters;
 import org.wicketstuff.simile.timeline.model.BandInfoParameters.DateTime;
 
-public class Timeline extends Panel
+public class Timeline extends Panel implements IHeaderContributor
 {
 
 	/**
@@ -130,8 +132,7 @@ public class Timeline extends Panel
 		return "timeLineLoad" + timelineMarkupId;
 	}
 
-	@Override
-	public void renderHead(IHeaderResponse response)
+	public void renderHead(Component c, IHeaderResponse response)
 	{
 
 		response.renderJavaScriptReference(new PackageResourceReference(getClass(),

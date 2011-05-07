@@ -48,6 +48,7 @@ import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.extensions.markup.html.tree.Tree;
+import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
 import org.apache.wicket.markup.html.panel.EmptyPanel;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -60,7 +61,7 @@ import org.apache.wicket.request.resource.ResourceReference;
  * @author Pedro Henrique Oliveira dos Santos
  * 
  */
-public class MBeansPanel extends Panel
+public class MBeansPanel extends Panel implements IHeaderContributor
 {
 	private static final long serialVersionUID = 1L;
 
