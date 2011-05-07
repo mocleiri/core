@@ -25,7 +25,7 @@ public class DefaultInvisibleFeedbackPanelTest
 	{
 		FeedbackPanel feedbackPanel = new DefaultInvisibleFeedbackPanel("foo");
 
-		tester.startComponent(feedbackPanel, null);
+		tester.startComponent(feedbackPanel);
 		tester.assertInvisible("");
 
 		tester.getSession().info("info");

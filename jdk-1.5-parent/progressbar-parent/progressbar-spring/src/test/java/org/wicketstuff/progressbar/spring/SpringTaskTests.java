@@ -198,7 +198,7 @@ public class SpringTaskTests
 			{
 				return taskService.getProgression(taskId);
 			}
-		}), null);
+		}));
 		tester.assertLabel("panel:label", "0%");
 
 		taskService.start(taskId);
